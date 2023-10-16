@@ -1,0 +1,233 @@
+body {
+    background-color: #ffffff;
+}
+.home {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100%;
+}
+.features-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 64px 0px;
+    background: #f8f9fa;
+}
+.container-1 {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1250px;
+    height: 800px;
+    padding: 0px 5px;
+}
+.text-2 {
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1.5rem;
+    color: #a88a46;
+    text-transform: uppercase;
+}
+.heading {
+    margin: 16px 0px;
+    font-weight: 900;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    color: #11181c;
+    text-align: center;
+}
+.text-1 {
+    width: 725px;
+    margin: 0px 0px 64px;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    color: #7e868c;
+    text-align: center;
+}
+.columns {
+    gap: 0px;
+    display: flex;
+    flex-direction: row;
+    flex: 0 1;
+    justify-content: center;
+    align-items: flex-end;
+    height: 60%;
+    margin-top: 57px;
+    border: 3px solid rgb(229, 224, 219);
+    border-radius: 25px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    cursor: auto;
+}
+.column {
+    gap: 11px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-self: center;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+.image {
+    flex: 1 0;
+    width: 200px;
+    height: 400px;
+    border-radius: 16px;
+}
+.text {
+    flex: 0 1;
+    align-self: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+.column-1 {
+    gap: 11px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-self: center;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+.image-1 {
+    flex: 1 0;
+    width: 200px;
+    height: 400px;
+    border-radius: 16px;
+}
+.text-3 {
+    flex: 0 1;
+    align-self: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+.column-2 {
+    gap: 11px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-self: center;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+.image-2 {
+    flex: 1 0;
+    width: 200px;
+    height: 400px;
+    border-radius: 16px;
+}
+.text-4 {
+    flex: 0 1;
+    align-self: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+.column-3 {
+    gap: 11px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-self: center;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+.image-3 {
+    flex: 1 0;
+    width: 200px;
+    height: 400px;
+    border-radius: 16px;
+}
+.text-5 {
+    flex: 0 1;
+    align-self: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+.column-4 {
+    gap: 11px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0;
+    align-self: center;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 16px;
+}
+.image-4 {
+    flex: 1 0;
+    width: 200px;
+    height: 400px;
+    border-radius: 16px;
+}
+.text-6 {
+    flex: 0 1;
+    align-self: center;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+@media screen and (max-width: 1280px) {
+    .container-1 {
+        padding: 0px 32px;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .container-1 {
+        padding: 0px 16px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .text-1 {
+        width: 75vw;
+    }
+    .columns {
+        flex-direction: column;
+    }
+    .column {
+        width: 100%;
+    }
+    .image {
+        width: 250px;
+        height: 250px;
+    }
+    .column-1 {
+        width: 100%;
+    }
+    .image-1 {
+        width: 250px;
+        height: 250px;
+    }
+    .column-2 {
+        width: 100%;
+    }
+    .image-2 {
+        width: 250px;
+        height: 250px;
+    }
+    .column-3 {
+        width: 100%;
+    }
+    .image-3 {
+        width: 250px;
+        height: 250px;
+    }
+    .column-4 {
+        width: 100%;
+    }
+    .image-4 {
+        width: 250px;
+        height: 250px;
+    }
+}

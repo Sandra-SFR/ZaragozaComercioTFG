@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="features-section">
+    <h1>Register</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example2" class="form-control" />
+            <label class="form-label" for="form5Example2">{{ field_label(registrationForm.email) }}</label>
+        </div>
+        <!-- Name input -->
+        <div class="form-outline mb-4">
+            <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example1" class="form-control" />
+            <label class="form-label" for="form5Example1">{{ field_label(registrationForm.nombre) }}</label>
+        </div>
+        <div class="form-outline mb-4">
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password',
+            attr: { class: 'form-label' }
+        }) }}</div>
+
+        <!-- Checkbox -->
+        <div class="form-check d-flex justify-content-center mb-4">
+            <input name="{{ field_name(registrationForm.agreeTerms) }}" class="form-check-input me-2" type="checkbox" value="" id="form5Example3" checked />
+            <label class="form-check-label" for="form5Example3">
+                {{ field_label(registrationForm.agreeTerms) }}
+            </label>
+        </div>
+        <div class="form-check d-flex justify-content-center mb-4">
+            <input name="{{ field_name(registrationForm.envio) }}" class="form-check-input me-2" type="checkbox" value="" id="form5Example3" checked />
+            <label class="form-check-label" for="form5Example3">
+                {{ field_label(registrationForm.envio) }}
+            </label>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+    {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
