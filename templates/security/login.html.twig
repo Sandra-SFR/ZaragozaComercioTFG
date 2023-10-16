@@ -3,6 +3,7 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<div class="features-section">
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -23,9 +24,10 @@
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
-
+    <br>
     <button class="btn btn-lg btn-primary" type="submit">
         Sign in
     </button>
 </form>
+</div>
 {% endblock %}
