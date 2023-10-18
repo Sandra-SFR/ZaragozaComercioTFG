@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ comercio.nombre }}{% endblock %}
+{#TODO: detalle del comercio que ve el usario#}
+{% block body %}
+{#    <h1>Nombre: {{ comercio.nombre }}</h1>#}
+{#    <h3>Email: {{ comercio.email }}</h3>#}
+{#    <h3>Teléfono: {{ comercio.telefono }}</h3>#}
+{#    <h3>Dirección: {{ comercio.direccion }}</h3>#}
+{#    <h3>Estado: {{ comercio.estado }}</h3>#}
+{#    <h3>Descripción: {{ comercio.descripcion }}</h3>#}
+<!-- Section: Split screen -->
+<section class="">
+
+    <div class="container-fluid px-0">
+        <div class="row g-0">
+    <!-- First column -->
+    <div class="col-lg-6 vh-100 d-flex flex-column justify-content-center align-items-center">
+
+        <!--Header-->
+        <div class="">
+            <h1 class="display-2 fw-bold text-uppercase">{{ comercio.nombre }}</h1>
+            <h2 class="display-4">Tienda de frikismo</h2>
+        </div>
+
+        <!--Info-->
+        <div class="" style="margin-top: 8%; text-align: center">
+            <p class="display-10">{{ comercio.estado }}</p>
+            <p class="display-10">{{ comercio.email }}</p>
+            <p class="display-10">{{ comercio.telefono }}</p>
+            <p class="display-10">{{ comercio.descripcion }}</p>
+            <p class="display-10">{{ comercio.direccion }}</p>
+        </div>
+
+    <!-- First column -->
+    </div>
+
+    <!-- Second column -->
+    <div class="col-lg-6 vh-100 d-flex justify-content-center align-items-center" >
+        <img class="d-block vh-100 vw-100" src="https://pbs.twimg.com/media/FVHV_ndWYAA8ZvU?format=jpg&name=large" alt="Foto comercio"
+        style="border-bottom-left-radius: 4rem">
+    </div>
+    <!-- Second column -->
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+
+{% endblock %}

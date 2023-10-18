@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Comercio;
+use App\Form\ComercioCreateForm;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\ComercioCreateForm;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/admin')]
@@ -21,7 +21,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/comercio', name: 'admin_comercios', methods: ['GET'])]
+    #[Route('/comercios', name: 'admin_comercios', methods: ['GET'])]
     public function comercios(EntityManagerInterface $em): Response
     {
         $usuario = $this->getUser();
@@ -29,12 +29,15 @@ class AdminController extends AbstractController
 
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($usuario, ['nombre' => 'ASC'], 20, 0);
 
-        return $this->render('comercio/index.html.twig', [
+        return $this->render('admin/comercios.html.twig', [
             'comercios'=>$comercios,
+            'controller_name' => 'Comercios',
         ]);
     }
 
-    #[Route('/comercio/{id}', name: 'admin_comercio', methods: ['GET'])]
+
+    //TODO: la ruta sin 'nombre/' entra en conflicto con el metodo '/comercio/new', puede que entienda new como {id} y explota
+    #[Route('/comercio/nombre/{id}', name: 'admin_comercio', methods: ['GET'])]
     public function comercio($id, EntityManagerInterface $em): Response
     {
         $usuario = $this->getUser();
@@ -42,14 +45,14 @@ class AdminController extends AbstractController
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
 
-        if ($usuario !== $comercio->getUsuario() && $rol !== 'ROLE_ADMIN') {
+        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
             return $this->render('error/error.html.twig', [
                 'codigo'=>403,
                 'mensaje'=>'haha no tienes poder aquí',
             ]);
         }
 
-        return $this->render('comercio/comercio.html.twig', [
+        return $this->render('admin/comercio.html.twig', [
             'comercio'=>$comercio,
         ]);
     }
@@ -60,7 +63,7 @@ class AdminController extends AbstractController
         $comercio = new Comercio();
         $form = $this->createForm(ComercioCreateForm::class, $comercio);
 
-        return $this->render('comercio/new.html.twig', [
+        return $this->render('admin/new.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
         ]);
@@ -69,7 +72,6 @@ class AdminController extends AbstractController
     #[Route('/comercio/new', name: 'comercio_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
-
 
         $comercio = new Comercio();
         $form = $this->createForm(ComercioCreateForm::class, $comercio);
@@ -85,16 +87,16 @@ class AdminController extends AbstractController
                 $em->persist($comercio);
                 $em->flush();
 
-                return $this->redirectToRoute('admin_comercio', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('comercio/new.html.twig', [
+            return $this->render('admin/new.html.twig', [
                 'comercio' => $comercio,
                 'form' => $form,
             ]);
         } else {
 
-            return $this->render('comercio/new.html.twig', [
+            return $this->render('admin/new.html.twig', [
                 'comercio' => $comercio,
                 'form' => $form,
             ]);

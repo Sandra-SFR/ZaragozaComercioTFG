@@ -31,7 +31,7 @@ class ComercioRepository extends ServiceEntityRepository
     public function findNombresComercios(Usuario $usuario, array $orderBy = null, $limit = null, $offset = null ): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id, c.nombre', 'u.nombre as usuario')
+            ->select('c.id, c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado')
             ->join('c.usuario', 'u')
             ->where('c.usuario = :val')
             ->setParameter('val', $usuario);
