@@ -4,6 +4,6 @@
 
 {% block body %}
 {% for comercio in comercios %}
-    <p><a href="/comercio/{{ comercio.id }}">{{ comercio.nombre }} {{ comercio.usuario.nombre }}</a></p>
+    <p><a href="/comercio/{{ comercio.id }}">{{ comercio.nombre }} {{ comercio.usuario }}</a></p>
     {% endfor %}
 {% endblock %}
