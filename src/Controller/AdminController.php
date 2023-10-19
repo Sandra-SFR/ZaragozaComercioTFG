@@ -35,28 +35,6 @@ class AdminController extends AbstractController
         ]);
     }
 
-
-    //TODO: la ruta sin 'nombre/' entra en conflicto con el metodo '/comercio/new', puede que entienda new como {id} y explota
-    #[Route('/comercio/nombre/{id}', name: 'admin_comercio', methods: ['GET'])]
-    public function comercio($id, EntityManagerInterface $em): Response
-    {
-        $usuario = $this->getUser();
-        $rol = $usuario->getRoles();
-
-        $comercio = $em->getRepository(Comercio::class)->find($id);
-
-        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
-            return $this->render('error/error.html.twig', [
-                'codigo'=>403,
-                'mensaje'=>'haha no tienes poder aquí',
-            ]);
-        }
-
-        return $this->render('admin/comercio.html.twig', [
-            'comercio'=>$comercio,
-        ]);
-    }
-
     #[Route('/comercio/new', name: 'comercio_new', methods: ['GET'])]
     public function new(): Response
     {
@@ -103,4 +81,79 @@ class AdminController extends AbstractController
         }
 
     }
+
+    #[Route('/comercio/{id}/edit', name: 'comercio_edit', methods: ['GET', 'POST'])]
+    public function edit(int $id, Request $request, Comercio $comercio, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(ComercioCreateForm::class, $comercio);
+        $form->handleRequest($request);
+
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        $comercio = $em->getRepository(Comercio::class)->find($id);
+
+        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
+            return $this->render('error/error.html.twig', [
+                'codigo'=>403,
+                'mensaje'=>'haha no tienes poder aquí',
+            ]);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
+        }
+
+
+        return $this->render('admin/comercio.html.twig', [
+            'comercio' => $comercio,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['POST'])]
+    public function delete(Comercio $comercio, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($comercio);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'El comercio ha sido eliminado con éxito.');
+
+        return $this->redirectToRoute('admin_comercios');
+    }
+
+//    #[Route('/comercio/{id}', name: 'comercio_delete', methods: ['POST'])]
+//    public function delete(Request $request, Comercio $comercio, EntityManagerInterface $em): Response
+//    {
+//        if ($this->isCsrfTokenValid('delete'.$comercio->getId(), $request->request->get('_token'))) {
+//            $em->remove($comercio);
+//            $em->flush();
+//        }
+//
+//        return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
+//    }
+
+//    #[Route('/comercio/{id}', name: 'admin_comercio', methods: ['GET'])]
+//    public function comercio(int $id, EntityManagerInterface $em): Response
+//    {
+//        $usuario = $this->getUser();
+//        $rol = $usuario->getRoles();
+//
+//        $comercio = $em->getRepository(Comercio::class)->find($id);
+//
+//        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
+//            return $this->render('error/error.html.twig', [
+//                'codigo'=>403,
+//                'mensaje'=>'haha no tienes poder aquí',
+//            ]);
+//        }
+//
+//        return $this->render('admin/comercio.html.twig', [
+//            'comercio'=>$comercio,
+//        ]);
+//    }
+
+
 }

@@ -32,6 +32,12 @@ class ComercioRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c.id, c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado')
+            ->addSelect('CASE c.estado
+            WHEN 1 THEN \'abierto\'
+            WHEN 2 THEN \'cerrado\'
+            WHEN 3 THEN \'vacaciones\'
+            ELSE \'sin estado\'
+            END as nombreEstado ')
             ->join('c.usuario', 'u')
             ->where('c.usuario = :val')
             ->setParameter('val', $usuario);

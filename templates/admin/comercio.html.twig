@@ -8,51 +8,58 @@
         <div class="">
             <div class="row">
 
+        {{ form_start(form) }}
         <div class="col">
             <!-- Name input -->
             <div class="form-outline mb-3 mt-5">
-                <input name="" type="text" id="form5Example2" class="form-control" />
-                <label class="form-label" for="form5Example2">{{ comercio.nombre }}</label>
+                <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2" class="form-control" value="{{ comercio.nombre }}" />
+                <label class="form-label" for="form5Example2">{{ field_label(form.nombre) }}</label>
             </div>
             <!-- Email input -->
             <div class="form-outline mb-3">
-                <input name="" type="email" id="form5Example2" class="form-control" />
-                <label class="form-label" for="form5Example2">{{ comercio.email }}</label>
+                <input name="{{ field_name(form.email) }}" type="email" id="form5Example2" class="form-control" value="{{ comercio.email }}" />
+                <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
             </div>
             <!-- Telefono input -->
             <div class="form-outline mb-3">
-                <input name="" type="tel" id="form4" class="form-control" />
-                <label class="form-label" for="form4">{{ comercio.telefono }}</label>
+                <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control" value="{{ comercio.telefono }}" />
+                <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
             </div>
             <!-- Direccion input -->
             <div class="form-outline mb-3">
-                <input name="" type="text" id="form1" class="form-control" />
-                <label class="form-label" for="form1">{{ comercio.direccion }}</label>
+                <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control" value="{{ comercio.direccion }}"/>
+                <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
             </div>
             <!-- Descripcion input -->
             <div class="form-outline mb-3">
-                <textarea name="" class="form-control" id="textAreaExample" rows="4"></textarea>
-                <label class="form-label" for="form5">{{ comercio.descripcion }}</label>
+                <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample" rows="4">{{ comercio.descripcion }}</textarea>
+                <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
             </div>
             <!-- Estado input -->
             <div class="form-group mb-3">
-                <select name="" id="form6" class="form-select" >
-                    <option selected>{{ comercio.estado }}</option>
+                <select name="{{ field_name(form.estado) }}" id="form6" class="form-select" >
+                    <option value="{{ comercio.estado }}">{{ comercio.estado }}</option>
                     <option value="1">Abierto</option>
                     <option value="2">Cerrado</option>
                     <option value="3">Vacaciones</option>
                 </select>
             </div>
             <div style="text-align: center; margin-top: 3%">
-                <button type="button" class="btn btn-link btn-sm btn-rounded">
-                    <a href="/admin/comercio/nombre/{{ comercio.id }}"><i class="far fa-square-check fa-2x" style="color: green" ></i></a>
+                <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                    <a href="/admin/comercios"><i class="far fa-square-check fa-2x" style="color: green">{{ button_label|default('') }}</i></a>
                 </button>
 
-                <button type="button" class="btn btn-link btn-sm btn-rounded">
-                    <a href="/admin/comercio/nombre/{{ comercio.id }}"><i class="fas fa-trash-can fa-2x" style="color: #B0413E" ></i></a>
-                </button>
+                <a href="{{ path('comercio_delete', {'id': comercio.id}) }}" class="btn btn-danger">Eliminar Comercio</a>
+
+{#                <a href="/admin/comercio/{{ comercio.id }}">{{ include('admin/delete.html.twig') }}</a>#}
+
+{#                <button type="button" class="btn btn-link btn-sm btn-rounded">#}
+{#                    <a href="/admin/comercios"><i class="fas fa-trash-can fa-2x" style="color: #B0413E" ></i></a>#}
+{#                </button>#}
             </div>
         </div>
+
+        {{ form_end(form) }}
 
             </div>
         </div>

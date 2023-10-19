@@ -20,6 +20,9 @@ class Foto
     #[ORM\JoinColumn(nullable: false)]
     private ?Comercio $comercio = null;
 
+    #[ORM\Column]
+    private ?bool $destacada = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class Foto
     public function setComercio(?Comercio $comercio): static
     {
         $this->comercio = $comercio;
+
+        return $this;
+    }
+
+    public function isDestacada(): ?bool
+    {
+        return $this->destacada;
+    }
+
+    public function setDestacada(bool $destacada): static
+    {
+        $this->destacada = $destacada;
 
         return $this;
     }
