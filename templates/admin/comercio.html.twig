@@ -44,21 +44,18 @@
                     <option value="3">Vacaciones</option>
                 </select>
             </div>
+
             <div style="text-align: center; margin-top: 3%">
                 <button type="submit" class="btn btn-link btn-sm btn-rounded">
-                    <a href="/admin/comercios"><i class="far fa-square-check fa-2x" style="color: green">{{ button_label|default('') }}</i></a>
+                <a href="{{ path('admin_comercios')}}">
+                    <i class="far fa-square-check fa-2x" style="color: green">{{ button_label|default('') }}</i></a>
                 </button>
 
-                <a href="{{ path('comercio_delete', {'id': comercio.id}) }}" class="btn btn-danger">Eliminar Comercio</a>
-
-{#                <a href="/admin/comercio/{{ comercio.id }}">{{ include('admin/delete.html.twig') }}</a>#}
-
-{#                <button type="button" class="btn btn-link btn-sm btn-rounded">#}
-{#                    <a href="/admin/comercios"><i class="fas fa-trash-can fa-2x" style="color: #B0413E" ></i></a>#}
-{#                </button>#}
+                <a href="{{ path('comercio_delete', {'id': comercio.id}) }}" class="btn btn-link btn-sm btn-rounded">
+                    <i class="fas fa-trash-can fa-2x" style="color: #B0413E" ></i></a>
             </div>
-        </div>
 
+        </div>
         {{ form_end(form) }}
 
             </div>
