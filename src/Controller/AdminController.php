@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Comercio;
+use App\Entity\Foto;
 use App\Form\ComercioCreateForm;
+use App\Form\FotoCreateForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +68,14 @@ class AdminController extends AbstractController
                 $em->persist($comercio);
                 $em->flush();
 
+                $fs = new Filesystem();
+                $currentDir = __DIR__;
+                $path = $currentDir.'/../../storage/' . $comercio->getId() ; // Ruta completa al archivo
+
+                if (!$fs->exists($path)) {
+                    $fs->mkdir($path, 0755);
+                }
+
                 return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
             }
 
@@ -100,6 +111,7 @@ class AdminController extends AbstractController
             ]);
         }
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
@@ -110,6 +122,7 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
+            'fotos' =>$comercio->getFotos(),
         ]);
     }
 
@@ -122,6 +135,46 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'El comercio ha sido eliminado con éxito.');
 
         return $this->redirectToRoute('admin_comercios');
+    }
+
+    public function addFoto(Request $request, Comercio $comercio): Response
+    {
+        $foto = new Foto();
+        $form = $this->createForm(FotoCreateForm::class, $foto);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Manejar la carga de la foto
+            $file = $form['archivo']->getData();
+            if ($file) {
+                $currentDir = __DIR__;
+                $path = $currentDir . '/../../storage/' . $comercio->getId();
+                $newFilename = uniqid() . '.' . $file->guessExtension();
+
+                // Mueve el archivo al directorio de destino
+                $file->move($path, $newFilename);
+
+                $foto->setArchivo($newFilename);
+                $foto->setComercio($comercio);
+                $foto->setDestacada(false); // Opcional: establecer destacada en false por defecto
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($foto);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+        }
+
+        return $this->render('admin/comercio.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function getFotos()
+    {
+        return $this->fotos;
     }
 
 //    #[Route('/comercio/{id}', name: 'comercio_delete', methods: ['POST'])]

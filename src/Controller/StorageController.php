@@ -16,12 +16,13 @@ class StorageController extends AbstractController
     #[Route('/', name: 'app_storage')]
     public function index(): Response
     {
+
         return $this->render('storage/index.html.twig', [
             'controller_name' => 'StorageController',
         ]);
     }
 
-    #[Route("/storage/{filename}", name: "storage_file")]
+    #[Route("/{comercio_id}/{filename}", name: "storage_file")]
     public function getFile($comercio_id ,string $filename)
     {
         // Obtener la ruta actual del archivo

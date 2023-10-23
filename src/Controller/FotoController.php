@@ -25,9 +25,23 @@ class FotoController extends AbstractController
         ]);
     }
 
+    public function resizeImage($path,$file,$width,$height, $sub = null) {
+        $img = new \Imagick();
+        $img->readImage($path.$file);
+        if ($sub != null) {
+            $path = $path.$sub."/";
+        }
+        $img->resizeImage($width,$height,\Imagick::FILTER_LANCZOS,1,TRUE);
+        $img->setImageFormat('jpeg');
+        $img->setImageCompressionQuality(60);
+        $img->writeImage($path.$file);
+        $img->clear();
+        $img->destroy();
+    }
+
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        $helpers = $this->get("app.helpers");
+//        $helpers = $this->get("app.helpers");
 
         $id = $request->get("id", null);
 
@@ -115,7 +129,7 @@ class FotoController extends AbstractController
 
                                 $photo = new Foto();
                                 $photo->setArchivo($file_name);
-                                $photo->setImagePath($path);
+//                                $photo->setImagePath($path);
                                 $photo->setComercio($comercio);
 //                                $photo->setTitle($title);
 //                                $photo->setUser($user);

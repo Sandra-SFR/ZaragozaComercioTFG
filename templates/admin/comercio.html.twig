@@ -58,6 +58,15 @@
         </div>
         {{ form_end(form) }}
 
+                <!-- Foto input -->
+                <div class="img-fluid rounded shadow-3 mb-3">
+{#                    {% block fotos_form %}  Incluir el bloque de formulario de fotos aquí#}
+                    {% for foto in comercio.fotos %}
+                        <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}" alt="Foto del comercio">
+                    {% endfor %}
+{#                    {% endblock %}#}
+                </div>
+
             </div>
         </div>
     </section>
