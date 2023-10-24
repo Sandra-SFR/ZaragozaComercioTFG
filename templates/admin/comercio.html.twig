@@ -1,70 +1,113 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ comercio.nombre }}{% endblock %}
-{#TODO: convertir esto en formulario del CRUD(AdminController UpdateById())#}
+{# TODO: convertir esto en formulario del CRUD(AdminController UpdateById()) #}
 {% block body %}
     <section class="container " style="margin-top: 10%">
         <h1 style="text-align: center; margin-top: 5%">Editar comercio</h1>
         <div class="">
             <div class="row">
 
-        {{ form_start(form) }}
-        <div class="col">
-            <!-- Name input -->
-            <div class="form-outline mb-3 mt-5">
-                <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2" class="form-control" value="{{ comercio.nombre }}" />
-                <label class="form-label" for="form5Example2">{{ field_label(form.nombre) }}</label>
-            </div>
-            <!-- Email input -->
-            <div class="form-outline mb-3">
-                <input name="{{ field_name(form.email) }}" type="email" id="form5Example2" class="form-control" value="{{ comercio.email }}" />
-                <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
-            </div>
-            <!-- Telefono input -->
-            <div class="form-outline mb-3">
-                <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control" value="{{ comercio.telefono }}" />
-                <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
-            </div>
-            <!-- Direccion input -->
-            <div class="form-outline mb-3">
-                <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control" value="{{ comercio.direccion }}"/>
-                <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
-            </div>
-            <!-- Descripcion input -->
-            <div class="form-outline mb-3">
-                <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample" rows="4">{{ comercio.descripcion }}</textarea>
-                <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
-            </div>
-            <!-- Estado input -->
-            <div class="form-group mb-3">
-                <select name="{{ field_name(form.estado) }}" id="form6" class="form-select" >
-                    <option value="{{ comercio.estado }}">{{ comercio.estado }}</option>
-                    <option value="1">Abierto</option>
-                    <option value="2">Cerrado</option>
-                    <option value="3">Vacaciones</option>
-                </select>
-            </div>
+                {{ form_start(form) }}
+                <div class="col">
+                    <!-- Name input -->
+                    <div class="form-outline mb-3 mt-5">
+                        <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2" class="form-control"
+                               value="{{ comercio.nombre }}"/>
+                        <label class="form-label" for="form5Example2">{{ field_label(form.nombre) }}</label>
+                    </div>
+                    <!-- Email input -->
+                    <div class="form-outline mb-3">
+                        <input name="{{ field_name(form.email) }}" type="email" id="form5Example2" class="form-control"
+                               value="{{ comercio.email }}"/>
+                        <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
+                    </div>
+                    <!-- Telefono input -->
+                    <div class="form-outline mb-3">
+                        <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control"
+                               value="{{ comercio.telefono }}"/>
+                        <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
+                    </div>
+                    <!-- Direccion input -->
+                    <div class="form-outline mb-3">
+                        <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control"
+                               value="{{ comercio.direccion }}"/>
+                        <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
+                    </div>
+                    <!-- Descripcion input -->
+                    <div class="form-outline mb-3">
+                        <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
+                                  rows="4">{{ comercio.descripcion }}</textarea>
+                        <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
+                    </div>
+                    <!-- Estado input -->
+                    <div class="form-group mb-3">
+                        <select name="{{ field_name(form.estado) }}" id="form6" class="form-select">
+                            <option value="{{ comercio.estado }}">{{ comercio.estado }}</option>
+                            <option value="1">Abierto</option>
+                            <option value="2">Cerrado</option>
+                            <option value="3">Vacaciones</option>
+                        </select>
+                    </div>
 
-            <div style="text-align: center; margin-top: 3%">
-                <button type="submit" class="btn btn-link btn-sm btn-rounded">
-                <a href="{{ path('admin_comercios')}}">
-                    <i class="far fa-square-check fa-2x" style="color: green">{{ button_label|default('') }}</i></a>
-                </button>
+                    <div style="text-align: center; margin-top: 3%">
+                        <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                            <a href="{{ path('admin_comercios') }}">
+                                <i class="far fa-square-check fa-2x"
+                                   style="color: green">{{ button_label|default('') }}</i></a>
+                        </button>
 
-                <a href="{{ path('comercio_delete', {'id': comercio.id}) }}" class="btn btn-link btn-sm btn-rounded">
-                    <i class="fas fa-trash-can fa-2x" style="color: #B0413E" ></i></a>
-            </div>
+                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}"
+                           class="btn btn-link btn-sm btn-rounded">
+                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
+                    </div>
 
-        </div>
-        {{ form_end(form) }}
+                </div>
+                {{ form_end(form) }}
 
                 <!-- Foto input -->
-                <div class="img-fluid rounded shadow-3 mb-3">
-{#                    {% block fotos_form %}  Incluir el bloque de formulario de fotos aquí#}
+                <div class="row">
+
                     {% for foto in comercio.fotos %}
-                        <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}" alt="Foto del comercio">
+                        <div class="col-6 col-md-4 col-lg-3 tarjeta" style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
+{#                            <img src="{{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }}"#}
+{#                                 alt="Foto del comercio" class="img-fluid rounded shadow-3 mb-3">#}
+                            <div class="d-flex flex-column justify-content-center align-items-center acciones">
+                            <button>Hacer Destacada</button>
+                            <button>Borrar</button>
+                            </div>
+                        </div>
                     {% endfor %}
-{#                    {% endblock %}#}
+
+                </div>
+                <div>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#addFoto">
+                        <i class="fas fa-circle-plus"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="addFoto" tabindex="-1" aria-labelledby="addFotoLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addFotoLabel">Modal title</h5>
+                                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/admin/foto/new" method="post" enctype="multipart/form-data">
+                                        <input type="file" name="foto" accept="image/*"><input type="hidden"
+                                                                                               name="comercio"
+                                                                                               value="{{ comercio.id }}">
+                                        <button type="submit">Subir Foto</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>

@@ -1,6 +1,28 @@
 body {
     background-color: #ffffff;
 }
+.tarjeta{
+    min-height: 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    padding: 0;
+    .acciones{
+        position: absolute;
+        height: 100%;
+        text-align: center;
+        width: 100%;
+        opacity: 0;
+        background: rgba(17, 24, 28, 0.67);
+        &:hover{
+            opacity: 1;
+        }
+
+    }
+}
 .home {
     display: flex;
     flex-direction: column;

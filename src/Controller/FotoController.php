@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comercio;
 use App\Entity\Foto;
+use App\Form\FotoCreateForm;
 use Doctrine\ORM\EntityManagerInterface;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
@@ -17,6 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/foto')]
 class FotoController extends AbstractController
 {
+
+
     #[Route('/', name: 'foto_index')]
     public function index(): Response
     {
@@ -39,9 +42,9 @@ class FotoController extends AbstractController
         $img->destroy();
     }
 
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function newNo(Request $request, EntityManagerInterface $em): Response
     {
-//        $helpers = $this->get("app.helpers");
+        $helpers = $this->get("app.helpers");
 
         $id = $request->get("id", null);
 
