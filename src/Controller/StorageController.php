@@ -46,7 +46,7 @@ class StorageController extends AbstractController
         return $response;
     }
 
-    #[Route("/thumb/{comercio_id}/{filename}", name: "storage_file")]
+    #[Route("/thumb/{comercio_id}/{filename}", name: "storage_file_thumb")]
     public function getFileThumb($comercio_id ,string $filename)
     {
         // Obtener la ruta actual del archivo
