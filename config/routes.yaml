@@ -7,3 +7,7 @@ controllers:
 comercio_delete:
     path: '/comercio/{id}/delete'
     controller: App\Controller\AdminController::delete
+
+foto_delete:
+    path: '/foto/{id}/delete'
+    controller: App\Controller\AdminController::deleteFoto

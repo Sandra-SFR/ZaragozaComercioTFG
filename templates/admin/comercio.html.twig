@@ -70,11 +70,19 @@
 
                     {% for foto in comercio.fotos %}
                         <div class="col-6 col-md-4 col-lg-3 tarjeta" style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
-{#                            <img src="{{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }}"#}
-{#                                 alt="Foto del comercio" class="img-fluid rounded shadow-3 mb-3">#}
                             <div class="d-flex flex-column justify-content-center align-items-center acciones">
-                            <button>Hacer Destacada</button>
-                            <button>Borrar</button>
+                            <form method="POST" action="{{ path('foto_destacar', {'id': foto.id}) }}">
+                                <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                    {% if foto.isDestacada %}
+                                        <i class="fas fa-star fa-2x" style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                    {% else %}
+                                        <i class="far fa-star fa-2x" style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                    {% endif %}
+                                </button>
+                            </form>
+                                <a href="{{ path('foto_delete', {'id': foto.id}) }}"
+                                   class="btn btn-link btn-sm btn-rounded">
+                                    <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
                             </div>
                         </div>
                     {% endfor %}
@@ -104,7 +112,6 @@
                                         <button type="submit">Subir Foto</button>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>

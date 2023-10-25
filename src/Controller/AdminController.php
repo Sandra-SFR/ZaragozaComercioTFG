@@ -181,6 +181,64 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig');
     }
 
+    #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['POST'])]
+    public function deleteFoto(Foto $foto, EntityManagerInterface $em): Response
+    {
+        $comercioId = $foto->getComercio();
+        $comercio = $em->getRepository(Comercio::class)->find($comercioId);
+
+
+        $fs = new Filesystem();
+
+        $currentDir = $this->getParameter('kernel.project_dir');
+        $path = $currentDir . '/storage/' . $comercio->getId() . '/';
+
+        $file = $foto->getArchivo();
+
+        $fs->remove($path . "thumb/" . $file);
+        $fs->remove($path . $file);
+
+        $em->remove($foto);
+        $em->flush();
+
+        $this->addFlash('success', 'La foto ha sido eliminada con éxito.');
+
+        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+    }
+
+    #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET','POST'])]
+    public function destacarFoto(Request $request,Foto $foto, EntityManagerInterface $em): Response
+    {
+        $comercioId = $foto->getComercio();
+        $comercio = $em->getRepository(Comercio::class)->find($comercioId);
+
+       if($request->isMethod('POST')){
+           // Desactivar todas las fotos destacadas del comercio
+           foreach ($comercio->getFotos() as $f) {
+               if ($f->isDestacada()) {
+                   $f->setDestacada(false);
+               }
+           }
+
+           // Activar la nueva foto destacada
+           $foto->setDestacada(true);
+
+//           if ($foto->isDestacada()) {
+//               // Si la foto ya es destacada, desactívala
+//               $foto->setDestacada(false);
+//               $message = 'La foto ya no está destacada.';
+//           } else {
+//               // Si la foto no es destacada, actívala
+//               $foto->setDestacada(true);
+//               $message = 'La foto ha sido destacada con éxito.';
+//           }
+//
+           $em->flush();
+       }
+        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+    }
+
+
 //    #[Route('/foto/new', name: 'foto_add', methods: ['GET', 'POST'])]
 //    public function newFoto(Request $request, Comercio $comercio): Response
 //    {
