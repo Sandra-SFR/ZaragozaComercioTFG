@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         {% for comercio in comercios %}
         <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
-
+            <a href="/comercio/{{ comercio.id }}">
                 <div class="card">
                     {% if comercio.fotos|length > 0 %}
                         <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
@@ -19,7 +19,7 @@
                         <p class="card-text">{{ comercio.nombre }}</p>
                     </div>
                 </div>
-
+            </a>
         </div>
         {% endfor %}
     </div>

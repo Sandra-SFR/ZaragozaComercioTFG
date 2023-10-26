@@ -23,6 +23,17 @@ body {
 
     }
 }
+.card {
+    width: 300px; /* Ancho deseado del card */
+    height: 300px; /* Alto deseado del card */
+    overflow: hidden;
+}
+
+.card img {
+    width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
+    height: 100%; /* Ajusta la altura de la imagen al 100% del contenedor */
+    object-fit: cover; /* Escala la imagen para llenar el contenedor sin deformarla */
+}
 .home {
     display: flex;
     flex-direction: column;
