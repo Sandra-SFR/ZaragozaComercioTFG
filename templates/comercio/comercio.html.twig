@@ -37,10 +37,10 @@
 
                 <!-- Second column -->
                 {% for foto in comercio.fotos %}
-                    <div class="col-lg-6 vh-100 d-flex justify-content-center align-items-center">
-                        <img class="d-block vh-100 vw-100"
+                    <div class="comercio col-lg-6 vh-100 d-flex justify-content-center align-items-center ">
+                        <img class="d-block vh-100 shadow-3-strong"
                              src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}" alt="Foto comercio"
-                             style="border-bottom-left-radius: 4rem">
+                             style="border-bottom-left-radius: 4rem; width: 43rem;">
                     </div>
                 {% endfor %}
 

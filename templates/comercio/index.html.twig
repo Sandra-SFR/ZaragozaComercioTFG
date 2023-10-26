@@ -5,22 +5,24 @@
 {% block body %}
     <div class="row justify-content-center">
         {% for comercio in comercios %}
-        <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
-            <a href="/comercio/{{ comercio.id }}">
-                <div class="card">
-                    {% if comercio.fotos|length > 0 %}
-                        <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
-                             class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 15rem;">
-                    {% else %}
-                        <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
-                        <p>No hay fotos disponibles</p>
-                    {% endif %}
-                    <div class="card-body">
-                        <p class="card-text">{{ comercio.nombre }}</p>
-                    </div>
+            <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
+                <div class="card shadow-3-strong">
+                    <a href="/comercio/{{ comercio.id }}">
+                        {% if comercio.fotos|length > 0 %}
+                            <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
+                                 class="card-img-top d-flex align-items-center" alt="Foto comercio"
+                                 style="border-bottom-left-radius: 4rem; height: 12rem;">
+                        {% else %}
+                            <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
+                            <p>No hay fotos disponibles</p>
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text">{{ comercio.nombre }} </p>
+                            <p class="card-text" style="font-size: small">{{ comercio.descripcion }}</p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
