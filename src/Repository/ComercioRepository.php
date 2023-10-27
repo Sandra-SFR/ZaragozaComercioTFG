@@ -31,7 +31,7 @@ class ComercioRepository extends ServiceEntityRepository
     public function findNombresComercios(Usuario $usuario, array $orderBy = null, $limit = null, $offset = null ): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id, c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado')
+            ->select('c.id, c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado', 'f.archivo' )
             ->addSelect('CASE c.estado
             WHEN 1 THEN \'abierto\'
             WHEN 2 THEN \'cerrado\'
@@ -39,6 +39,8 @@ class ComercioRepository extends ServiceEntityRepository
             ELSE \'sin estado\'
             END as nombreEstado ')
             ->join('c.usuario', 'u')
+//            ->leftJoin('c.fotos', 'f')
+            ->leftJoin('c.fotos', 'f', 'WITH', 'f.destacada = true')
             ->where('c.usuario = :val')
             ->setParameter('val', $usuario);
 

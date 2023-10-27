@@ -3,58 +3,65 @@
 {% block title %}Comercios{% endblock %}
 
 {% block body %}
-{#    <p><a href="/comercio/{{ comercio.id }}">{{ comercio.nombre }} {{ comercio.usuario }} {{ comercio.email }} {{ comercio.estado }}</a></p>#}
-<table class="table align-middle mb-0 bg-white">
-    <thead class="bg-light">
-    <tr>
-        <th>Propietario</th>
-        <th>Comercio</th>
-        <th>Estado</th>
-        <th>Categoría</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for comercio in comercios %}
+    {# <p><a href="/comercio/{{ comercio.id }}">{{ comercio.nombre }} {{ comercio.usuario }} {{ comercio.email }} {{ comercio.estado }}</a></p> #}
+    <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
         <tr>
-            <td>
-                <div class="d-flex align-items-center">
-{#                    <img#}
-{#                            src="{{ asset(comercio.fotos.first.destacada ? comercio.fotos.first.archivo : '/storage/images.png') }}"#}
-{#                            alt=""#}
-{#                            style="width: 45px; height: 45px"#}
-{#                            class="rounded-circle"#}
-{#                    />#}
-                    <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqumqi5nDspADptzXhh9vWi4vrCqtFLhDamBBRbObfTigpLN7g2mvuHBu6ocIXl1E8IxQ&usqp=CAU"
-                            alt=""
-                            style="width: 45px; height: 45px"
-                            class="rounded-circle"
-                    />
-                    <div class="ms-3">
-                        <p class="fw-bold mb-1">{{ comercio.usuario }}</p>
-                        <p class="text-muted mb-0">{{ comercio.email }}</p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <p class="fw-normal mb-1">{{ comercio.nombre }}</p>
-            </td>
-            <td>
-                {#            TODO: hay que convertir el numero por el estado#}
-                <span class="badge badge-success rounded-pill d-inline">{{ comercio.nombreEstado }}</span>
-            </td>
-            <td>
-                {#            TODO: sustituir por categoria cuando la haya#}
-                <p class="text-muted mb-0">Tienda</p>
-            </td>
-            <td>
-                <button type="button" class="btn btn-link btn-sm btn-rounded">
-                    <a href="/admin/comercio/{{ comercio.id }}/edit"><i class="far fa-pen-to-square fa-2x" ></i></a>
-                </button>
-            </td>
+            <th>Propietario</th>
+            <th>Comercio</th>
+            <th>Estado</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
         </tr>
-    {% endfor %}
-    </tbody >
-</table>
+        </thead>
+        <tbody>
+        {% for comercio in comercios %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+
+
+                        {% if comercio.archivo != null %}
+                            <img
+                                    src="/storage/{{ comercio.id }}/{{ comercio.archivo }}"
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                        {% else %}
+                            <img
+                                    src="/img/tienda.jpg"
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+
+                        {% endif %}
+
+                        <div class="ms-3">
+                            <p class="fw-bold mb-1">{{ comercio.usuario }}</p>
+                            <p class="text-muted mb-0">{{ comercio.email }}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <p class="fw-normal mb-1">{{ comercio.nombre }}</p>
+                </td>
+                <td>
+                    {# TODO: hay que convertir el numero por el estado #}
+                    <span class="badge badge-success rounded-pill d-inline">{{ comercio.nombreEstado }}</span>
+                </td>
+                <td>
+                    {# TODO: sustituir por categoria cuando la haya #}
+                    <p class="text-muted mb-0">Tienda</p>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link btn-sm btn-rounded">
+                        <a href="/admin/comercio/{{ comercio.id }}/edit"><i class="far fa-pen-to-square fa-2x"></i></a>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

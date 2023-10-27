@@ -38,12 +38,9 @@ class AdminController extends AbstractController
         $rol = $usuario->getRoles();
 
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($usuario, ['nombre' => 'ASC'], 20, 0);
-//        $fotos = $em->getRepository(Foto::class)->findBy($comercios);
-
 
         return $this->render('admin/comercios.html.twig', [
             'comercios'=>$comercios,
-//            'fotos'=>$fotos,
             'controller_name' => 'Comercios',
         ]);
     }
