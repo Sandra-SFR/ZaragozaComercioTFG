@@ -2,17 +2,21 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Controller\FotoController;
 use App\Entity\Comercio;
 use App\Entity\Foto;
+use App\Entity\Horario;
 use App\Form\ComercioCreateForm;
 use App\Form\FotoCreateForm;
+use App\Form\HorarioCreateFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -125,11 +129,11 @@ class AdminController extends AbstractController
                 'comercio' => $comercio], Response::HTTP_SEE_OTHER);
         }
 
-
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
             'fotos' =>$comercio->getFotos(),
+            'horarios' =>$comercio->getHorarios()
         ]);
     }
 
@@ -222,91 +226,43 @@ class AdminController extends AbstractController
 
            // Activar la nueva foto destacada
            $foto->setDestacada(true);
-
-//           if ($foto->isDestacada()) {
-//               // Si la foto ya es destacada, desactívala
-//               $foto->setDestacada(false);
-//               $message = 'La foto ya no está destacada.';
-//           } else {
-//               // Si la foto no es destacada, actívala
-//               $foto->setDestacada(true);
-//               $message = 'La foto ha sido destacada con éxito.';
-//           }
-//
            $em->flush();
        }
         return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
     }
 
+    #[Route('/horario/new', name: 'horario_add', methods: ['POST'])]
+    public function addHorario(Request $request,EntityManagerInterface $entityManager): Response
+    {
+        if ($request->isMethod('POST')) {
+            // Obtener los valores del formulario
+            $horaAperturaStr = $request->request->get('horaApertura');
+            $horaCierreStr = $request->request->get('horaCierre');
+            $dia = $request->request->get('dia');
 
-//    #[Route('/foto/new', name: 'foto_add', methods: ['GET', 'POST'])]
-//    public function newFoto(Request $request, Comercio $comercio): Response
-//    {
-//        $foto = new Foto();
-//        $formFoto = $this->createForm(FotoCreateForm::class, $foto);
-//
-//        $formFoto->handleRequest($request);
-//
-//        if ($formFoto->isSubmitted() && $formFoto->isValid()) {
-//            // Manejar la carga de la foto
-//            $file = $formFoto['archivo']->getData();
-//            if ($file) {
-//                $currentDir = __DIR__;
-//                $path = $currentDir . '/../../storage/' . $comercio->getId();
-//                $newFilename = uniqid() . '.' . $file->guessExtension(); //hash
-//
-//                // Mueve el archivo al directorio de destino
-//                $file->move($path, $newFilename);
-//
-//                $foto->setArchivo($newFilename);
-//                $foto->setComercio($comercio);
-//                $foto->setDestacada(false); // Opcional: establecer destacada en false por defecto
-//                $this->fotoController->resizeImage($path,$file,352,235,null);
-//            }
-//
-//            $entityManager = $this->getDoctrine()->getManager();
-//            $entityManager->persist($foto);
-//            $entityManager->flush();
-//
-//            return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
-//        }
-//
-//        return $this->render('admin/comercio.html.twig', [
-//            'form_foto' => $formFoto->createView(),
-//        ]);
-//    }
+            // Buscar el comercio por su ID
+            $comercioId = $request->get('comercio');
+            $comercio = $entityManager->getRepository(Comercio::class)->find($comercioId);
 
+            $horaApertura = DateTime::createFromFormat('H:i', $horaAperturaStr);
+            $horaCierre = DateTime::createFromFormat('H:i', $horaCierreStr);
 
-//    #[Route('/comercio/{id}', name: 'comercio_delete', methods: ['POST'])]
-//    public function delete(Request $request, Comercio $comercio, EntityManagerInterface $em): Response
-//    {
-//        if ($this->isCsrfTokenValid('delete'.$comercio->getId(), $request->request->get('_token'))) {
-//            $em->remove($comercio);
-//            $em->flush();
-//        }
-//
-//        return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
-//    }
+            if ($comercio && $horaApertura && $horaCierre && $dia) {
+                // Crear una nueva instancia de Horario
+                $horario = new Horario();
+                $horario->setHoraApertura($horaApertura);
+                $horario->setHoraCierre($horaCierre);
+                $horario->setComercio($comercio);
+                $horario->setDia($dia);
 
-//    #[Route('/comercio/{id}', name: 'admin_comercio', methods: ['GET'])]
-//    public function comercio(int $id, EntityManagerInterface $em): Response
-//    {
-//        $usuario = $this->getUser();
-//        $rol = $usuario->getRoles();
-//
-//        $comercio = $em->getRepository(Comercio::class)->find($id);
-//
-//        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
-//            return $this->render('error/error.html.twig', [
-//                'codigo'=>403,
-//                'mensaje'=>'haha no tienes poder aquí',
-//            ]);
-//        }
-//
-//        return $this->render('admin/comercio.html.twig', [
-//            'comercio'=>$comercio,
-//        ]);
-//    }
+                // Persistir y guardar en la base de datos
+                $entityManager->persist($horario);
+                $entityManager->flush();
 
+                return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+            }
+        }
+        return $this->render('admin/comercio.html.twig');
+    }
 
 }

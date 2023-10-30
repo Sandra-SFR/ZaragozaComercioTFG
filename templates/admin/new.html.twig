@@ -7,41 +7,48 @@
         <h1 class="h3 mb-3 font-weight-normal">Create new Comercio</h1>
 
         {{ form_start(form) }}
-{#        {{ form_widget(form) }}#}
+        {#        {{ form_widget(form) }} #}
         <!-- Name input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(form.nombre) }}" type="text" id="form2" class="form-control" />
+            <input name="{{ field_name(form.nombre) }}" type="text" id="form2" class="form-control"/>
             <label class="form-label" for="form2">{{ field_label(form.nombre) }}</label>
         </div>
         <!-- Email input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(form.email) }}" type="email" id="form3" class="form-control" />
+            <input name="{{ field_name(form.email) }}" type="email" id="form3" class="form-control"/>
             <label class="form-label" for="form3">{{ field_label(form.email) }}</label>
         </div>
         <!-- Telefono input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control" />
+            <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control"/>
             <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
         </div>
         <!-- Direccion input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control" />
+            <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control"/>
             <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
         </div>
         <!-- Descripcion input -->
         <div class="form-outline mb-4">
-            <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample" rows="4"></textarea>
+            <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
+                      rows="4"></textarea>
             <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
         </div>
         <!-- Estado input -->
         <div class="form-group mb-4">
-            <select name="{{ field_name(form.estado) }}" id="form6" class="form-select" >
+            <select name="{{ field_name(form.estado) }}" id="form6" class="form-select">
                 <option selected>{{ field_label(form.estado) }}</option>
                 <option value="1">Abierto</option>
                 <option value="2">Cerrado</option>
                 <option value="3">Vacaciones</option>
             </select>
         </div>
+
+        <div class="form-group mb-4">
+            <label for="inputFoto" class="form-label">Añadir foto</label>
+            <input class="form-control" type="file" id="inputFoto" name="foto" accept="image/*">
+        </div>
+
         <br>
         <button class="btn btn-lg btn-primary">{{ button_label|default('Save') }}</button>
 

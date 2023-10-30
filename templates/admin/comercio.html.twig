@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ comercio.nombre }}{% endblock %}
-{# TODO: convertir esto en formulario del CRUD(AdminController UpdateById()) #}
 {% block body %}
     <section class="container " style="margin-top: 10%">
         <h1 style="text-align: center; margin-top: 5%">Editar comercio</h1>
@@ -65,21 +64,84 @@
                 </div>
                 {{ form_end(form) }}
 
-                <!-- Foto input -->
+                <!--Horarios del comercio-->
+                <div class="row">
+                    <table>
+                        <thead class="bg-light">
+                        <tr>
+                            <th>Día</th>
+                            <th>Hora apertura</th>
+                            <th>Hora Cierre</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for horario in comercio.horarios %}
+                            <tr>
+                                <td>{{ horario.dia }}</td>
+                                <td>{{ horario.horaApertura|date('H:i') }}</td>
+                                <td>{{ horario.horacierre|date('H:i') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--Añadir Horarios al comercio-->
+                <div>
+                    <h1>Añadir Horario</h1>
+
+                    <form method="POST" action="{{ path('horario_add') }}">
+                        <table>
+                            <tr>
+                                <td>Día:</td>
+                                <td>
+                                    <select name="dia" class="form-select">
+                                        <option value="dia">dia</option>
+                                        <option value="1">Lunes</option>
+                                        <option value="2">Martes</option>
+                                        <option value="3">Miercoles</option>
+                                        <option value="4">Jueves</option>
+                                        <option value="5">Viernes</option>
+                                        <option value="6">Sabado</option>
+                                        <option value="7">Domingo</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Hora de Apertura:</td>
+                                <td><input type="time" name="horaApertura"></td>
+                            </tr>
+                            <tr>
+                                <td>Hora de Cierre:</td>
+                                <td><input type="time" name="horaCierre"></td>
+                            </tr>
+                        </table>
+                        <input type="hidden"
+                               name="comercio"
+                               value="{{ comercio.id }}">
+
+                        <input type="submit" value="Guardar">
+                    </form>
+                </div>
+
+                <!-- Ver fotos del comercio -->
                 <div class="row">
 
                     {% for foto in comercio.fotos %}
-                        <div class="col-6 col-md-4 col-lg-3 tarjeta" style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
+                        <div class="col-6 col-md-4 col-lg-3 tarjeta"
+                             style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
                             <div class="d-flex flex-column justify-content-center align-items-center acciones">
-                            <form method="POST" action="{{ path('foto_destacar', {'id': foto.id}) }}">
-                                <button type="submit" class="btn btn-link btn-sm btn-rounded">
-                                    {% if foto.isDestacada %}
-                                        <i class="fas fa-star fa-2x" style="color: #e3e32d">{{ button_label|default('') }}</i>
-                                    {% else %}
-                                        <i class="far fa-star fa-2x" style="color: #e3e32d">{{ button_label|default('') }}</i>
-                                    {% endif %}
-                                </button>
-                            </form>
+                                <form method="POST" action="{{ path('foto_destacar', {'id': foto.id}) }}">
+                                    <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                        {% if foto.isDestacada %}
+                                            <i class="fas fa-star fa-2x"
+                                               style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                        {% else %}
+                                            <i class="far fa-star fa-2x"
+                                               style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                        {% endif %}
+                                    </button>
+                                </form>
                                 <a href="{{ path('foto_delete', {'id': foto.id}) }}"
                                    class="btn btn-link btn-sm btn-rounded">
                                     <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
@@ -88,6 +150,8 @@
                     {% endfor %}
 
                 </div>
+
+                <!-- Añadir fotos al comercio -->
                 <div>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#addFoto">
