@@ -115,6 +115,7 @@ class AdminController extends AbstractController
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
 
+
         if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
             return $this->render('error/error.html.twig', [
                 'codigo'=>403,
@@ -129,11 +130,14 @@ class AdminController extends AbstractController
                 'comercio' => $comercio], Response::HTTP_SEE_OTHER);
         }
 
+        $horarios = $em->getRepository(Horario::class)->findHorarioComercio($comercio, ['dia' => 'ASC']);
+
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
             'fotos' =>$comercio->getFotos(),
-            'horarios' =>$comercio->getHorarios()
+//            'horarios' =>$comercio->getHorarios(),
+            'horas' =>$horarios,
         ]);
     }
 
@@ -228,7 +232,7 @@ class AdminController extends AbstractController
            $foto->setDestacada(true);
            $em->flush();
        }
-        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+        return $this->json(['code'=>200]);
     }
 
     #[Route('/horario/new', name: 'horario_add', methods: ['POST'])]
@@ -259,10 +263,24 @@ class AdminController extends AbstractController
                 $entityManager->persist($horario);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+                return $this->json(['code'=>200]);
             }
         }
         return $this->render('admin/comercio.html.twig');
+    }
+
+    #[Route('/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
+    public function deleteHorario(Horario $horario, EntityManagerInterface $em): Response
+    {
+        $comercioId = $horario->getComercio();
+        $comercio = $em->getRepository(Comercio::class)->find($comercioId);
+
+        $em->remove($horario);
+        $em->flush();
+
+        $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
+
+        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
     }
 
 }

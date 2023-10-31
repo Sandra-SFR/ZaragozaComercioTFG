@@ -24,14 +24,13 @@ class ComercioRepository extends ServiceEntityRepository
     }
 
 
-
     /**
      * @return Comercio[] Returns an array of Comercio objects
      */
-    public function findNombresComercios(Usuario $usuario, array $orderBy = null, $limit = null, $offset = null ): array
+    public function findNombresComercios(Usuario $usuario, array $orderBy = null, $limit = null, $offset = null): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c.id, c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado', 'f.archivo' )
+            ->select('c.id', 'c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado', 'f.archivo', 'cat.nombre as categoria')
             ->addSelect('CASE c.estado
             WHEN 1 THEN \'abierto\'
             WHEN 2 THEN \'cerrado\'
@@ -39,22 +38,23 @@ class ComercioRepository extends ServiceEntityRepository
             ELSE \'sin estado\'
             END as nombreEstado ')
             ->join('c.usuario', 'u')
-//            ->leftJoin('c.fotos', 'f')
             ->leftJoin('c.fotos', 'f', 'WITH', 'f.destacada = true')
+            ->leftJoin('c.categorias', 'cat')
             ->where('c.usuario = :val')
-            ->setParameter('val', $usuario);
+            ->setParameter('val', $usuario)
+            ->groupBy('c.id');
 
-        if(!is_null($orderBy)){
-            foreach ($orderBy as $campo => $direccion){
-                $qb->orderBy('c.' .$campo, $direccion);
+        if (!is_null($orderBy)) {
+            foreach ($orderBy as $campo => $direccion) {
+                $qb->orderBy('c.' . $campo, $direccion);
             }
         }
 
-        if(!is_null($limit)){
+        if (!is_null($limit)) {
             $qb->setMaxResults($limit);
         }
 
-        if(!is_null($offset)){
+        if (!is_null($offset)) {
             $qb->setFirstResult($offset);
         }
 

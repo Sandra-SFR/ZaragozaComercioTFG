@@ -39,14 +39,25 @@
                                   rows="4">{{ comercio.descripcion }}</textarea>
                         <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
                     </div>
+                    <!-- Categoria input -->
+                    <div class="form-outline mb-3">
+                        {{ form_widget(form.categorias, {'attr': {'class': 'form-control active'}}) }}
+                        <label class="form-label" for="form20">{{ field_label(form.categorias) }}</label>
+                        <div class="form-notch">
+                            <div class="form-notch-leading" style="width: 9px;"></div>
+                            <div class="form-notch-middle" style="width: 46.2px;"></div>
+                            <div class="form-notch-trailing"></div>
+                        </div>
+                    </div>
                     <!-- Estado input -->
-                    <div class="form-group mb-3">
-                        <select name="{{ field_name(form.estado) }}" id="form6" class="form-select">
-                            <option value="{{ comercio.estado }}">{{ comercio.estado }}</option>
-                            <option value="1">Abierto</option>
-                            <option value="2">Cerrado</option>
-                            <option value="3">Vacaciones</option>
-                        </select>
+                    <div class="form-outline mb-3">
+                        {{ form_widget(form.estado, {'attr': {'class': 'form-control active'}}) }}
+                        <label class="form-label" for="form20">{{ field_label(form.estado) }}</label>
+                        <div class="form-notch">
+                            <div class="form-notch-leading" style="width: 9px;"></div>
+                            <div class="form-notch-middle" style="width: 46.2px;"></div>
+                            <div class="form-notch-trailing"></div>
+                        </div>
                     </div>
 
                     <div style="text-align: center; margin-top: 3%">
@@ -72,56 +83,49 @@
                             <th>Día</th>
                             <th>Hora apertura</th>
                             <th>Hora Cierre</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for horario in comercio.horarios %}
+                        {% for hora in horas %}
                             <tr>
-                                <td>{{ horario.dia }}</td>
-                                <td>{{ horario.horaApertura|date('H:i') }}</td>
-                                <td>{{ horario.horacierre|date('H:i') }}</td>
+                                <td>{{ hora.nombreDia }}</td>
+                                <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                <td><a href="{{ path('horario_delete', {'id': hora.id}) }}"><i
+                                                class="fas fa-trash-can fa-1x" style="color: #B0413E"></i></a></td>
                             </tr>
                         {% endfor %}
+                        <!--Añadir Horarios al comercio-->
+                        <tr>
+                            <td>
+                                <select name="dia" class="form-select" id="dia">
+                                    <option value="dia">dia</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miercoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sabado</option>
+                                    <option value="7">Domingo</option>
+                                </select>
+                            </td>
+
+                            <td><input type="time" name="horaApertura" id="horaApertura"></td>
+                            <td><input type="time" name="horaCierre" id="horaCierre"></td>
+                            <td>
+                                <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded">
+
+                                    <i class="far fa-square-check fa-2x"
+                                       style="color: green">{{ button_label|default('') }}</i>
+                                </button>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <!--Añadir Horarios al comercio-->
-                <div>
-                    <h1>Añadir Horario</h1>
-
-                    <form method="POST" action="{{ path('horario_add') }}">
-                        <table>
-                            <tr>
-                                <td>Día:</td>
-                                <td>
-                                    <select name="dia" class="form-select">
-                                        <option value="dia">dia</option>
-                                        <option value="1">Lunes</option>
-                                        <option value="2">Martes</option>
-                                        <option value="3">Miercoles</option>
-                                        <option value="4">Jueves</option>
-                                        <option value="5">Viernes</option>
-                                        <option value="6">Sabado</option>
-                                        <option value="7">Domingo</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Hora de Apertura:</td>
-                                <td><input type="time" name="horaApertura"></td>
-                            </tr>
-                            <tr>
-                                <td>Hora de Cierre:</td>
-                                <td><input type="time" name="horaCierre"></td>
-                            </tr>
-                        </table>
-                        <input type="hidden"
-                               name="comercio"
-                               value="{{ comercio.id }}">
-
-                        <input type="submit" value="Guardar">
-                    </form>
+                    <input type="hidden"
+                           name="comercio"
+                           value="{{ comercio.id }}">
                 </div>
 
                 <!-- Ver fotos del comercio -->
@@ -130,9 +134,9 @@
                     {% for foto in comercio.fotos %}
                         <div class="col-6 col-md-4 col-lg-3 tarjeta"
                              style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
-                            <div class="d-flex flex-column justify-content-center align-items-center acciones">
-                                <form method="POST" action="{{ path('foto_destacar', {'id': foto.id}) }}">
-                                    <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                            <div class="acciones">
+                                <div>
+                                    <button onclick="destacada({{ foto.id }})" class="btn btn-link btn-sm btn-rounded">
                                         {% if foto.isDestacada %}
                                             <i class="fas fa-star fa-2x"
                                                style="color: #e3e32d">{{ button_label|default('') }}</i>
@@ -141,10 +145,11 @@
                                                style="color: #e3e32d">{{ button_label|default('') }}</i>
                                         {% endif %}
                                     </button>
-                                </form>
-                                <a href="{{ path('foto_delete', {'id': foto.id}) }}"
-                                   class="btn btn-link btn-sm btn-rounded">
-                                    <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
+
+                                    <a href="{{ path('foto_delete', {'id': foto.id}) }}"
+                                       class="btn btn-link btn-sm btn-rounded">
+                                        <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -180,11 +185,58 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 {% endblock %}
 {% block js %}
+    <script>
+        function destacada(id) {
+            var url = '/admin/foto/' + id + '/destacar';
+            var envio = {'id': id};
 
+            fetch(url, {
+                method: 'POST',
+                body: envio
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('chachi');
+                    location.reload();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
+        function nuevoHorario() {
+            var comercio = {{ comercio.id }};
+            var dia = document.getElementById('dia').value;
+            var horaApertura = document.getElementById('horaApertura').value;
+            var horaCierre = document.getElementById('horaCierre').value;
+            var url = '/admin/horario/new';
+            var formData = new FormData();
+
+            formData.append('comercio', comercio);
+            formData.append('dia', dia);
+            formData.append('horaApertura', horaApertura);
+            formData.append('horaCierre', horaCierre);
+
+
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+                }
+            )
+                .then(response => response.json())
+                .then(data => {
+                    console.log('chachi');
+                    location.reload();
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    </script>
 {% endblock %}

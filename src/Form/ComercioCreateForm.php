@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Categoria;
 use App\Entity\Comercio;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +45,12 @@ class ComercioCreateForm extends AbstractType
                     'Vacaciones' => 3,
                 ],
                 'constraints' => [new NotBlank()],
+            ])
+            ->add('categorias', EntityType::class, [
+                'class' => Categoria::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => false,
             ])
         ;
     }

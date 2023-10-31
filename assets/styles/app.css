@@ -11,7 +11,7 @@ body {
     position: relative;
     padding: 0;
     .acciones{
-        position: absolute;
+        position: relative;
         height: 100%;
         text-align: center;
         width: 100%;
@@ -20,7 +20,12 @@ body {
         &:hover{
             opacity: 1;
         }
-
+        & div {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: calc(50% - 13px);
+        }
     }
 }
 .card {

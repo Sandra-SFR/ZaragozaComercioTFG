@@ -11,3 +11,7 @@ comercio_delete:
 foto_delete:
     path: '/foto/{id}/delete'
     controller: App\Controller\AdminController::deleteFoto
+
+horario_delete:
+    path: '/horario/{id}/delete'
+    controller: App\Controller\AdminController::deleteHorario
