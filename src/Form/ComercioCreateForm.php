@@ -67,22 +67,6 @@ class ComercioCreateForm extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-//            $form = $event->getForm();
-//            $data = $event->getData();
-//
-//            if ($data instanceof Comercio) {
-//                $estado = $data->getEstado();
-//                $token = $this->tokenStorage->getToken();
-//
-//                if ($token && $estado === 1) {
-//                    $usuario = $token->getUser();
-//
-//                    if (!$this->isAdmin($usuario)) {
-//                        $form->remove('estado'); // Si el estado es "Pendiente" y no es administrador, oculta el campo
-//                    }
-//                }
-//            }
-//        });
             $form = $event->getForm();
             $data = $event->getData();
 
