@@ -45,10 +45,11 @@
                         <label class="form-label" for="form20">{{ field_label(form.categorias) }}</label>
                         <div class="form-notch">
                             <div class="form-notch-leading" style="width: 9px;"></div>
-                            <div class="form-notch-middle" style="width: 46.2px;"></div>
+                            <div class="form-notch-middle" style="width: 65.2px;"></div>
                             <div class="form-notch-trailing"></div>
                         </div>
                     </div>
+                    {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
                     <!-- Estado input -->
                     <div class="form-outline mb-3">
                         {{ form_widget(form.estado, {'attr': {'class': 'form-control active'}}) }}
@@ -59,7 +60,7 @@
                             <div class="form-notch-trailing"></div>
                         </div>
                     </div>
-
+                    {% endif %}
                     <div style="text-align: center; margin-top: 3%">
                         <button type="submit" class="btn btn-link btn-sm btn-rounded">
                             <a href="{{ path('admin_comercios') }}">
@@ -209,6 +210,24 @@
                 })
         }
 
+        // function nuevaFoto() {
+        //     var url = '/admin/foto/new' ;
+        //     var foto = ;
+        //
+        //     fetch(url, {
+        //         method: 'POST',
+        //         body: foto
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log('chachi');
+        //             location.reload();
+        //         })
+        //         .catch(error => {
+        //             console.log(error);
+        //         })
+        // }
+
         function nuevoHorario() {
             var comercio = {{ comercio.id }};
             var dia = document.getElementById('dia').value;
@@ -221,8 +240,6 @@
             formData.append('dia', dia);
             formData.append('horaApertura', horaApertura);
             formData.append('horaCierre', horaCierre);
-
-
 
             fetch(url, {
                 method: 'POST',

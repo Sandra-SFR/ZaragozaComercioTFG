@@ -48,11 +48,18 @@
                     <p class="fw-normal mb-1">{{ comercio.nombre }}</p>
                 </td>
                 <td>
-                    {# TODO: hay que convertir el numero por el estado #}
-                    <span class="badge badge-success rounded-pill d-inline">{{ comercio.nombreEstado }}</span>
+                    <span class="badge badge-success rounded-pill d-inline
+                    {% if comercio.nombreEstado == 'pendiente' %}
+                        estado-pendiente
+                    {% elseif comercio.nombreEstado == 'abierto' %}
+                        estado-abierto
+                    {% elseif comercio.nombreEstado == 'cerrado' %}
+                        estado-cerrado
+                    {% elseif comercio.nombreEstado == 'vacaciones' %}
+                        estado-vacaciones
+                    {% endif %}">{{ comercio.nombreEstado }}</span>
                 </td>
                 <td>
-                    {# TODO: sustituir por categoria cuando la haya #}
                     <p class="text-muted mb-0">{{ comercio.categoria }}</p>
                 </td>
                 <td>

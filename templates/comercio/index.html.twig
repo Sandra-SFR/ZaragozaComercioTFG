@@ -5,6 +5,7 @@
 {% block body %}
     <div class="row justify-content-center">
         {% for comercio in comercios %}
+            {% if comercio.estado == '2' or comercio.estado == '4' %}
             <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
                 <div class="card shadow-3-strong">
                     <a href="/comercio/{{ comercio.id }}">
@@ -23,6 +24,7 @@
                     </a>
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

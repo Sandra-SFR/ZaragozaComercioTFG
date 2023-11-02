@@ -32,22 +32,26 @@ class ComercioRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->select('c.id', 'c.nombre', 'u.nombre as usuario', 'c.email', 'c.estado', 'f.archivo', 'cat.nombre as categoria')
             ->addSelect('CASE c.estado
-            WHEN 1 THEN \'abierto\'
-            WHEN 2 THEN \'cerrado\'
-            WHEN 3 THEN \'vacaciones\'
+            WHEN 1 THEN \'pendiente\'
+            WHEN 2 THEN \'abierto\'
+            WHEN 3 THEN \'cerrado\'
+            WHEN 4 THEN \'vacaciones\'
             ELSE \'sin estado\'
             END as nombreEstado ')
             ->join('c.usuario', 'u')
             ->leftJoin('c.fotos', 'f', 'WITH', 'f.destacada = true')
             ->leftJoin('c.categorias', 'cat')
-            ->where('c.usuario = :val')
-            ->setParameter('val', $usuario)
             ->groupBy('c.id');
 
         if (!is_null($orderBy)) {
             foreach ($orderBy as $campo => $direccion) {
                 $qb->orderBy('c.' . $campo, $direccion);
             }
+        }
+
+        if (!in_array('ROLE_ADMIN', $usuario->getRoles())) {
+            $qb->where('c.usuario = :val')
+                ->setParameter('val', $usuario);
         }
 
         if (!is_null($limit)) {

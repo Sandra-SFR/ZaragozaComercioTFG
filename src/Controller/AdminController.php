@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Usuario;
+use App\Form\ComercioNewFormType;
 use DateTime;
 use App\Controller\FotoController;
 use App\Entity\Comercio;
@@ -53,7 +55,7 @@ class AdminController extends AbstractController
     public function new(): Response
     {
         $comercio = new Comercio();
-        $form = $this->createForm(ComercioCreateForm::class, $comercio);
+        $form = $this->createForm(ComercioNewFormType::class, $comercio);
 
         return $this->render('admin/new.html.twig', [
             'comercio' => $comercio,
@@ -66,7 +68,8 @@ class AdminController extends AbstractController
     {
 
         $comercio = new Comercio();
-        $form = $this->createForm(ComercioCreateForm::class, $comercio);
+        $comercio->setEstado(1);
+        $form = $this->createForm(ComercioNewFormType::class, $comercio);
         $form->handleRequest($request);
 
         $user = $this->getUser();
@@ -115,8 +118,7 @@ class AdminController extends AbstractController
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
 
-
-        if ($usuario !== $comercio->getUsuario() && $rol != 'ROLE_ADMIN') {
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo'=>403,
                 'mensaje'=>'haha no tienes poder aquí',
@@ -136,7 +138,6 @@ class AdminController extends AbstractController
             'comercio' => $comercio,
             'form' => $form,
             'fotos' =>$comercio->getFotos(),
-//            'horarios' =>$comercio->getHorarios(),
             'horas' =>$horarios,
         ]);
     }

@@ -55,6 +55,18 @@ body {
     height: 100%; /* Ajusta la altura de la imagen al 100% del contenedor */
     object-fit: cover; /* Escala la imagen para llenar el contenedor sin deformarla */
 }
+.estado-pendiente {
+    color: #0dcaf0;
+}
+.estado-abierto {
+    color: #198754;
+}
+.estado-cerrado {
+    color: #dc3545;
+}
+.estado-vacaciones {
+    color: #ffc107;
+}
 .home {
     display: flex;
     flex-direction: column;
