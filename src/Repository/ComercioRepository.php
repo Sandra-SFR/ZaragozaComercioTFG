@@ -6,6 +6,7 @@ use App\Entity\Comercio;
 use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * @extends ServiceEntityRepository<Comercio>
@@ -15,7 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Comercio[]    findAll()
  * @method Comercio[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method Comercio[]    findNombresComercios(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Comercio[]    buscadorComercios(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+
 class ComercioRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -61,6 +64,19 @@ class ComercioRepository extends ServiceEntityRepository
         if (!is_null($offset)) {
             $qb->setFirstResult($offset);
         }
+
+        return $qb->getQuery()->execute();
+    }/**
+     * @return Comercio[] Returns an array of Comercio objects
+     */
+    public function buscadorComercios(string $searchTerm, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.nombre LIKE :searchTerm')
+            ->orWhere('c.descripcion LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ;
+
 
         return $qb->getQuery()->execute();
     }

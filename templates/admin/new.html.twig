@@ -25,9 +25,13 @@
         </div>
         <!-- Direccion input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control"/>
+            <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control" onchange="mapa()"/>
             <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
         </div>
+        <section>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
+            <div id="map" style="width: 400px; height: 400px;"></div>
+        </section>
         <!-- Descripcion input -->
         <div class="form-outline mb-4">
             <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
@@ -47,4 +51,62 @@
 
         <a href="{{ path('admin_comercios') }}">back to list</a>
     </div>
+{% endblock %}
+{% block js %}
+    <script>
+        // Función para inicializar el mapa
+        function initMap() {
+            var direccion = "Plaza de España, Zaragoza";
+
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': direccion }, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
+
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                } else {
+                    alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
+
+    function mapa(){
+    var direccion = document.getElementById('form1').value;
+
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': direccion }, function (results, status) {
+            if (status === 'OK') {
+                var mapOptions = {
+                    center: results[0].geometry.location,
+                    zoom: 15
+                };
+
+                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                    title: 'Ubicación del Comercio'
+                });
+            } else {
+                alert('Geocodificación fallida debido a: ' + status);
+            }
+        });
+    }
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
+    </script>
 {% endblock %}

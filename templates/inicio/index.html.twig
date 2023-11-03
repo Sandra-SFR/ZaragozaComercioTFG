@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Zaragoza comercio{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <input type="text" id="search-input" placeholder="Buscar comercios">
+    <div id="search-results"></div>
+</div>
+{% endblock %}
+{% block js %}
+
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        searchInput.addEventListener('input', function() {
+            // const searchTerm = removeAccents(this.value).toLowerCase(); // Eliminar acentos y hacer minúsculas
+            const searchTerm = this.value; // Eliminar acentos y hacer minúsculas
+            const url = '/buscar?search=' + searchTerm;
+
+            fetch(url)
+        .then(response => response.json())
+                .then(data => {
+                    // Limpiar los resultados anteriores
+                    searchResults.innerHTML = '';
+
+                    data.forEach(comercio => {
+                        console.log(comercio);
+                        const comercioElement = document.createElement('div');
+                        comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
+                        searchResults.appendChild(comercioElement);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al buscar:', error);
+                });
+        });
+
+        // Función para eliminar acentos y caracteres especiales
+        function removeAccents(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+    </script>
+
+{% endblock %}
