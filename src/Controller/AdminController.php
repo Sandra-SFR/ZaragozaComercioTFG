@@ -170,6 +170,13 @@ class AdminController extends AbstractController
     #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['POST'])]
     public function delete(Comercio $comercio, EntityManagerInterface $entityManager): Response
     {
+        //buscar la carpeta de fotos del comercio
+        $fs = new Filesystem();
+        $currentDir = __DIR__;
+        $path = $currentDir . '/../../storage/' . $comercio->getId(); // Ruta completa al archivo
+
+        $fs->remove($path); //Borra la carpeta de fotos del comercio
+
         $entityManager->remove($comercio);
         $entityManager->flush();
 
