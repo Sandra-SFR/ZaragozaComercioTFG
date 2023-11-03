@@ -2,19 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Usuario;
 use App\Form\ComercioNewFormType;
 use DateTime;
-use App\Controller\FotoController;
 use App\Entity\Comercio;
 use App\Entity\Foto;
 use App\Entity\Horario;
 use App\Form\ComercioCreateForm;
-use App\Form\FotoCreateForm;
-use App\Form\HorarioCreateFormType;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +27,7 @@ class AdminController extends AbstractController
     {
         $this->fotoController = $fotoController;
     }
+
     #[Route('/', name: 'admin')]
     public function index(): Response
     {
@@ -46,7 +45,7 @@ class AdminController extends AbstractController
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($usuario, ['nombre' => 'ASC'], 20, 0);
 
         return $this->render('admin/comercios.html.twig', [
-            'comercios'=>$comercios,
+            'comercios' => $comercios,
             'controller_name' => 'Comercios',
         ]);
     }
@@ -66,9 +65,8 @@ class AdminController extends AbstractController
     #[Route('/comercio/new', name: 'comercio_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
-
         $comercio = new Comercio();
-        $comercio->setEstado(1);
+        $comercio->setEstado(1); //Pone el estado en pendiente
         $form = $this->createForm(ComercioNewFormType::class, $comercio);
         $form->handleRequest($request);
 
@@ -82,12 +80,40 @@ class AdminController extends AbstractController
                 $em->persist($comercio);
                 $em->flush();
 
+                //Crea la carpeta del comercio
                 $fs = new Filesystem();
                 $currentDir = __DIR__;
-                $path = $currentDir.'/../../storage/' . $comercio->getId() ; // Ruta completa al archivo
+                $path = $currentDir . '/../../storage/' . $comercio->getId(); // Ruta completa al archivo
 
                 if (!$fs->exists($path)) {
                     $fs->mkdir($path, 0755);
+                }
+
+                $file = $form['foto']->getData();// Guarda la foto del formulario
+
+                if ($file instanceof UploadedFile) {
+                    $currentDir = $this->getParameter('kernel.project_dir');
+                    $path = $currentDir . '/storage/' . $comercio->getId() . '/';
+                    $fs = new Filesystem();
+
+                    $newFilename = uniqid() . '.' . $file->guessExtension(); //hash
+                    $file->move($path, $newFilename);
+
+                    // Crea una nueva entidad Foto y relaciona la foto con el comercio
+                    $foto = new Foto();
+                    $foto->setArchivo($newFilename);
+                    $foto->setComercio($comercio);
+                    $foto->setDestacada(true); // Para que la foto aparezca como foto principal
+
+                    //Crea la carpeta thumb
+                    if (!$fs->exists($path . "thumb")) {
+                        $fs->mkdir($path . "thumb", 0775);
+                    }
+                    $this->fotoController->resizeImage($path, $newFilename, 1920, 1920, null);
+                    $this->fotoController->resizeImage($path, $newFilename, 400, 400, 'thumb');
+
+                    $em->persist($foto);
+                    $em->flush();
                 }
 
                 return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
@@ -104,7 +130,6 @@ class AdminController extends AbstractController
                 'form' => $form,
             ]);
         }
-
     }
 
     #[Route('/comercio/{id}/edit', name: 'comercio_edit', methods: ['GET', 'POST'])]
@@ -120,8 +145,8 @@ class AdminController extends AbstractController
 
         if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
-                'codigo'=>403,
-                'mensaje'=>'haha no tienes poder aquí',
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
             ]);
         }
 
@@ -137,8 +162,8 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
-            'fotos' =>$comercio->getFotos(),
-            'horas' =>$horarios,
+            'fotos' => $comercio->getFotos(),
+            'horas' => $horarios,
         ]);
     }
 
@@ -154,7 +179,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/foto/new', name: 'foto_add', methods: ['POST'])]
-    public function addFoto(Request $request,EntityManagerInterface $entityManager): Response
+    public function addFoto(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             $file = $request->files->get('foto');
@@ -181,11 +206,11 @@ class AdminController extends AbstractController
                 $this->fotoController->resizeImage($path, $newFilename, 1920, 1920, null);
                 $this->fotoController->resizeImage($path, $newFilename, 400, 400, 'thumb');
             }
-                $entityManager->persist($foto);
-                $entityManager->flush();
+            $entityManager->persist($foto);
+            $entityManager->flush();
 
-                return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
-            }
+            return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+        }
 
         return $this->render('admin/comercio.html.twig');
     }
@@ -215,29 +240,29 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
     }
 
-    #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET','POST'])]
-    public function destacarFoto(Request $request,Foto $foto, EntityManagerInterface $em): Response
+    #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET', 'POST'])]
+    public function destacarFoto(Request $request, Foto $foto, EntityManagerInterface $em): Response
     {
         $comercioId = $foto->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
-       if($request->isMethod('POST')){
-           // Desactivar todas las fotos destacadas del comercio
-           foreach ($comercio->getFotos() as $f) {
-               if ($f->isDestacada()) {
-                   $f->setDestacada(false);
-               }
-           }
+        if ($request->isMethod('POST')) {
+            // Desactivar todas las fotos destacadas del comercio
+            foreach ($comercio->getFotos() as $f) {
+                if ($f->isDestacada()) {
+                    $f->setDestacada(false);
+                }
+            }
 
-           // Activar la nueva foto destacada
-           $foto->setDestacada(true);
-           $em->flush();
-       }
-        return $this->json(['code'=>200]);
+            // Activar la nueva foto destacada
+            $foto->setDestacada(true);
+            $em->flush();
+        }
+        return $this->json(['code' => 200]);
     }
 
     #[Route('/horario/new', name: 'horario_add', methods: ['POST'])]
-    public function addHorario(Request $request,EntityManagerInterface $entityManager): Response
+    public function addHorario(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             // Obtener los valores del formulario
@@ -264,7 +289,7 @@ class AdminController extends AbstractController
                 $entityManager->persist($horario);
                 $entityManager->flush();
 
-                return $this->json(['code'=>200]);
+                return $this->json(['code' => 200]);
             }
         }
         return $this->render('admin/comercio.html.twig');

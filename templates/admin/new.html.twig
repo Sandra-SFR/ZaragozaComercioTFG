@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Comercio{% endblock %}
+{% block title %}Nuevo Comercio{% endblock %}
 
 {% block body %}
     <div class="features-section">
-        <h1 class="h3 mb-3 font-weight-normal">Create new Comercio</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Crear Comercio</h1>
 
         {{ form_start(form) }}
         {#        {{ form_widget(form) }} #}
@@ -34,17 +34,10 @@
                       rows="4"></textarea>
             <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
         </div>
-        <!-- Estado input -->
-{#        <div class="form-group mb-4">#}
-{#            <select name="{{ field_name(form.estado) }}" id="form6" class="form-select">#}
-{#                <option selected>{{ field_label(form.estado) }}</option>#}
-{#                <option value="1">Pendiente</option>#}
-{#            </select>#}
-{#        </div>#}
-
+        <!-- Foto input -->
         <div class="form-group mb-4">
-            <label for="inputFoto" class="form-label">Añadir foto</label>
-            <input class="form-control" type="file" id="inputFoto" name="foto" accept="image/*">
+            <label for="inputFoto" class="form-label">{{ field_label(form.foto) }}</label>
+            <input class="form-control" type="file" id="inputFoto" name="{{ field_name(form.foto) }}" accept="image/*">
         </div>
 
         <br>
