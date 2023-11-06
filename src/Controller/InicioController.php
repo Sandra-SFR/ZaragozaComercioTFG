@@ -43,4 +43,5 @@ class InicioController extends AbstractController
 
         return new JsonResponse($result);
     }
+
 }

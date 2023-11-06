@@ -11,26 +11,86 @@
 {% block js %}
 
     <script>
+        // const searchInput = document.getElementById('search-input');
+        // const searchResults = document.getElementById('search-results');
+        //
+        // searchInput.addEventListener('input', function() {
+        //     // const searchTerm = removeAccents(this.value).toLowerCase(); // Eliminar acentos y hacer minúsculas
+        //     const searchTerm = this.value; // Eliminar acentos y hacer minúsculas
+        //     const url = '/buscar?search=' + searchTerm;
+        //
+        //     fetch(url)
+        // .then(response => response.json())
+        //         .then(data => {
+        //             // Limpiar los resultados anteriores
+        //             searchResults.innerHTML = '';
+        //
+        //             data.forEach(comercio => {
+        //                 console.log(comercio);
+        //                 const comercioElement = document.createElement('div');
+        //                 comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
+        //                 searchResults.appendChild(comercioElement);
+        //             });
+        //
+        //         })
+        //         .catch(error => {
+        //             console.error('Error al buscar:', error);
+        //         });
+        // });
+
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
 
         searchInput.addEventListener('input', function() {
-            // const searchTerm = removeAccents(this.value).toLowerCase(); // Eliminar acentos y hacer minúsculas
-            const searchTerm = this.value; // Eliminar acentos y hacer minúsculas
+            const searchTerm = this.value;
             const url = '/buscar?search=' + searchTerm;
 
             fetch(url)
-        .then(response => response.json())
+                .then(response => response.json())
                 .then(data => {
                     // Limpiar los resultados anteriores
                     searchResults.innerHTML = '';
 
-                    data.forEach(comercio => {
-                        console.log(comercio);
-                        const comercioElement = document.createElement('div');
-                        comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
-                        searchResults.appendChild(comercioElement);
-                    });
+                    if (data.length === 0) {
+                        // No se encontraron resultados sin acentos, intenta con acentos y en la descripción
+                        const searchTermWithAccents = removeAccents(searchTerm);
+                        const urlWithAccents = '/buscar?search=' + searchTermWithAccents;
+
+                        fetch(urlWithAccents)
+                            .then(response => response.json())
+                            .then(dataWithAccents => {
+                                dataWithAccents.forEach(comercio => {
+                                    const comercioElement = document.createElement('div');
+                                    comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
+                                    searchResults.appendChild(comercioElement);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error al buscar con acentos y en la descripción:', error);
+                            });
+
+                        // Intenta buscar palabras clave en la descripción
+                        const urlWithKeywords = '/buscar?search=' + searchTerm + '&searchInDescripcionKeywords=true';
+
+                        fetch(urlWithKeywords)
+                            .then(response => response.json())
+                            .then(dataWithKeywords => {
+                                dataWithKeywords.forEach(comercio => {
+                                    const comercioElement = document.createElement('div');
+                                    comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
+                                    searchResults.appendChild(comercioElement);
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error al buscar palabras clave en la descripción:', error);
+                            });
+                    } else {
+                        data.forEach(comercio => {
+                            const comercioElement = document.createElement('div');
+                            comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
+                            searchResults.appendChild(comercioElement);
+                        });
+                    }
                 })
                 .catch(error => {
                     console.error('Error al buscar:', error);
