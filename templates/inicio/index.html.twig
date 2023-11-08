@@ -3,10 +3,23 @@
 {% block title %}Zaragoza comercio{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <input type="text" id="search-input" placeholder="Buscar comercios">
+    <div style="height: 3rem; background-color: #9b3838">
+
+    </div>
+    <div style="width: 100%; height: 8rem; background-color: #1c1b1b">
+        <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <div style="margin-top: 2.5rem; margin-left: 33%">
+            <input type="text" id="search-input" placeholder="Buscar comercios" style="width: 33rem;">
+            <i class="fas fa-magnifying-glass fa-lg" style="margin-left: 10px; color: #7e868c"></i>
+        </div>
+    </div>
+        </nav>
+    </div>
     <div id="search-results"></div>
-</div>
+    <div>
+
+    </div>
 {% endblock %}
 {% block js %}
 
@@ -41,7 +54,7 @@
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
 
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             const searchTerm = this.value;
             const url = '/buscar?search=' + searchTerm;
 
