@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231108085925 extends AbstractMigration
+final class Version20231109090405 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -25,12 +25,13 @@ final class Version20231108085925 extends AbstractMigration
         $this->addSql('CREATE TABLE comercio_categoria (comercio_id INT NOT NULL, categoria_id INT NOT NULL, INDEX IDX_B06AA44B2C8A84B9 (comercio_id), INDEX IDX_B06AA44B3397707A (categoria_id), PRIMARY KEY(comercio_id, categoria_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE foto (id INT AUTO_INCREMENT NOT NULL, comercio_id INT NOT NULL, archivo VARCHAR(255) NOT NULL, destacada TINYINT(1) NOT NULL, INDEX IDX_EADC3BE52C8A84B9 (comercio_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE horario (id INT AUTO_INCREMENT NOT NULL, comercio_id INT NOT NULL, hora_apertura TIME NOT NULL, hora_cierre TIME NOT NULL, dia SMALLINT NOT NULL, INDEX IDX_E25853A32C8A84B9 (comercio_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE usuario (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, nombre VARCHAR(50) NOT NULL, envio TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_2265B05DE7927C74 (email), UNIQUE INDEX UNIQ_2265B05D3A909126 (nombre), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_general_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE comercio ADD CONSTRAINT FK_419511CDDB38439E FOREIGN KEY (usuario_id) REFERENCES usuario (id)');
         $this->addSql('ALTER TABLE comercio_categoria ADD CONSTRAINT FK_B06AA44B2C8A84B9 FOREIGN KEY (comercio_id) REFERENCES comercio (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE comercio_categoria ADD CONSTRAINT FK_B06AA44B3397707A FOREIGN KEY (categoria_id) REFERENCES categoria (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE foto ADD CONSTRAINT FK_EADC3BE52C8A84B9 FOREIGN KEY (comercio_id) REFERENCES comercio (id)');
         $this->addSql('ALTER TABLE horario ADD CONSTRAINT FK_E25853A32C8A84B9 FOREIGN KEY (comercio_id) REFERENCES comercio (id)');
-        $this->addSql('ALTER TABLE messenger_messages CHANGE id id BIGINT AUTO_INCREMENT NOT NULL, CHANGE body body LONGTEXT NOT NULL, CHANGE headers headers LONGTEXT NOT NULL, CHANGE created_at created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE available_at available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE delivered_at delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
     }
 
     public function down(Schema $schema): void
@@ -46,6 +47,7 @@ final class Version20231108085925 extends AbstractMigration
         $this->addSql('DROP TABLE comercio_categoria');
         $this->addSql('DROP TABLE foto');
         $this->addSql('DROP TABLE horario');
-        $this->addSql('ALTER TABLE messenger_messages CHANGE id id INT AUTO_INCREMENT NOT NULL, CHANGE body body JSON NOT NULL COMMENT \'(DC2Type:json)\', CHANGE headers headers JSON NOT NULL COMMENT \'(DC2Type:json)\', CHANGE created_at created_at DATETIME NOT NULL, CHANGE available_at available_at DATETIME NOT NULL, CHANGE delivered_at delivered_at DATETIME DEFAULT NULL');
+        $this->addSql('DROP TABLE usuario');
+        $this->addSql('DROP TABLE messenger_messages');
     }
 }
