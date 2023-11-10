@@ -15,15 +15,13 @@ class InicioController extends AbstractController
     #[Route('/', name: 'app_inicio')]
     public function index(): Response
     {
-
-//        //TODO: Pagina de inicio con buscardor, Carga del buscador con AJAX
         return $this->render('inicio/index.html.twig', [
             'controller_name' => 'InicioController',
         ]);
     }
 
     #[Route('/buscar', name: 'buscar')]
-    public function bucar(Request $request, EntityManagerInterface $em): JsonResponse
+    public function buscar(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $searchTerm = $request->query->get('search');
 

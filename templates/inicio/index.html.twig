@@ -1,25 +1,75 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Zaragoza comercio{% endblock %}
-{#{% block header %}#}
-{#    <div style="height: 3rem; background-color: #9b3838">#}
-{#    </div>#}
-{#{% endblock %}#}
+{# {% block header %} #}
+{# <div style="height: 3rem; background-color: #9b3838"> #}
+{# </div> #}
+{# {% endblock %} #}
 {% block body %}
     <div class="buscador">
-            <div class="container text-center">
-                <div class="row">
+        <div class="container-fluid text-center">
+            <div class="row" style="color: black">
+                <h1>Zaragoza comerio</h1>
+                <h3>Cosas flaules y chulas</h3>
+                <h5>magic everywhere</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="barra">
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col">
-                    <input type="text" id="search-input" placeholder="Buscar comercios">
-                    <i class="fas fa-magnifying-glass fa-lg" style="margin-left: 10px; color: #7e868c"></i>
-                </div>
+                    <input type="text" id="search-input" placeholder="Buscar comercios" style="border: none; outline: none;">
+                    <i class="fas fa-magnifying-glass fa-lg" style="color: #7e868c"></i>
                 </div>
             </div>
+        </div>
     </div>
-    <div class="container" id="search-results"></div>
-    <div>
 
+    <div class="container-fluid" id="search-results">
     </div>
+
+    <div class="row">
+        {% for comercio in comercios|default([]) %}
+            <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
+                <div class="card shadow-3-strong">
+                    <a href="{{ path('app_comercio', {'id': comercio.id}) }}">
+                        {% if comercio.fotos|length > 0 %}
+                            <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
+                                 class="card-img-top d-flex align-items-center" alt="Foto comercio"
+                                 style="border-bottom-left-radius: 4rem; height: 12rem;">
+                        {% else %}
+                            <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
+                            <p>No hay fotos disponibles</p>
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text">{{ comercio.nombre }}</p>
+                            <p class="card-text" style="font-size: small">{{ comercio.descripcion }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="categorias">
+        <div class="container-fluid">
+            <h2>Categorías</h2>
+        </div>
+    </div>
+    <div>
+        <div class="container-fluid">
+            <h2>Introduce tu comercio</h2>
+        </div>
+    </div>
+
+    <div>
+        <div class="container-fluid">
+            <h2>¿Qué es esta mierda?</h2>
+        </div>
+    </div>
+
 {% endblock %}
 {% block js %}
 
