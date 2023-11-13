@@ -20,44 +20,42 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <input type="text" id="search-input" placeholder="Buscar comercios" style="border: none; outline: none;">
+                    <input type="text" id="search-input" placeholder="Buscar comercios"
+                           style="border: none; outline: none;">
                     <i class="fas fa-magnifying-glass fa-lg" style="color: #7e868c"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid" id="search-results">
-    </div>
+    {#  Aquí pinta las tarjetas de comercio  #}
+    <div class="row" id="search-results"></div>
 
-    <div class="row">
-        {% for comercio in comercios|default([]) %}
-            <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
-                <div class="card shadow-3-strong">
-                    <a href="{{ path('app_comercio', {'id': comercio.id}) }}">
-                        {% if comercio.fotos|length > 0 %}
-                            <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
-                                 class="card-img-top d-flex align-items-center" alt="Foto comercio"
-                                 style="border-bottom-left-radius: 4rem; height: 12rem;">
-                        {% else %}
-                            <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
-                            <p>No hay fotos disponibles</p>
-                        {% endif %}
-                        <div class="card-body">
-                            <p class="card-text">{{ comercio.nombre }}</p>
-                            <p class="card-text" style="font-size: small">{{ comercio.descripcion }}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <div class="divisor"></div>
 
-    <div class="categorias">
-        <div class="container-fluid">
+    {#  Aquí pinta las tarjetas de categoría #}
+    <div class="container-fluid">
+        <div class="row justify-content-center text-center">
             <h2>Categorías</h2>
         </div>
+        <div class="row justify-content-center">
+            {% for categoria in categorias %}
+                <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 10rem;">
+                    <div class="categoria shadow-3-strong">
+                        <a href="/categoria/{{ categoria.id }}">
+                            <i class="{{ categoria.icono }} fa-4x"></i>
+                            <div class="">
+                                <p class="">{{ categoria.nombre }} </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <div class="divisor"></div>
+
     <div>
         <div class="container-fluid">
             <h2>Introduce tu comercio</h2>
@@ -76,68 +74,106 @@
     <script>
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
+        let controller = new AbortController();
         let timeout;
 
         searchInput.addEventListener('input', function () {
-            // Borra el temporizador existente si existe
+
             clearTimeout(timeout);
 
-            // Configura un nuevo temporizador para la búsqueda después de 1 segundo
-            timeout = setTimeout(function () {
-                const searchTerm = searchInput.value;
-                const url = '/buscar?search=' + searchTerm;
+            controller.abort();
 
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Limpiar los resultados anteriores
-                        searchResults.innerHTML = '';
+            controller = new AbortController();
 
-                        if (data.length === 0) {
-                            // No se encontraron resultados sin acentos, intenta con acentos y en la descripción
-                            const searchTermWithAccents = removeAccents(searchTerm);
-                            const urlWithAccents = '/buscar?search=' + searchTermWithAccents;
+            timeout = setTimeout(() => {
+                if (searchInput.value.trim() == '' || searchInput.value.trim() == null) {
+                    searchResults.innerHTML = '';
 
-                            fetch(urlWithAccents)
-                                .then(response => response.json())
-                                .then(dataWithAccents => {
-                                    dataWithAccents.forEach(comercio => {
-                                        const comercioElement = document.createElement('div');
-                                        comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
-                                        searchResults.appendChild(comercioElement);
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error al buscar con acentos y en la descripción:', error);
-                                });
+                } else {
+                    const searchTerm = searchInput.value.trim();
+                    const url = '/buscar?search=' + searchTerm;
 
-                            // Intenta buscar palabras clave en la descripción
-                            const urlWithKeywords = '/buscar?search=' + searchTerm + '&searchInDescripcionKeywords=true';
-
-                            fetch(urlWithKeywords)
-                                .then(response => response.json())
-                                .then(dataWithKeywords => {
-                                    dataWithKeywords.forEach(comercio => {
-                                        const comercioElement = document.createElement('div');
-                                        comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
-                                        searchResults.appendChild(comercioElement);
-                                    });
-                                })
-                                .catch(error => {
-                                    console.error('Error al buscar palabras clave en la descripción:', error);
-                                });
-                        } else {
-                            data.forEach(comercio => {
-                                const comercioElement = document.createElement('div');
-                                comercioElement.innerHTML = '<a href="/comercio/' + comercio.id + '">' + comercio.nombre + '</a>';
-                                searchResults.appendChild(comercioElement);
-                            });
-                        }
+                    fetch(url, {
+                        signal: controller.signal
                     })
-                    .catch(error => {
-                        console.error('Error al buscar:', error);
-                    });
-            }, 500); // 1000 milisegundos = 1 segundo
+                        .then(response => response.json())
+                        .then(data => {
+                            // Limpiar los resultados anteriores
+                            searchResults.innerHTML = '';
+
+                            if (data.length === 0) {
+                                // No se encontraron resultados sin acentos, intenta con acentos y en la descripción
+                                const searchTermWithAccents = removeAccents(searchTerm);
+                                const urlWithAccents = '/buscar?search=' + searchTermWithAccents;
+
+                                fetch(urlWithAccents)
+                                    .then(response => response.json())
+                                    .then(dataWithAccents => {
+                                        dataWithAccents.forEach(comercio => {
+                                            console.log(comercio);
+                                            searchResults.innerHTML +=
+                                                '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                '<div class="card shadow-3-strong">' +
+                                                '<a href="/comercio/' + comercio.id + '">' +
+                                                '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                '<div class="card-body">' +
+                                                '<p class="card-text">' + comercio.nombre + '</p>' +
+                                                '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                                '</div>' +
+                                                '</a>' +
+                                                '</div>';
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error al buscar con acentos y en la descripción:', error);
+                                    });
+
+                                // Intenta buscar palabras clave en la descripción
+                                const urlWithKeywords = '/buscar?search=' + searchTerm + '&searchInDescripcionKeywords=true';
+
+                                fetch(urlWithKeywords)
+                                    .then(response => response.json())
+                                    .then(dataWithKeywords => {
+                                        dataWithKeywords.forEach(comercio => {
+                                            console.log(comercio);
+                                            searchResults.innerHTML +=
+                                                '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                '<div class="card shadow-3-strong">' +
+                                                '<a href="/comercio/' + comercio.id + '">' +
+                                                '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                '<div class="card-body">' +
+                                                '<p class="card-text">' + comercio.nombre + '</p>' +
+                                                '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                                '</div>' +
+                                                '</a>' +
+                                                '</div>';
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error al buscar palabras clave en la descripción:', error);
+                                    });
+                            } else {
+                                data.forEach(comercio => {
+                                    console.log(comercio);
+                                    searchResults.innerHTML +=
+                                        '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                        '<div class="card shadow-3-strong">' +
+                                        '<a href="/comercio/' + comercio.id + '">' +
+                                        '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                        '<div class="card-body">' +
+                                        '<p class="card-text">' + comercio.nombre + '</p>' +
+                                        '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                        '</div>' +
+                                        '</a>' +
+                                        '</div>';
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al buscar:', error);
+                        });
+                }
+            }, 300);
         });
 
         // Función para eliminar acentos y caracteres especiales

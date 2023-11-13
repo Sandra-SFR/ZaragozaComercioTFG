@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categoria;
 use App\Entity\Comercio;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,10 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class InicioController extends AbstractController
 {
     #[Route('/', name: 'app_inicio')]
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
+        $categorias = $em->getRepository(Categoria::class)->findAll();
+
         return $this->render('inicio/index.html.twig', [
             'controller_name' => 'InicioController',
+            'categorias' => $categorias,
         ]);
     }
 
@@ -33,9 +37,12 @@ class InicioController extends AbstractController
         $result = [];
         foreach ($comercios as $comercio) {
             $result[] = [
-                'id' => $comercio->getId(),
-                'nombre' => $comercio->getNombre(),
-                'descripcion' => $comercio->getDescripcion(),
+                'id' => $comercio['id'],
+                'nombre' => $comercio['nombre'],
+                'descripcion' => $comercio['descripcion'],
+                'foto' => $comercio['archivo'],
+                'categoria' => $comercio['categoria'],
+                'estado' => $comercio['estado'],
             ];
         }
 

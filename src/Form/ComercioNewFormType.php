@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Categoria;
 use App\Entity\Comercio;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\File;
@@ -33,6 +35,12 @@ class ComercioNewFormType extends AbstractType
             ])
             ->add('descripcion', TextareaType::class, [
                 'constraints' => [new NotBlank()],
+            ])
+            ->add('categorias', EntityType::class, [
+                'class' => Categoria::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => false,
             ])
             ->add('foto', FileType::class, [
                 'label' => 'Añadir foto',

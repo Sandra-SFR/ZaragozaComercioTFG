@@ -72,13 +72,30 @@ class ComercioRepository extends ServiceEntityRepository
     public function buscadorComercios(string $searchTerm, array $orderBy = null, $limit = null, $offset = null): array
     {
         $qb = $this->createQueryBuilder('c')
+            ->select('c.id', 'c.nombre', 'c.descripcion', 'c.estado', 'f.archivo', 'cat.nombre as categoria')
+            ->addSelect('CASE c.estado
+            WHEN 1 THEN \'pendiente\'
+            WHEN 2 THEN \'abierto\'
+            WHEN 3 THEN \'cerrado\'
+            WHEN 4 THEN \'vacaciones\'
+            ELSE \'sin estado\'
+            END as nombreEstado ')
+            ->join('c.usuario', 'u')
+            ->leftJoin('c.fotos', 'f', 'WITH', 'f.destacada = true')
+            ->leftJoin('c.categorias', 'cat')
             ->where('c.nombre LIKE :searchTerm')
             ->orWhere('c.descripcion LIKE :searchTerm')
             ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->groupBy('c.id')
             ;
 
+        if (!is_null($orderBy)) {
+            foreach ($orderBy as $campo => $direccion) {
+                $qb->orderBy('c.' . $campo, $direccion);
+            }
+        }
 
-        return $qb->getQuery()->execute();
+        return $qb->getQuery()->getResult();
     }
 
 //    public function findOneBySomeField($value): ?Comercio
