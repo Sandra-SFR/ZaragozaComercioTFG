@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comercios{% endblock %}
+
+{% block body %}
+
+    <div class="divisor"></div>
+
+    <div class="row justify-content-center text-center">
+        <h1>{{ categoria.nombre }}</h1>
+    </div>
+
+    <div class="divisor"></div>
+
+    <div class="row justify-content-center">
+        {% for comercio in comercios %}
+            {% if comercio.estado == '2' or comercio.estado == '4' %}
+                <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
+                    <div class="card shadow-3-strong">
+                        <a href="/comercio/{{ comercio.id }}">
+                            {% if comercio.fotos|length > 0 %}
+                                <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
+                                     class="card-img-top d-flex align-items-center" alt="Foto comercio"
+                                     style="border-bottom-left-radius: 4rem; height: 12rem;">
+                            {% else %}
+                                <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
+                                <p>No hay fotos disponibles</p>
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">{{ comercio.nombre }} </p>
+                                <p class="card-text" style="font-size: small">{{ comercio.descripcion }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

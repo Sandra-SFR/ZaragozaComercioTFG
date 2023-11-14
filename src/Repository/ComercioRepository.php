@@ -85,6 +85,7 @@ class ComercioRepository extends ServiceEntityRepository
             ->leftJoin('c.categorias', 'cat')
             ->where('c.nombre LIKE :searchTerm')
             ->orWhere('c.descripcion LIKE :searchTerm')
+            ->orWhere('cat.nombre LIKE :searchTerm')
             ->setParameter('searchTerm', '%' . $searchTerm . '%')
             ->groupBy('c.id')
             ;

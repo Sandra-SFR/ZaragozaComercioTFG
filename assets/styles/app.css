@@ -1,6 +1,39 @@
 body {
     background-color: #ffffff;
 }
+.prevBtn{
+    position: absolute;
+    left: 30px;
+    top: 30vmin;
+}
+.nextBtn{
+    position: absolute;
+    right: 30px;
+    top: 30vmin;
+}
+.submitBtn{
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+}
+.crearComercio{
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 4px #000;
+    background-color: #93c5fd;
+    top: 20px;
+    height: 60vmin;
+    & .progress{
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        bottom: 10px;
+    }
+}
+.paso-formulario{
+    width: 500px;
+}
 .divisor{
     margin-top: 6px;
     margin-bottom: 6px;

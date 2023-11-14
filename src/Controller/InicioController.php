@@ -49,4 +49,18 @@ class InicioController extends AbstractController
         return new JsonResponse($result);
     }
 
+    #[Route('/categoria/{id}', name: 'app_categoria')]
+    public function categoria($id,EntityManagerInterface $em): Response
+    {
+        $categoria = $em->getRepository(Categoria::class)->find($id);
+
+        $comercios = $categoria->getComercios();
+
+        return $this->render('inicio/categoria.html.twig', [
+            'controller_name' => 'InicioController',
+            'comercios' => $comercios,
+            'categoria' => $categoria,
+        ]);
+    }
+
 }

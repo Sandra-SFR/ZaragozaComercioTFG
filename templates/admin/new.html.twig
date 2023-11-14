@@ -3,76 +3,153 @@
 {% block title %}Nuevo Comercio{% endblock %}
 
 {% block body %}
-    <div class="features-section">
+    <div class="features-section crearComercio container">
         <h1 class="h3 mb-3 font-weight-normal">Crear Comercio</h1>
 
         {{ form_start(form) }}
-        <!-- Name input -->
-        <div class="form-outline mb-4">
-            <input name="{{ field_name(form.nombre) }}" type="text" id="form2" class="form-control"/>
-            <label class="form-label" for="form2">{{ field_label(form.nombre) }}</label>
+
+        <div id="paso1" class="paso-formulario">
+            <!-- Name input -->
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.nombre) }}" type="text" id="form2" class="form-control"/>
+                <label class="form-label" for="form2">{{ field_label(form.nombre) }}</label>
+            </div>
         </div>
         <!-- Email input -->
-        <div class="form-outline mb-4">
-            <input name="{{ field_name(form.email) }}" type="email" id="form3" class="form-control"/>
-            <label class="form-label" for="form3">{{ field_label(form.email) }}</label>
+        <div id="paso2" class="paso-formulario" style="display: none;">
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.email) }}" type="email" id="form3" class="form-control"/>
+                <label class="form-label" for="form3">{{ field_label(form.email) }}</label>
+            </div>
         </div>
         <!-- Telefono input -->
-        <div class="form-outline mb-4">
-            <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control"/>
-            <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
+        <div id="paso3" class="paso-formulario" style="display: none;">
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control"/>
+                <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
+            </div>
         </div>
         <!-- Direccion input -->
-        <div class="form-outline mb-4">
-            <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control" onchange="mapa()"/>
-            <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
+        <div id="paso4" class="paso-formulario" style="display: none;">
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control"
+                       onchange="mapa()"/>
+                <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
+            </div>
+            <section>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
+                <div id="map" style="width: 100%; height: 150px;"></div>
+            </section>
         </div>
-        <section>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
-            <div id="map" style="width: 100%; height: 400px;"></div>
-        </section>
         <!-- Descripcion input -->
-        <div class="form-outline mb-4">
+        <div id="paso5" class="paso-formulario" style="display: none;">
+            <div class="form-outline mb-4">
             <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
                       rows="4"></textarea>
-            <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
+                <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
+            </div>
         </div>
         <!-- Foto input -->
-        <div class="form-group mb-4">
-            <label for="inputFoto" class="form-label">{{ field_label(form.foto) }}</label>
-            <input class="form-control" type="file" id="inputFoto" name="{{ field_name(form.foto) }}" accept="image/*">
+        <div id="paso6" class="paso-formulario" style="display: none;">
+            <div class="form-group mb-4">
+                <label for="inputFoto" class="form-label">{{ field_label(form.foto) }}</label>
+                <input class="form-control" type="file" id="inputFoto" name="{{ field_name(form.foto) }}"
+                       accept="image/*">
+            </div>
         </div>
 
         <!-- Categoria input -->
-        <label>{{ field_label(form.categorias) }}</label>
-        <div class="row">
-        {% for categoria in categorias %}
-        <div class="form-check form-group mb-4 col">
-            <input class="form-check-input" type="radio" value="{{ categoria.id }}" name="{{ field_name(form.categorias) }}" id="categoria{{ categoria.id }}">
-            <label class="form-check-label" for="categoria{{ categoria.id }}">
-                {{ categoria.nombre }}
-            </label>
-        </div>
-        {% endfor %}
+        <div id="paso7" class="paso-formulario" style="display: none;">
+            <label>{{ field_label(form.categorias) }}</label>
+            <div class="row">
+                {% for categoria in categorias %}
+                    <div class="form-check form-group mb-4 col-4">
+                        <input class="form-check-input" type="radio" value="{{ categoria.id }}"
+                               name="{{ field_name(form.categorias) }}" id="categoria{{ categoria.id }}">
+                        <label class="form-check-label text-capitalize" for="categoria{{ categoria.id }}">
+                            {{ categoria.nombre }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
+        <!-- Barra de progreso -->
+        <div class="progress mb-4">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <button type="button" class="btn btn-primary btn-floating prevBtn" id="prevBtn" onclick="nextPrev(-1)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-floating nextBtn" id="nextBtn" onclick="nextPrev(1)">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Botón de envío -->
         <br>
-        <button class="btn btn-lg btn-primary">{{ button_label|default('Save') }}</button>
+        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="submit"><i class="fa-regular fa-floppy-disk"></i></button>
 
         {{ form_end(form) }}
 
-        <a href="{{ path('admin_comercios') }}">back to list</a>
     </div>
+
+    <a href="{{ path('admin_comercios') }}">back to list</a>
+
 {% endblock %}
 {% block js %}
     <script>
+        // Función para los pasos del formulario
+        var currentStep = 0;
+        showStep(currentStep);
+
+        function showStep(n) {
+            var steps = document.getElementsByClassName("paso-formulario");
+            for (var i = 0; i < steps.length; i++) {
+                steps[i].style.display = "none";
+            }
+            steps[n].style.display = "block";
+            updateProgressBar(n);
+            updateButtonsVisibility(n);
+        }
+
+        function nextPrev(n) {
+            // Validar campos si es necesario antes de avanzar
+            // if (n === 1 && !validateForm()) return false;
+
+            currentStep += n;
+            showStep(currentStep);
+        }
+
+        function updateProgressBar(n) {
+            var progress = ((n + 1) / document.getElementsByClassName("paso-formulario").length) * 100;
+            console.log(progress);
+            document.getElementById("progressBar").style.width = progress + "%";
+            document.getElementById("progressBar").setAttribute("aria-valuenow", progress);
+        }
+
+        function updateButtonsVisibility(n) {
+            var prevBtn = document.getElementById("prevBtn");
+            var nextBtn = document.getElementById("nextBtn");
+            var submitBtn = document.getElementById("submitBtn");
+
+            // Ocultar o mostrar el botón "Atrás" según el paso actual
+            prevBtn.style.display = (n === 0) ? "none" : "inline";
+
+            // Ocultar o mostrar el botón "Siguiente" y el botón de envío según el paso actual
+            nextBtn.style.display = (n < document.getElementsByClassName("paso-formulario").length - 1) ? "inline" : "none";
+            submitBtn.style.display = (n === document.getElementsByClassName("paso-formulario").length - 1) ? "inline" : "none";
+        }
+
         // Función para inicializar el mapa
         function initMap() {
             var direccion = "Plaza de España, Zaragoza";
 
             var geocoder = new google.maps.Geocoder();
 
-            geocoder.geocode({ 'address': direccion }, function (results, status) {
+            geocoder.geocode({'address': direccion}, function (results, status) {
                 if (status === 'OK') {
                     var mapOptions = {
                         center: results[0].geometry.location,
@@ -92,32 +169,32 @@
             });
         }
 
-    function mapa(){
-    var direccion = document.getElementById('form1').value;
+        function mapa() {
+            var direccion = document.getElementById('form1').value;
 
-        var geocoder = new google.maps.Geocoder();
+            var geocoder = new google.maps.Geocoder();
 
-        geocoder.geocode({ 'address': direccion }, function (results, status) {
-            if (status === 'OK') {
-                var mapOptions = {
-                    center: results[0].geometry.location,
-                    zoom: 15
-                };
+            geocoder.geocode({'address': direccion}, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
 
-                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location,
-                    title: 'Ubicación del Comercio'
-                });
-            }else if(status === 'ZERO_RESULTS'){
-                alert('La dirección proporcionada no es válida. Por favor, ingrese una dirección válida.');
-            } else {
-                alert('Geocodificación fallida debido a: ' + status);
-            }
-        });
-    }
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                } else if (status === 'ZERO_RESULTS') {
+                    alert('La dirección proporcionada no es válida. Por favor, ingrese una dirección válida.');
+                } else {
+                    alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
     </script>
 
     <script async defer
