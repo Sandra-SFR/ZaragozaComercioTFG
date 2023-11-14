@@ -7,7 +7,6 @@
         <h1 class="h3 mb-3 font-weight-normal">Crear Comercio</h1>
 
         {{ form_start(form) }}
-        {#        {{ form_widget(form) }} #}
         <!-- Name input -->
         <div class="form-outline mb-4">
             <input name="{{ field_name(form.nombre) }}" type="text" id="form2" class="form-control"/>
@@ -30,7 +29,7 @@
         </div>
         <section>
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
-            <div id="map" style="width: 400px; height: 400px;"></div>
+            <div id="map" style="width: 100%; height: 400px;"></div>
         </section>
         <!-- Descripcion input -->
         <div class="form-outline mb-4">
@@ -42,6 +41,19 @@
         <div class="form-group mb-4">
             <label for="inputFoto" class="form-label">{{ field_label(form.foto) }}</label>
             <input class="form-control" type="file" id="inputFoto" name="{{ field_name(form.foto) }}" accept="image/*">
+        </div>
+
+        <!-- Categoria input -->
+        <label>{{ field_label(form.categorias) }}</label>
+        <div class="row">
+        {% for categoria in categorias %}
+        <div class="form-check form-group mb-4 col">
+            <input class="form-check-input" type="radio" value="{{ categoria.id }}" name="{{ field_name(form.categorias) }}" id="categoria{{ categoria.id }}">
+            <label class="form-check-label" for="categoria{{ categoria.id }}">
+                {{ categoria.nombre }}
+            </label>
+        </div>
+        {% endfor %}
         </div>
 
         <br>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categoria;
 use App\Form\ComercioNewFormType;
 use DateTime;
 use App\Entity\Comercio;
@@ -51,14 +52,16 @@ class AdminController extends AbstractController
     }
 
     #[Route('/comercio/new', name: 'comercio_new', methods: ['GET'])]
-    public function new(): Response
+    public function new(EntityManagerInterface $em): Response
     {
         $comercio = new Comercio();
+        $categorias = $em->getRepository(Categoria::class)->findAll();
         $form = $this->createForm(ComercioNewFormType::class, $comercio);
 
         return $this->render('admin/new.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
+            'categorias' => $categorias,
         ]);
     }
 
@@ -67,6 +70,7 @@ class AdminController extends AbstractController
     {
         $comercio = new Comercio();
         $comercio->setEstado(1); //Pone el estado en pendiente
+        $categorias = $em->getRepository(Categoria::class)->findAll();
         $form = $this->createForm(ComercioNewFormType::class, $comercio);
         $form->handleRequest($request);
 
@@ -121,12 +125,14 @@ class AdminController extends AbstractController
 
             return $this->render('admin/new.html.twig', [
                 'comercio' => $comercio,
+                'categorias' => $categorias,
                 'form' => $form,
             ]);
         } else {
 
             return $this->render('admin/new.html.twig', [
                 'comercio' => $comercio,
+                'categorias' => $categorias,
                 'form' => $form,
             ]);
         }

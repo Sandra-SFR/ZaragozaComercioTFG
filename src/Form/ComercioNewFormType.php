@@ -38,6 +38,7 @@ class ComercioNewFormType extends AbstractType
             ])
             ->add('categorias', EntityType::class, [
                 'class' => Categoria::class,
+                'label' => 'Selecciona una categoría',
                 'choice_label' => 'nombre',
                 'multiple' => true,
                 'expanded' => false,
