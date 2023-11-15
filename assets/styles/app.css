@@ -23,7 +23,7 @@ body {
     box-shadow: 0 0 4px #000;
     background-color: #93c5fd;
     top: 20px;
-    height: 60vmin;
+    height: 500px;
     & .progress{
         position: absolute;
         width: 60%;
@@ -50,6 +50,11 @@ body {
     align-items: center;
     background-image: url('../../public/img/movidas-comerciales-zaragoza.jpg');
     background-size: cover;
+}
+.error-message {
+    font-size: 80%;
+    color: red;
+    margin-top: 5px;
 }
 .barra{
     margin-top: -15px;
