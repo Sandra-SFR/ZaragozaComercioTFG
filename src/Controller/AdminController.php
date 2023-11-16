@@ -51,6 +51,20 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/categorias', name: 'admin_categorias', methods: ['GET'])]
+    public function categorias(EntityManagerInterface $em): Response
+    {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        $categorias = $em->getRepository(Comercio::class)->findNombresComercios($usuario, ['nombre' => 'ASC'], 20, 0);
+
+        return $this->render('admin/comercios.html.twig', [
+            'categorias' => $categorias,
+            'controller_name' => 'Comercios',
+        ]);
+    }
+
     #[Route('/comercio/new', name: 'comercio_new', methods: ['GET'])]
     public function new(EntityManagerInterface $em): Response
     {
