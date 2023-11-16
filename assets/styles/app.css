@@ -61,9 +61,13 @@ body {
     border-radius: 20px;
     border: 1px solid #d5cbcb;
     background-color: white;
-    text-align: right;
-    margin-left: 33%;
-    margin-right: 33%;
+    text-align: left;
+}
+.sin-focus:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
 }
 .tarjeta{
     min-height: 200px;
