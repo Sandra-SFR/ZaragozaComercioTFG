@@ -19,7 +19,8 @@
         <!-- Email input -->
         <div id="paso2" class="paso-formulario" style="display: none;">
             <div class="form-outline mb-4">
-                <input name="{{ field_name(form.email) }}" type="email" id="form2" class="form-control" required/>
+                <input name="{{ field_name(form.email) }}" type="email" id="form2" class="form-control"
+                       onkeyup="validateEmail(this)" required/>
                 <label class="form-label" for="form2">{{ field_label(form.email) }}</label>
             </div>
             <div class="error-message"></div>
@@ -27,7 +28,8 @@
         <!-- Telefono input -->
         <div id="paso3" class="paso-formulario" style="display: none;">
             <div class="form-outline mb-4">
-                <input name="{{ field_name(form.telefono) }}" type="tel" id="form3" class="form-control" required/>
+                <input name="{{ field_name(form.telefono) }}" type="tel" id="form3" class="form-control"
+                       onkeyup="validatePhoneNumber(this)" required/>
                 <label class="form-label" for="form3">{{ field_label(form.telefono) }}</label>
             </div>
             <div class="error-message"></div>
@@ -131,6 +133,7 @@
 
         function nextPrev(n) {
             // Validar campos antes de avanzar
+            console.log('validateForm: ' ,validateForm());
             if (n === 1 && !validateForm()) {
                 // La validación falló, no avanzar
                 return false;
@@ -171,15 +174,17 @@
                     showError(currentStepFields[i], 'Por favor, complete este campo.');
                     return false;
                 }
-
+                if (currentStepFields[i].type === 'email'){
+                    console.log('ifEmail: ', currentStepFields[i]);
+                }
                 // Validación específica para el campo de correo electrónico
-                if (currentStepFields[i].type === 'email' && !validateEmail(currentStepFields[i].value.trim())) {
+                if (currentStepFields[i].type === 'email' && !validateEmail(currentStepFields[i])) {
                     showError(currentStepFields[i], 'Por favor, ingrese un correo electrónico válido.');
                     return false;
                 }
 
                 // Validación específica para el campo de teléfono
-                if (currentStepFields[i].type === 'tel' && !validatePhoneNumber(currentStepFields[i].value.trim())) {
+                if (currentStepFields[i].type === 'tel' && !validatePhoneNumber(currentStepFields[i])) {
                     showError(currentStepFields[i], 'Por favor, ingrese un número de teléfono válido (9 dígitos).');
                     return false;
                 }
@@ -202,7 +207,6 @@
                     return false;
                 }
             }
-
             // Si la validación pasa, ocultar los mensajes de error
             hideAllErrors();
             return true;
@@ -211,13 +215,26 @@
         function validateEmail(email) {
             // Utiliza una expresión regular simple para validar el formato del correo electrónico
             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
+
+            if(!emailRegex.test(email.value)){
+                showError(email, 'El email debe tener un formato válido.');
+                return false;
+            }
+
+            hideError(email);
+            return true;
         }
 
         function validatePhoneNumber(phoneNumber) {
             // Utiliza una expresión regular para validar que el número de teléfono tenga exactamente 6 dígitos
             var phoneRegex = /^\d{9}$/;
-            return phoneRegex.test(phoneNumber);
+
+            if(!phoneRegex.exec(phoneNumber.value)){
+                showError(phoneNumber, 'El número debe tener 9 digitos.');
+                return false;
+            }
+            hideError(phoneNumber);
+            return true;
         }
 
         function validateImage(fileInput) {
@@ -249,7 +266,6 @@
 
         function validateCategory() {
             catOk = true;
-            console.log('patatas');
             var selectedCategory = document.getElementsByName('comercio_new_form[categorias][]');
             var seleccionado = Array.from(selectedCategory).some(radio => radio.checked);
 
@@ -343,6 +359,7 @@
                         position: results[0].geometry.location,
                         title: 'Ubicación del Comercio'
                     });
+                    hideAllErrors();
                     mapaOk = true;
                 } else if (status === 'ZERO_RESULTS') {
                     mapaOk = false;

@@ -40,5 +40,10 @@
 
         <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
     {{ form_end(registrationForm) }}
+        <div class="justify-content-center mt-5">
+            <h6>¿Ya tienes cuenta?
+                <a href="{{ path('app_login') }}"> Inicia sesión aquí.</a>
+            </h6>
+        </div>
     </div>
 {% endblock %}

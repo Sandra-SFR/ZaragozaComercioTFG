@@ -47,11 +47,19 @@
                         <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
                     </ul>
 
+
                     <div class="text-end">
-                        <a href="{{ path('app_login') }}">
-                        <button type="button" class="btn btn-outline-light me-2">Registrar comercio</button>
-                        </a>
+                        {% if app.user %}
+                            <a href="{{ path('comercio_new') }}">
+                                <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">
+                                <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>
+                            </a>
+                        {% endif %}
                     </div>
+
 
                     {% if app.user %}
                         <div class="text-end">
