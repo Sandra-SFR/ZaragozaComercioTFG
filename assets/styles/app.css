@@ -1,6 +1,9 @@
 body {
     background-color: #ffffff;
 }
+.addCategoria{
+    background-color: rgba(0, 128, 0, 0.24);
+}
 .prevBtn{
     position: absolute;
     left: 30px;

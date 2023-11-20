@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo Comercio{% endblock %}
+
+{% block body %}
+    <div class="features-section crearComercio container">
+        <h1 class="h3 mb-3 font-weight-normal">Crear Categoria</h1>
+
+        {{ form_start(form) }}
+
+        <div id="paso1" class="paso-formulario">
+            <!-- Name input -->
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.nombre) }}" type="text" id="form1" class="form-control" required/>
+                <label class="form-label" for="form1">{{ field_label(form.nombre) }}</label>
+            </div>
+            <div class="error-message"></div>
+        </div>
+        <!-- Icono input -->
+        <div id="paso2" class="paso-formulario" style="display: none;">
+            <div class="form-outline mb-4">
+                <input name="{{ field_name(form.icono) }}" type="text" id="form2" class="form-control" required/>
+                <label class="form-label" for="form2">{{ field_label(form.icono) }}</label>
+            </div>
+            <div class="error-message"></div>
+        </div>
+
+        <div id="paso3" class="paso-formulario" style="display: none;">
+
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress mb-4">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+                 aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <button type="button" class="btn btn-primary btn-floating prevBtn" id="prevBtn" onclick="nextPrev(-1)">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-floating nextBtn" id="nextBtn" onclick="nextPrev(1)">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Botón de envío -->
+        <br>
+        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="submit"  onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
+
+        {{ form_end(form) }}
+
+    </div>
+
+    <a href="{{ path('admin_categorias') }}">back to list</a>
+
+{% endblock %}
+{% block js %}
+    <script>
+        var currentStep = 0;    // Función para los pasos del formulario
+
+        showStep(currentStep);
+
+        function showStep(n) {
+            var steps = document.getElementsByClassName("paso-formulario");
+            for (var i = 0; i < steps.length; i++) {
+                steps[i].style.display = "none";
+            }
+            steps[n].style.display = "block";
+            updateProgressBar(n);
+            updateButtonsVisibility(n);
+        }
+
+        function nextPrev(n) {
+            // Validar campos antes de avanzar
+            console.log('validateForm: ' ,validateForm());
+            if (n === 1 && !validateForm()) {
+                // La validación falló, no avanzar
+                return false;
+            }
+            // Avanzar al siguiente paso
+            currentStep += n;
+            showStep(currentStep);
+        }
+
+        function updateProgressBar(n) {
+            var progress = ((n + 1) / document.getElementsByClassName("paso-formulario").length) * 100;
+            document.getElementById("progressBar").style.width = progress + "%";
+            document.getElementById("progressBar").setAttribute("aria-valuenow", progress);
+        }
+
+        function updateButtonsVisibility(n) {
+            var prevBtn = document.getElementById("prevBtn");
+            var nextBtn = document.getElementById("nextBtn");
+            var submitBtn = document.getElementById("submitBtn");
+
+            // Ocultar o mostrar el botón "Atrás" según el paso actual
+            prevBtn.style.display = (n === 0) ? "none" : "inline";
+
+            // Ocultar o mostrar el botón "Siguiente" y el botón de envío según el paso actual
+            nextBtn.style.display = (n < document.getElementsByClassName("paso-formulario").length - 1) ? "inline" : "none";
+            submitBtn.style.display = (n === document.getElementsByClassName("paso-formulario").length - 1) ? "inline" : "none";
+        }
+
+        function validateForm() {
+            // Obtener los campos del paso actual
+            var currentStepFields = document.querySelectorAll('.paso-formulario')[currentStep].querySelectorAll('input, select, textarea, text');
+
+            // Realizar la validación para cada campo
+            for (var i = 0; i < currentStepFields.length; i++) {
+                // Validación genérica para campos obligatorios usando HTML5 required
+                if (currentStepFields[i].hasAttribute('required') && currentStepFields[i].value.trim() === '') {
+                    // Mostrar mensaje de error debajo del campo
+                    showError(currentStepFields[i], 'Por favor, complete este campo.');
+                    return false;
+                }
+            }
+            // Si la validación pasa, ocultar los mensajes de error
+            hideAllErrors();
+            return true;
+        }
+
+        function submitForm() {
+            // Si el paso actual es el último, valida la categoría antes de enviar el formulario
+            if (currentStep === document.getElementsByClassName("paso-formulario").length - 1) {
+                if (!validateCategory()) {
+                    return;
+                }
+            }
+
+            // Enviar el formulario
+            document.forms["form"].submit();
+        }
+
+        function showError(field, message) {
+            // Encuentra el elemento de mensaje de error asociado con el campo
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+
+            // Muestra el mensaje de error y aplica el estilo
+            errorElement.textContent = message;
+            errorElement.style.color = 'red';
+        }
+        function hideError(field) {
+            // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            errorElement.textContent = '';
+        }
+
+        function hideAllErrors() {
+            // Oculta todos los mensajes de error en el formulario
+            var errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(function (element) {
+                element.textContent = '';
+            });
+        }
+
+    </script>
+{% endblock %}

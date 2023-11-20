@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Categoria;
+use App\Form\CategoriaNewFormType;
 use App\Form\ComercioNewFormType;
 use DateTime;
 use App\Entity\Comercio;
 use App\Entity\Foto;
 use App\Entity\Horario;
 use App\Form\ComercioCreateForm;
+use App\Form\CategoriaCreateFormType;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,11 +59,18 @@ class AdminController extends AbstractController
         $usuario = $this->getUser();
         $rol = $usuario->getRoles();
 
-        $categorias = $em->getRepository(Comercio::class)->findNombresComercios($usuario, ['nombre' => 'ASC'], 20, 0);
+        $categorias = $em->getRepository(Categoria::class)->findAll();
+        $numero = [];
+        foreach ($categorias as $categoria) {
+            // Suponiendo que la relación se llama $comercios en la entidad Categoria
+            $comercios = $categoria->getComercios();
+            $numero[$categoria->getNombre()] = count($comercios);
+        }
 
-        return $this->render('admin/comercios.html.twig', [
+        return $this->render('admin/categorias.html.twig', [
             'categorias' => $categorias,
-            'controller_name' => 'Comercios',
+            'numero' => $numero,
+            'controller_name' => 'Categorias',
         ]);
     }
 
@@ -152,6 +161,58 @@ class AdminController extends AbstractController
         }
     }
 
+    #[Route('/categoria/new', name: 'categoria_new', methods: ['GET'])]
+    public function newComercio(EntityManagerInterface $em): Response
+    {
+        $categoria = new Categoria();
+        $form = $this->createForm(CategoriaNewFormType::class, $categoria);
+
+        return $this->render('admin/newcat.html.twig', [
+            'categoria' => $categoria,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/categoria/new', name: 'categoria_create', methods: ['POST'])]
+    public function createCategoria(Request $request, EntityManagerInterface $em): Response
+    {
+        $categoria = new Categoria();
+
+        $form = $this->createForm(CategoriaNewFormType::class, $categoria);
+        $form->handleRequest($request);
+
+        $user = $this->getUser();
+        $rol = $user->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+            ]);
+        }
+
+        if ($user) {
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($categoria);
+                $em->flush();
+
+                return $this->redirectToRoute('admin_categorias', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->render('admin/newcat.html.twig', [
+                'categoria' => $categoria,
+                'form' => $form,
+            ]);
+        } else {
+
+            return $this->render('admin/newcat.html.twig', [
+                'categoria' => $categoria,
+                'form' => $form,
+            ]);
+        }
+    }
+
     #[Route('/comercio/{id}/edit', name: 'comercio_edit', methods: ['GET', 'POST'])]
     public function edit(int $id, Request $request, Comercio $comercio, EntityManagerInterface $em): Response
     {
@@ -187,6 +248,38 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/categoria/{id}/edit', name: 'categoria_edit', methods: ['GET', 'POST'])]
+    public function editCategoria(int $id, Request $request, Categoria $categoria, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(CategoriaCreateFormType::class, $categoria);
+        $form->handleRequest($request);
+
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        $categoria = $em->getRepository(Categoria::class)->find($id);
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+            ]);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('admin_categorias', [
+                'categoria' => $categoria], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('admin/categoria.html.twig', [
+            'categoria' => $categoria,
+            'form' => $form,
+
+        ]);
+    }
+
     #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['POST'])]
     public function delete(Comercio $comercio, EntityManagerInterface $entityManager): Response
     {
@@ -203,6 +296,17 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'El comercio ha sido eliminado con éxito.');
 
         return $this->redirectToRoute('admin_comercios');
+    }
+
+    #[Route('/categoria/{id}/delete', name: 'categoria_delete', methods: ['POST'])]
+    public function deleteCategoria(Categoria $categoria, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($categoria);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La categoría ha sido eliminada con éxito.');
+
+        return $this->redirectToRoute('admin_categorias');
     }
 
     #[Route('/foto/new', name: 'foto_add', methods: ['POST'])]

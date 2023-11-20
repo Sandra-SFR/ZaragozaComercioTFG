@@ -3,20 +3,58 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
+    <div class="row mt-5 justify-content-center align-items-center">
 
-<div class="col-lg-6 vh-100 d-flex flex-column justify-content-center align-items-center">
-    <h1>Administrar comercios</h1>
-
-    <ul class="mt-5">
-        <li>Your controller at <code><a href="/admin/comercios">ver comercios</a></code></li>
-    </ul>
-    <ul>
-        <li>Your controller at <code><a href="/admin/comercio/new">crear comercios</a></code></li>
-    </ul>
-    <ul>
-        <li>Your controller at <code><a href="/admin/categorias">ver categorias</a></code></li>
-    </ul>
-
+<div class="col-lg-6 text-center">
+    <h1>Administrar comercios y categorías</h1>
 </div>
 
+    <table class="table align-middle mb-0 bg-white">
+        <thead class="bg-light">
+        <tr>
+            <th></th>
+            <th>Entidad</th>
+            <th></th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td>
+                    <div>
+                        <p class="text-muted mb-0">Comercios</p>
+                    </div>
+                </td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-link btn-sm btn-rounded">
+                        <a href="/admin/comercios"><i class="fa-regular fa-eye fa-2x"></i></a>
+                    </button>
+                    <button type="button" class="btn btn-link btn-sm btn-rounded">
+                        <a href="/admin/comercio/new"><i class="fa-regular fa-square-plus fa-2x" style="color: green"></i></a>
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <div>
+                        <p class="text-muted mb-0">Categorias</p>
+                    </div>
+                </td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-link btn-sm btn-rounded">
+                        <a href="/admin/categorias"><i class="fa-regular fa-eye fa-2x"></i></a>
+                    </button>
+                    <button type="button" class="btn btn-link btn-sm btn-rounded">
+                        <a href="/admin/categoria/new"><i class="fa-regular fa-square-plus fa-2x" style="color: green"></i></a>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
 {% endblock %}

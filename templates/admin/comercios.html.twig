@@ -15,6 +15,19 @@
         </tr>
         </thead>
         <tbody>
+        {% if is_granted('ROLE_ADMIN') %}
+        <tr class="addCategoria">
+            <td></td>
+            <td>Añadir uno nuevo</td>
+            <td></td>
+            <td></td>
+            <td>
+                <button type="button" class="btn btn-link btn-sm btn-rounded">
+                    <a href="/admin/comercio/new"><i class="fa-regular fa-square-plus fa-2x" style="color: green"></i></a>
+                </button>
+            </td>
+        </tr>
+        {% endif %}
         {% for comercio in comercios %}
             <tr>
                 <td>
