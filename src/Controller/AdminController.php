@@ -59,6 +59,14 @@ class AdminController extends AbstractController
         $usuario = $this->getUser();
         $rol = $usuario->getRoles();
 
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
+            ]);
+        }
+
         $categorias = $em->getRepository(Categoria::class)->findAll();
         $numero = [];
         foreach ($categorias as $categoria) {
@@ -162,10 +170,21 @@ class AdminController extends AbstractController
     }
 
     #[Route('/categoria/new', name: 'categoria_new', methods: ['GET'])]
-    public function newComercio(EntityManagerInterface $em): Response
+    public function newCategoria(EntityManagerInterface $em): Response
     {
         $categoria = new Categoria();
         $form = $this->createForm(CategoriaNewFormType::class, $categoria);
+
+        $user = $this->getUser();
+        $rol = $user->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
+            ]);
+        }
 
         return $this->render('admin/newcat.html.twig', [
             'categoria' => $categoria,
@@ -188,6 +207,7 @@ class AdminController extends AbstractController
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
             ]);
         }
 
@@ -263,6 +283,7 @@ class AdminController extends AbstractController
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
             ]);
         }
 
