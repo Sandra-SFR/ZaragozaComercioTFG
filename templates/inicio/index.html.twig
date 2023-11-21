@@ -110,22 +110,24 @@
                                 const searchTermWithAccents = removeAccents(searchTerm);
                                 const urlWithAccents = '/buscar?search=' + searchTermWithAccents;
 
-                                fetch(urlWithAccents)
+                                    fetch(urlWithAccents)
                                     .then(response => response.json())
                                     .then(dataWithAccents => {
                                         dataWithAccents.forEach(comercio => {
-                                            console.log(comercio);
-                                            searchResults.innerHTML +=
-                                                '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                                '<div class="card shadow-3-strong">' +
-                                                '<a href="/comercio/' + comercio.id + '">' +
-                                                '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
-                                                '<div class="card-body">' +
-                                                '<p class="card-text">' + comercio.nombre + '</p>' +
-                                                '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
-                                                '</div>' +
-                                                '</a>' +
-                                                '</div>';
+                                            if (comercio.estado != 1 && comercio.estado != 3) {
+                                                console.log(comercio.estado);
+                                                searchResults.innerHTML +=
+                                                    '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                    '<div class="card shadow-3-strong">' +
+                                                    '<a href="/comercio/' + comercio.id + '">' +
+                                                    '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                    '<div class="card-body">' +
+                                                    '<p class="card-text">' + comercio.nombre + '</p>' +
+                                                    '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                                    '</div>' +
+                                                    '</a>' +
+                                                    '</div>';
+                                            }
                                         });
                                     })
                                     .catch(error => {
@@ -135,22 +137,25 @@
                                 // Intenta buscar palabras clave en la descripción
                                 const urlWithKeywords = '/buscar?search=' + searchTerm + '&searchInDescripcionKeywords=true';
 
+
                                 fetch(urlWithKeywords)
                                     .then(response => response.json())
                                     .then(dataWithKeywords => {
                                         dataWithKeywords.forEach(comercio => {
-                                            console.log(comercio);
-                                            searchResults.innerHTML +=
-                                                '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                                '<div class="card shadow-3-strong">' +
-                                                '<a href="/comercio/' + comercio.id + '">' +
-                                                '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
-                                                '<div class="card-body">' +
-                                                '<p class="card-text">' + comercio.nombre + '</p>' +
-                                                '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
-                                                '</div>' +
-                                                '</a>' +
-                                                '</div>';
+                                            if (comercio.estado != 1 && comercio.estado != 3) {
+                                                console.log(comercio.estado);
+                                                searchResults.innerHTML +=
+                                                    '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                    '<div class="card shadow-3-strong">' +
+                                                    '<a href="/comercio/' + comercio.id + '">' +
+                                                    '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                    '<div class="card-body">' +
+                                                    '<p class="card-text">' + comercio.nombre + '</p>' +
+                                                    '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                                    '</div>' +
+                                                    '</a>' +
+                                                    '</div>';
+                                            }
                                         });
                                     })
                                     .catch(error => {
@@ -158,18 +163,20 @@
                                     });
                             } else {
                                 data.forEach(comercio => {
-                                    console.log(comercio);
-                                    searchResults.innerHTML +=
-                                        '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                        '<div class="card shadow-3-strong">' +
-                                        '<a href="/comercio/' + comercio.id + '">' +
-                                        '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
-                                        '<div class="card-body">' +
-                                        '<p class="card-text">' + comercio.nombre + '</p>' +
-                                        '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
-                                        '</div>' +
-                                        '</a>' +
-                                        '</div>';
+                                    if (comercio.estado != 1 && comercio.estado != 3) {
+                                        console.log(comercio.estado);
+                                        searchResults.innerHTML +=
+                                            '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                            '<div class="card shadow-3-strong">' +
+                                            '<a href="/comercio/' + comercio.id + '">' +
+                                            '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                            '<div class="card-body">' +
+                                            '<p class="card-text">' + comercio.nombre + '</p>' +
+                                            '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                            '</div>' +
+                                            '</a>' +
+                                            '</div>';
+                                    }
                                 });
                             }
                         })
