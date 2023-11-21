@@ -12,6 +12,8 @@ use App\Entity\Horario;
 use App\Form\ComercioCreateForm;
 use App\Form\CategoriaCreateFormType;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -243,6 +245,7 @@ class AdminController extends AbstractController
         $rol = $usuario->getRoles();
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
+        $categorias = $em->getRepository(Categoria::class)->findAll();
 
         if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
@@ -250,6 +253,20 @@ class AdminController extends AbstractController
                 'mensaje' => 'haha no tienes poder aquí',
             ]);
         }
+
+        // Obtén la categoría actual del comercio
+        $categoriaActual = $comercio->getCategorias();
+//
+//        // Si la categoría actual existe, establece el valor predeterminado del campo 'categoria' en el formulario
+//        if ($categoriaActual) {
+//            $form->get('categorias')->setData($categoriaActual);
+//        }
+
+        $ids = array_map(function($categoria) {
+            return $categoria->getId();
+        }, $categoriaActual->getValues());
+
+//        dd($ids[0]);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
@@ -263,15 +280,17 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
+            'categorias' => $categorias,
             'fotos' => $comercio->getFotos(),
             'horas' => $horarios,
+            'ids' => $ids,
         ]);
     }
 
     #[Route('/categoria/{id}/edit', name: 'categoria_edit', methods: ['GET', 'POST'])]
     public function editCategoria(int $id, Request $request, Categoria $categoria, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(CategoriaCreateFormType::class, $categoria);
+        $form = $this->createForm(CategoriaNewFormType::class, $categoria);
         $form->handleRequest($request);
 
         $usuario = $this->getUser();
