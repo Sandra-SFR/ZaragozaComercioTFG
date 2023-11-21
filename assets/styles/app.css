@@ -59,6 +59,17 @@ body {
     color: red;
     margin-top: 5px;
 }
+.sirulo{
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('../../public/img/sirulo1profe.png');
+    background-size: cover;
+    height: 140px;
+    width: 140px;
+    position: absolute;
+    top: 200px;
+    left: 100px;
+}
 .barra{
     margin-top: -15px;
     border-radius: 20px;
@@ -386,5 +397,8 @@ body {
     .image-4 {
         width: 250px;
         height: 250px;
+    }
+    .paso-formulario{
+        width: 300px;
     }
 }

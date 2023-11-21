@@ -251,6 +251,7 @@ class AdminController extends AbstractController
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
             ]);
         }
 
