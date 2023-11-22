@@ -6,7 +6,7 @@
     <div class="features-section crearComercio container">
         <h1 class="h3 mb-3 font-weight-normal">Crear Comercio</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'id': 'formId'}}) }}
 
         <div class="sirulo"></div>
 
@@ -105,7 +105,7 @@
 
         <!-- Botón de envío -->
         <br>
-        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="submit"  onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
+        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="button" onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
 
         {{ form_end(form) }}
 
@@ -119,6 +119,7 @@
         var mapaOk = false;     // Validar dirección
         var imgOk = false;      // Validar imagen
         var catOk = false;      // Validar categoría
+        var formSubmitted = false; // Validar que el formulario solo se envie una vez
         var currentStep = 0;    // Función para los pasos del formulario
 
         showStep(currentStep);
@@ -283,15 +284,24 @@
         }
 
         function submitForm() {
+            // Si el formulario ya se ha enviado, no hacer nada
+            if (formSubmitted) {
+                return;
+            }
+
             // Si el paso actual es el último, valida la categoría antes de enviar el formulario
             if (currentStep === document.getElementsByClassName("paso-formulario").length - 1) {
                 if (!validateCategory()) {
                     return;
                 }
             }
+            // Deshabilita el botón de envío para evitar envíos múltiples
+            document.getElementById("submitBtn").disabled = true;
 
-            // Enviar el formulario
-            document.forms["form"].submit();
+            formSubmitted = true;
+
+            // Envía el formulario
+            document.getElementById("formId").submit();
         }
 
         function showError(field, message) {
