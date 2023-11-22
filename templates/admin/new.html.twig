@@ -8,7 +8,7 @@
 
         {{ form_start(form, {'attr': {'id': 'formId'}}) }}
 
-        <div class="sirulo"></div>
+        <div class="sirulo" id="sirulo"></div>
 
         <div id="paso1" class="paso-formulario">
             <!-- Name input -->
@@ -144,6 +144,7 @@
             // Avanzar al siguiente paso
             currentStep += n;
             showStep(currentStep);
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
         }
 
         function updateProgressBar(n) {
@@ -307,6 +308,7 @@
         function showError(field, message) {
             // Encuentra el elemento de mensaje de error asociado con el campo
             var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            document.getElementById("sirulo").classList.add("sirulo-profe");
 
             // Muestra el mensaje de error y aplica el estilo
             errorElement.textContent = message;
@@ -315,12 +317,14 @@
         function hideError(field) {
             // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
             var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
             errorElement.textContent = '';
         }
 
         function hideAllErrors() {
             // Oculta todos los mensajes de error en el formulario
             var errorElements = document.querySelectorAll('.error-message');
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
             errorElements.forEach(function (element) {
                 element.textContent = '';
             });

@@ -62,13 +62,21 @@ body {
 .sirulo{
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url('../../public/img/sirulo1profe.png');
+    background-image: url('../../public/img/sirulo1.png');
     background-size: cover;
     height: 140px;
     width: 140px;
     position: absolute;
     top: 200px;
     left: 100px;
+}
+.sirulo-profe{
+    transform: translateX(10px);
+    background-image: url('../../public/img/sirulo1profe.png');
+    height: 170px;
+    width: 170px;
+    top: 180px;
+    left: 110px;
 }
 .barra{
     margin-top: -15px;

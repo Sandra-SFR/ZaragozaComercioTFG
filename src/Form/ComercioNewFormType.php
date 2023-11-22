@@ -35,6 +35,7 @@ class ComercioNewFormType extends AbstractType
             ])
             ->add('descripcion', TextareaType::class, [
                 'constraints' => [new NotBlank()],
+                'label' => 'Añade una breve descripción de tu comerio'
             ])
             ->add('categorias', EntityType::class, [
                 'class' => Categoria::class,
@@ -44,7 +45,7 @@ class ComercioNewFormType extends AbstractType
                 'expanded' => false,
             ])
             ->add('foto', FileType::class, [
-                'label' => 'Añadir foto',
+                'label' => 'Añadir foto de perfil de tu comercio',
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
