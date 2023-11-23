@@ -360,11 +360,13 @@
             var navbar2 = document.getElementById('navVertical2');
 
             if (window.scrollY === 0) {
-                navbar.style.position = 'relative';
+                navbar.classList.remove('position-fixed');
+                navbar.classList.remove('mr-3');
                 navbar2.classList.remove('offset-3');
 
             } else {
-                navbar.style.position = 'fixed';
+                navbar.classList.add('position-fixed');
+                navbar.classList.add('mr-3');
                 navbar2.classList.add('offset-3');
             }
         });
