@@ -2,236 +2,373 @@
 
 {% block title %}{{ comercio.nombre }}{% endblock %}
 {% block body %}
-    <section class="container " style="margin-top: 10%">
-        <h1 style="text-align: center; margin-top: 5%">Editar comercio</h1>
-        <div class="">
-            <div class="row">
+    <section class="container-fluid" >
+        <!-- Tabs nav vertical -->
+        <div class="row w-100">
+            <div class="col-3" id="navVertical">
+                <!-- Tab navs -->
+                <div
+                        class="nav flex-column nav-tabs text-center mt-5"
+                        id="v-tabs-tab"
+                        role="tablist"
+                        aria-orientation="vertical"
+                >
+                    <a
+                            data-mdb-tab-init
+                            class="nav-link active"
+                            id="v-tabs-comercio-tab"
+                            href="#v-tabs-comercio"
+                            role="tab"
+                            data-mdb-toggle="pill"
+                            aria-controls="v-tabs-comercio"
+                            aria-selected="true"
+                    >Datos del comercio</a
+                    >
+                    <a
+                            data-mdb-tab-init
+                            class="nav-link"
+                            id="v-tabs-categorias-tab"
+                            href="#v-tabs-categorias"
+                            role="tab"
+                            data-mdb-toggle="pill"
+                            aria-controls="v-tabs-categorias"
+                            aria-selected="false"
+                    >Categorías</a
+                    >
+                    <a
+                            data-mdb-tab-init
+                            class="nav-link"
+                            id="v-tabs-horarios-tab"
+                            href="#v-tabs-horarios"
+                            role="tab"
+                            data-mdb-toggle="pill"
+                            aria-controls="v-tabs-horarios"
+                            aria-selected="false"
+                    >Horarios</a
+                    >
+                    <a
+                            data-mdb-tab-init
+                            class="nav-link"
+                            id="v-tabs-fotos-tab"
+                            href="#v-tabs-fotos"
+                            role="tab"
+                            data-mdb-toggle="pill"
+                            aria-controls="v-tabs-fotos"
+                            aria-selected="false"
+                    >Fotos</a
+                    >
+                </div>
+                <!-- Tab navs -->
+            </div>
 
-                {{ form_start(form) }}
-                <div class="col">
-                    <!-- Name input -->
-                    <div class="form-outline mb-3 mt-5">
-                        <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2" class="form-control"
-                               value="{{ comercio.nombre }}"/>
-                        <label class="form-label" for="form5Example2">{{ field_label(form.nombre) }}</label>
+            <div class="col-9" id="navVertical2">
+                <!-- Tab content -->
+                <div class="tab-content" id="v-tabs-tabContent">
+                    <!-- content comercio -->
+                    <div
+                            class="tab-pane fade show active"
+                            id="v-tabs-comercio"
+                            role="tabpanel"
+                            aria-labelledby="v-tabs-comercio-tab"
+                    >
+                        <h1 style="text-align: center; margin-top: 5%">Editar comercio</h1>
+                        <div class="">
+                            <div class="row">
+
+                                {{ form_start(form) }}
+                                <div class="col">
+                                    <!-- Name input -->
+                                    <div class="form-outline mb-3 mt-5">
+                                        <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2"
+                                               class="form-control"
+                                               value="{{ comercio.nombre }}"/>
+                                        <label class="form-label"
+                                               for="form5Example2">{{ field_label(form.nombre) }}</label>
+                                    </div>
+                                    <!-- Email input -->
+                                    <div class="form-outline mb-3">
+                                        <input name="{{ field_name(form.email) }}" type="email" id="form5Example2"
+                                               class="form-control"
+                                               value="{{ comercio.email }}"/>
+                                        <label class="form-label"
+                                               for="form5Example2">{{ field_label(form.email) }}</label>
+                                    </div>
+                                    <!-- Telefono input -->
+                                    <div class="form-outline mb-3">
+                                        <input name="{{ field_name(form.telefono) }}" type="tel" id="form4"
+                                               class="form-control"
+                                               value="{{ comercio.telefono }}"/>
+                                        <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
+                                    </div>
+                                    <!-- Direccion input -->
+                                    <div class="form-outline mb-3">
+                                        <input name="{{ field_name(form.direccion) }}" type="text" id="form1"
+                                               class="form-control"
+                                               value="{{ comercio.direccion }}"/>
+                                        <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
+                                    </div>
+                                    <!-- Descripcion input -->
+                                    <div class="form-outline mb-3">
+                                        <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
+                                        rows="4">{{ comercio.descripcion }}</textarea>
+                                        <label class="form-label"
+                                               for="form5">{{ field_label(form.descripcion) }}</label>
+                                    </div>
+                                    <!-- Categoria input -->
+                                    <div class="form-outline mb-3">
+                                        <label>{{ field_label(form.categorias) }}</label>
+                                        <div class="row">
+                                            {% for categoria in categorias %}
+                                                <div class="form-check form-group mb-4 col-4">
+                                                    <input class="form-check-input" type="radio"
+                                                           value="{{ categoria.id }}"
+                                                           name="{{ field_name(form.categorias) }}"
+                                                           id="categoria{{ categoria.id }}"
+                                                            {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
+                                                    <label class="form-check-label text-capitalize"
+                                                           for="categoria{{ categoria.id }}">
+                                                        {{ categoria.nombre }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
+                                        <!-- Estado input -->
+                                        <div class="form-outline mb-3">
+                                            {{ form_widget(form.estado, {'attr': {'class': 'form-control active'}}) }}
+                                            <label class="form-label"
+                                                   for="form20">{{ field_label(form.estado) }}</label>
+                                            <div class="form-notch">
+                                                <div class="form-notch-leading" style="width: 9px;"></div>
+                                                <div class="form-notch-middle" style="width: 46.2px;"></div>
+                                                <div class="form-notch-trailing"></div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div style="text-align: center; margin-top: 3%">
+                                        <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                            <a href="{{ path('admin_comercios') }}">
+                                                <i class="far fa-square-check fa-2x"
+                                                   style="color: green">{{ button_label|default('') }}</i></a>
+                                        </button>
+
+                                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                                data-mdb-toggle="modal"
+                                                data-mdb-target="#borrarFoto">
+                                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>
+                                        </button>
+
+                                        <!-- Modal Borrar-->
+                                        <div class="modal fade" id="borrarFoto" tabindex="-1"
+                                             aria-labelledby="borrarLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar
+                                                            el
+                                                            comercio?</h5>
+                                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Será eliminado definitivamente y los archivos asociados a
+                                                            este.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-mdb-dismiss="modal">
+                                                            Cancelar
+                                                        </button>
+                                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">
+                                                            <button type="button" class="btn btn-primary">Aceptar
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Borrar-->
+                                    </div>
+                                </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                        </div>
+
+
                     </div>
-                    <!-- Email input -->
-                    <div class="form-outline mb-3">
-                        <input name="{{ field_name(form.email) }}" type="email" id="form5Example2" class="form-control"
-                               value="{{ comercio.email }}"/>
-                        <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
+                    <!-- content categorias -->
+                    <div
+                            class="tab-pane fade"
+                            id="v-tabs-categorias"
+                            role="tabpanel"
+                            aria-labelledby="v-tabs-categorias-tab"
+                    >
+                        <h1 style="text-align: center; margin-top: 5%">Categoría</h1>
                     </div>
-                    <!-- Telefono input -->
-                    <div class="form-outline mb-3">
-                        <input name="{{ field_name(form.telefono) }}" type="tel" id="form4" class="form-control"
-                               value="{{ comercio.telefono }}"/>
-                        <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
-                    </div>
-                    <!-- Direccion input -->
-                    <div class="form-outline mb-3">
-                        <input name="{{ field_name(form.direccion) }}" type="text" id="form1" class="form-control"
-                               value="{{ comercio.direccion }}"/>
-                        <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
-                    </div>
-                    <!-- Descripcion input -->
-                    <div class="form-outline mb-3">
-                        <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
-                                  rows="4">{{ comercio.descripcion }}</textarea>
-                        <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
-                    </div>
-                    <!-- Categoria input -->
-                    <div class="form-outline mb-3">
-                        <label>{{ field_label(form.categorias) }}</label>
+                    <!-- content horarios -->
+                    <div
+                            class="tab-pane fade"
+                            id="v-tabs-horarios"
+                            role="tabpanel"
+                            aria-labelledby="v-tabs-horarios-tab"
+                    >
+                        <h1 style="text-align: center; margin-top: 5%">Horarios</h1>
+                        <!--Horarios del comercio-->
                         <div class="row">
-                            {% for categoria in categorias %}
-                                <div class="form-check form-group mb-4 col-4">
-                                    <input class="form-check-input" type="radio" value="{{ categoria.id }}"
-                                           name="{{ field_name(form.categorias) }}" id="categoria{{ categoria.id }}"
-                                            {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
-                                    <label class="form-check-label text-capitalize" for="categoria{{ categoria.id }}">
-                                        {{ categoria.nombre }}
-                                    </label>
+                            <table>
+                                <thead class="bg-light">
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Hora apertura</th>
+                                    <th>Hora Cierre</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for hora in horas %}
+                                    <tr>
+                                        <td>{{ hora.nombreDia }}</td>
+                                        <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                        <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                        <td><a href="{{ path('horario_delete', {'id': hora.id}) }}"><i
+                                                        class="fas fa-trash-can fa-1x" style="color: #B0413E"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <!--Añadir Horarios al comercio-->
+                                <tr>
+                                    <td>
+                                        <select name="dia" class="form-select" id="dia">
+                                            <option value="dia">dia</option>
+                                            <option value="1">Lunes</option>
+                                            <option value="2">Martes</option>
+                                            <option value="3">Miercoles</option>
+                                            <option value="4">Jueves</option>
+                                            <option value="5">Viernes</option>
+                                            <option value="6">Sabado</option>
+                                            <option value="7">Domingo</option>
+                                        </select>
+                                    </td>
+
+                                    <td><input type="time" name="horaApertura" id="horaApertura"></td>
+                                    <td><input type="time" name="horaCierre" id="horaCierre"></td>
+                                    <td>
+                                        <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded">
+
+                                            <i class="far fa-square-check fa-2x"
+                                               style="color: green">{{ button_label|default('') }}</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <input type="hidden"
+                                   name="comercio"
+                                   value="{{ comercio.id }}">
+                        </div>
+                    </div>
+                    <!-- content fotos -->
+                    <div
+                            class="tab-pane fade"
+                            id="v-tabs-fotos"
+                            role="tabpanel"
+                            aria-labelledby="v-tabs-fotos-tab"
+                    >
+                        <h1 style="text-align: center; margin-top: 5%">Añadir fotos</h1>
+                        <!-- Ver fotos del comercio -->
+                        <div class="row">
+                            {% for foto in comercio.fotos %}
+                                <div class="col-6 col-md-4 col-lg-3 tarjeta"
+                                     style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
+                                    <div class="acciones">
+                                        <div>
+                                            <button onclick="destacada({{ foto.id }})"
+                                                    class="btn btn-link btn-sm btn-rounded">
+                                                {% if foto.isDestacada %}
+                                                    <i class="fas fa-star fa-2x"
+                                                       style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                                {% else %}
+                                                    <i class="far fa-star fa-2x"
+                                                       style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                                {% endif %}
+                                            </button>
+
+                                            <a href="{{ path('foto_delete', {'id': foto.id}) }}"
+                                               class="btn btn-link btn-sm btn-rounded">
+                                                <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
                             {% endfor %}
+
                         </div>
-                    </div>
+                        <!-- Ver fotos del comercio -->
 
-                    {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
-                        <!-- Estado input -->
-                        <div class="form-outline mb-3">
-                            {{ form_widget(form.estado, {'attr': {'class': 'form-control active'}}) }}
-                            <label class="form-label" for="form20">{{ field_label(form.estado) }}</label>
-                            <div class="form-notch">
-                                <div class="form-notch-leading" style="width: 9px;"></div>
-                                <div class="form-notch-middle" style="width: 46.2px;"></div>
-                                <div class="form-notch-trailing"></div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div style="text-align: center; margin-top: 3%">
-                        <button type="submit" class="btn btn-link btn-sm btn-rounded">
-                            <a href="{{ path('admin_comercios') }}">
-                                <i class="far fa-square-check fa-2x"
-                                   style="color: green">{{ button_label|default('') }}</i></a>
-                        </button>
+                        <!-- Añadir fotos al comercio -->
+                        <div>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-mdb-toggle="modal"
+                                    data-mdb-target="#addFoto">
+                                <i class="fas fa-circle-plus"></i>
+                            </button>
 
-                        <button type="button" class="btn btn-link btn-sm btn-rounded" data-mdb-toggle="modal"
-                                data-mdb-target="#borrarFoto">
-                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>
-                        </button>
-
-                        <!-- Modal Borrar-->
-                        <div class="modal fade" id="borrarFoto" tabindex="-1" aria-labelledby="borrarLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar el
-                                            comercio?</h5>
-                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Será eliminado definitivamente y los archivos asociados a este.</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
-                                            Cancelar
-                                        </button>
-                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">
-                                            <button type="button" class="btn btn-primary">Aceptar</button>
-                                        </a>
+                            <!-- Modal -->
+                            <div class="modal fade" id="addFoto" tabindex="-1" aria-labelledby="addFotoLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addFotoLabel">Añadir foto</h5>
+                                            <button type="button" class="btn-close btn-link btn-sm btn-rounded"
+                                                    data-mdb-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <form action="/admin/foto/new" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <input class="form-control" type="file" name="foto"
+                                                       accept="image/*"><input
+                                                        type="hidden"
+                                                        name="comercio"
+                                                        value="{{ comercio.id }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="submit">Subir Foto
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-                    </div>
-                </div>
-                {{ form_end(form) }}
-
-                <!--Horarios del comercio-->
-                <div class="row">
-                    <table>
-                        <thead class="bg-light">
-                        <tr>
-                            <th>Día</th>
-                            <th>Hora apertura</th>
-                            <th>Hora Cierre</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for hora in horas %}
-                            <tr>
-                                <td>{{ hora.nombreDia }}</td>
-                                <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                <td><a href="{{ path('horario_delete', {'id': hora.id}) }}"><i
-                                                class="fas fa-trash-can fa-1x" style="color: #B0413E"></i></a></td>
-                            </tr>
-                        {% endfor %}
-                        <!--Añadir Horarios al comercio-->
-                        <tr>
-                            <td>
-                                <select name="dia" class="form-select" id="dia">
-                                    <option value="dia">dia</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2">Martes</option>
-                                    <option value="3">Miercoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sabado</option>
-                                    <option value="7">Domingo</option>
-                                </select>
-                            </td>
-
-                            <td><input type="time" name="horaApertura" id="horaApertura"></td>
-                            <td><input type="time" name="horaCierre" id="horaCierre"></td>
-                            <td>
-                                <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded">
-
-                                    <i class="far fa-square-check fa-2x"
-                                       style="color: green">{{ button_label|default('') }}</i>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <input type="hidden"
-                           name="comercio"
-                           value="{{ comercio.id }}">
-                </div>
-
-                <!-- Ver fotos del comercio -->
-                <div class="row">
-
-                    {% for foto in comercio.fotos %}
-                        <div class="col-6 col-md-4 col-lg-3 tarjeta"
-                             style="background-image: url({{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ foto.archivo) }})">
-                            <div class="acciones">
-                                <div>
-                                    <button onclick="destacada({{ foto.id }})" class="btn btn-link btn-sm btn-rounded">
-                                        {% if foto.isDestacada %}
-                                            <i class="fas fa-star fa-2x"
-                                               style="color: #e3e32d">{{ button_label|default('') }}</i>
-                                        {% else %}
-                                            <i class="far fa-star fa-2x"
-                                               style="color: #e3e32d">{{ button_label|default('') }}</i>
-                                        {% endif %}
-                                    </button>
-
-                                    <a href="{{ path('foto_delete', {'id': foto.id}) }}"
-                                       class="btn btn-link btn-sm btn-rounded">
-                                        <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                </div>
-
-                <!-- Añadir fotos al comercio -->
-                <div>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#addFoto">
-                        <i class="fas fa-circle-plus"></i>
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="addFoto" tabindex="-1" aria-labelledby="addFotoLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addFotoLabel">Añadir foto</h5>
-                                    <button type="button" class="btn-close btn-link btn-sm btn-rounded"
-                                            data-mdb-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <form action="/admin/foto/new" method="post" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        <input class="form-control" type="file" name="foto" accept="image/*"><input
-                                                type="hidden"
-                                                name="comercio"
-                                                value="{{ comercio.id }}">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-primary" type="submit">Subir Foto
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <!-- Añadir fotos al comercio -->
                     </div>
                 </div>
             </div>
+            <!-- Tab content -->
         </div>
+        <!-- Tabs nav vertical -->
     </section>
 {% endblock %}
 {% block js %}
     <script>
+        window.addEventListener('scroll', function() {
+            var navbar = document.getElementById('navVertical');
+            var navbar2 = document.getElementById('navVertical2');
+
+            if (window.scrollY === 0) {
+                navbar.style.position = 'relative';
+                navbar2.classList.remove('offset-3');
+
+            } else {
+                navbar.style.position = 'fixed';
+                navbar2.classList.add('offset-3');
+            }
+        });
+
         function destacada(id) {
             var url = '/admin/foto/' + id + '/destacar';
             var envio = {'id': id};
