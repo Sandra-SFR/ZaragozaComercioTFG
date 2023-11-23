@@ -75,11 +75,39 @@
                                    style="color: green">{{ button_label|default('') }}</i></a>
                         </button>
 
-                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}"
-                           class="btn btn-link btn-sm btn-rounded">
-                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
-                    </div>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded" data-mdb-toggle="modal"
+                                data-mdb-target="#borrarFoto">
+                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>
+                        </button>
 
+                        <!-- Modal Borrar-->
+                        <div class="modal fade" id="borrarFoto" tabindex="-1" aria-labelledby="borrarLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar el
+                                            comercio?</h5>
+                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Será eliminado definitivamente y los archivos asociados a este.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">
+                                            <button type="button" class="btn btn-primary">Aceptar</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
                 {{ form_end(form) }}
 
@@ -177,18 +205,23 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addFotoLabel">Modal title</h5>
-                                    <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                    <h5 class="modal-title" id="addFotoLabel">Añadir foto</h5>
+                                    <button type="button" class="btn-close btn-link btn-sm btn-rounded"
+                                            data-mdb-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <form action="/admin/foto/new" method="post" enctype="multipart/form-data">
-                                        <input type="file" name="foto" accept="image/*"><input type="hidden"
-                                                                                               name="comercio"
-                                                                                               value="{{ comercio.id }}">
-                                        <button type="submit">Subir Foto</button>
-                                    </form>
-                                </div>
+                                <form action="/admin/foto/new" method="post" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <input class="form-control" type="file" name="foto" accept="image/*"><input
+                                                type="hidden"
+                                                name="comercio"
+                                                value="{{ comercio.id }}">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit">Subir Foto
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -216,24 +249,6 @@
                     console.log(error);
                 })
         }
-
-        // function nuevaFoto() {
-        //     var url = '/admin/foto/new' ;
-        //     var foto = ;
-        //
-        //     fetch(url, {
-        //         method: 'POST',
-        //         body: foto
-        //     })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log('chachi');
-        //             location.reload();
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         })
-        // }
 
         function nuevoHorario() {
             var comercio = {{ comercio.id }};

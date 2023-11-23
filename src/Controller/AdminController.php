@@ -257,17 +257,10 @@ class AdminController extends AbstractController
 
         // Obtén la categoría actual del comercio
         $categoriaActual = $comercio->getCategorias();
-//
-//        // Si la categoría actual existe, establece el valor predeterminado del campo 'categoria' en el formulario
-//        if ($categoriaActual) {
-//            $form->get('categorias')->setData($categoriaActual);
-//        }
 
         $ids = array_map(function($categoria) {
             return $categoria->getId();
         }, $categoriaActual->getValues());
-
-//        dd($ids[0]);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
