@@ -114,25 +114,6 @@
                                         <label class="form-label"
                                                for="form5">{{ field_label(form.descripcion) }}</label>
                                     </div>
-                                    <!-- Categoria input -->
-                                    <div class="form-outline mb-3">
-                                        <label>{{ field_label(form.categorias) }}</label>
-                                        <div class="row">
-                                            {% for categoria in categorias %}
-                                                <div class="form-check form-group mb-4 col-4">
-                                                    <input class="form-check-input" type="radio"
-                                                           value="{{ categoria.id }}"
-                                                           name="{{ field_name(form.categorias) }}"
-                                                           id="categoria{{ categoria.id }}"
-                                                            {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
-                                                    <label class="form-check-label text-capitalize"
-                                                           for="categoria{{ categoria.id }}">
-                                                        {{ categoria.nombre }}
-                                                    </label>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
 
                                     {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
                                         <!-- Estado input -->
@@ -194,10 +175,8 @@
                                     </div>
                                 </div>
                                 {{ form_end(form) }}
-
                             </div>
                         </div>
-
 
                     </div>
                     <!-- content categorias -->
@@ -207,7 +186,37 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-categorias-tab"
                     >
-                        <h1 style="text-align: center; margin-top: 5%">Categoría</h1>
+                        <h1 class="mt-5 mb-5" style="text-align: center;">Categoría</h1>
+
+                        {{ form_start(formCat)  }}
+                        <!-- Categoria input -->
+                        <div class="form-outline mb-3">
+                            <label style="display: none">{{ field_label(formCat.categorias) }}</label>
+                            <div class="row">
+                                {% for categoria in categorias %}
+                                    <div class="form-check form-group mb-4 col-4">
+                                        <input class="form-check-input" type="radio"
+                                               value="{{ categoria.id }}"
+                                               name="{{ field_name(formCat.categorias) }}"
+                                               id="categoria{{ categoria.id }}"
+                                                {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
+                                        <label class="form-check-label text-capitalize"
+                                               for="categoria{{ categoria.id }}">
+                                            {{ categoria.nombre }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {#boton de guardar#}
+                            <div style="text-align: center; margin-top: 3%">
+                                <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                    <a href="{{ path('admin_comercios') }}">
+                                        <i class="far fa-square-check fa-2x"
+                                           style="color: green">{{ button_label|default('') }}</i></a>
+                                </button>
+                            </div>
+                        </div>
+                        {{ form_end(formCat) }}
                     </div>
                     <!-- content horarios -->
                     <div
@@ -360,13 +369,10 @@
             var navbar2 = document.getElementById('navVertical2');
 
             if (window.scrollY === 0) {
-                navbar.classList.remove('position-fixed');
-                navbar.classList.remove('mr-3');
+                navbar.classList.remove('fixed-top');
                 navbar2.classList.remove('offset-3');
-
             } else {
-                navbar.classList.add('position-fixed');
-                navbar.classList.add('mr-3');
+                navbar.classList.add('fixed-top', 'mt-4');
                 navbar2.classList.add('offset-3');
             }
         });

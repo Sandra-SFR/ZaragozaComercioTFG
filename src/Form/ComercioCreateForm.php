@@ -54,12 +54,6 @@ class ComercioCreateForm extends AbstractType
                 'constraints' => [new NotBlank()],
                 'attr' => ['class' => 'estado-field'],
             ])
-            ->add('categorias', EntityType::class, [
-                'class' => Categoria::class,
-                'choice_label' => 'nombre',
-                'multiple' => true,
-                'expanded' => false,
-            ])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

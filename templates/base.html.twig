@@ -32,52 +32,192 @@
 <body>
 <header>
     {% block header %}
-        <header class="p-3 text-bg-dark">
+
+        <!-- Navbar -->
+        <nav data-mdb-navbar-init class="navbar navbar-dark bg-dark ">
+            <!-- Container wrapper -->
             <div class="container-fluid">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        <i class="fas fa-shop fa-2x" style="margin-right: 5px"></i>
+                <!-- Toggle button -->
+                <button
+                        data-mdb-collapse-init
+                        class="navbar-toggler"
+                        type="button"
+                        data-mdb-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                        onclick="colapsador()"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                        <img
+                                src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
+                                height="15"
+                                alt="MDB Logo"
+                                loading="lazy"
+                        />
+                    </a>
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Team</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Projects</a>
+                        </li>
+                    </ul>
+                    <!-- Left links -->
+                </div>
+                <!-- Collapsible wrapper -->
+
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <!-- Icon -->
+                    <a class="text-reset me-3" href="#">
+                        <i class="fas fa-shopping-cart"></i>
                     </a>
 
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="/" class="nav-link px-2 text-secondary"><i class="fas fa-z"></i><i
-                                        class="fas fa-c"></i></a></li>
-                        <li><a href="/comercio" class="nav-link px-2 text-white">Comercios</a></li>
-                        <li><a href="/#categorias00" class="nav-link px-2 text-white">Categorias</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                    </ul>
-
-                    {% if is_granted('ROLE_ADMIN') %}
-                        {# Mostrar navegación específica para ROLE_ADMIN #}
-                        <div class="text-end">
-                            <a href="/admin/">
-                                <button type="button" class="btn btn-outline-light me-2">Panel de Admin</button>
-                            </a>
-                        </div>
-                    {% else %}
-                        <div class="text-end">
-                            {% if app.user %}
-                                <a href="{{ path('comercio_new') }}">
-                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>
-                                </a>
-                            {% else %}
-                                <a href="{{ path('app_login') }}">
-                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-
-
-                    {% if app.user %}
-                        <div class="text-end">
-                            <a href="{{ path('app_logout') }}" class="nav-link px-2 text-white"><i
-                                        class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a>
-                        </div>
-                    {% endif %}
+                    <!-- Notifications -->
+                    <div class="dropdown">
+                        <a
+                                data-mdb-dropdown-init
+                                class="text-reset me-3 dropdown-toggle hidden-arrow"
+                                href="#"
+                                id="navbarDropdownMenuLink"
+                                role="button"
+                                aria-expanded="false"
+                        >
+                            <i class="fas fa-bell"></i>
+                            <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                        </a>
+                        <ul
+                                class="dropdown-menu dropdown-menu-end"
+                                aria-labelledby="navbarDropdownMenuLink"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="#">Some news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Another news</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Avatar -->
+                    <div class="dropdown">
+                        <a
+                                data-mdb-dropdown-init
+                                class="dropdown-toggle d-flex align-items-center hidden-arrow"
+                                href="#"
+                                id="navbarDropdownMenuAvatar"
+                                role="button"
+                                aria-expanded="false"
+                        >
+                            <img
+                                    src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                                    class="rounded-circle"
+                                    height="25"
+                                    alt="Black and White Portrait of a Man"
+                                    loading="lazy"
+                            />
+                        </a>
+                        <ul
+                                class="dropdown-menu dropdown-menu-end"
+                                aria-labelledby="navbarDropdownMenuAvatar"
+                        >
+                            <li>
+                                <a class="dropdown-item" href="#">My profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- Right elements -->
             </div>
-        </header>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+
+{#        <header class="p-3 text-bg-dark">#}
+{#            <div class="container-fluid">#}
+{#                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">#}
+{#                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">#}
+{#                        <i class="fas fa-shop fa-2x" style="margin-right: 5px"></i>#}
+{#                    </a>#}
+
+{#                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">#}
+{#                        <li><a href="/" class="nav-link px-2 text-secondary"><i class="fas fa-z"></i><i#}
+{#                                        class="fas fa-c"></i></a></li>#}
+{#                        <li><a href="/comercio" class="nav-link px-2 text-white">Comercios</a></li>#}
+{#                        <li><a href="/#categorias00" class="nav-link px-2 text-white">Categorias</a></li>#}
+{#                        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>#}
+{#                    </ul>#}
+
+{#                    {% if is_granted('ROLE_ADMIN') %}#}
+{#                        #}{# Mostrar navegación específica para ROLE_ADMIN #}
+{#                        <div class="text-end">#}
+{#                            <a href="/admin/">#}
+{#                                <button type="button" class="btn btn-outline-light me-2">Panel de Admin</button>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    {% else %}#}
+{#                        <div class="text-end">#}
+{#                            {% if app.user %}#}
+{#                                <a href="{{ path('comercio_new') }}">#}
+{#                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>#}
+{#                                </a>#}
+{#                            {% else %}#}
+{#                                <a href="{{ path('app_login') }}">#}
+{#                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button>#}
+{#                                </a>#}
+{#                            {% endif %}#}
+{#                        </div>#}
+{#                    {% endif %}#}
+
+
+{#                    {% if app.user %}#}
+{#                        <div class="text-end">#}
+{#                            <a href="{{ path('app_logout') }}" class="nav-link px-2 text-white"><i#}
+{#                                        class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            </div>#}
+
+{#            <nav class="navbar navbar-dark bg-dark">#}
+{#            <div class="fixed-top">#}
+{#                <div class="collapse" id="navbarToggleExternalContent">#}
+{#                    <div class="bg-dark p-4">#}
+{#                        <h5 class="text-white h4">Collapsed content</h5>#}
+{#                        <span class="text-muted">Toggleable via the navbar brand.</span>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <nav class="navbar navbar-dark bg-dark">#}
+{#                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                        <span class="navbar-toggler-icon"></span>#}
+{#                    </button>#}
+{#                </nav>#}
+{#            </div>#}
+{#            </nav>#}
+
+
+
+{#        </header>#}
     {% endblock %}
 </header>
 <main>
@@ -153,6 +293,12 @@
         type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
 ></script>
+<script>
+    function colapsador(){
+        console.log('patata');
+        document.getElementById('navbarSupportedContent').classList.toggle('collapse');
+    }
+</script>
 {% block js %}
 
 {% endblock %}

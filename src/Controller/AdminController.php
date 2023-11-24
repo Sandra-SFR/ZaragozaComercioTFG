@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Categoria;
 use App\Form\CategoriaNewFormType;
+use App\Form\ComercioCategoriaFormType;
 use App\Form\ComercioNewFormType;
 use DateTime;
 use App\Entity\Comercio;
@@ -239,7 +240,9 @@ class AdminController extends AbstractController
     public function edit(int $id, Request $request, Comercio $comercio, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ComercioCreateForm::class, $comercio);
+        $formCat = $this->createForm(ComercioCategoriaFormType::class, $comercio);
         $form->handleRequest($request);
+        $formCat->handleRequest($request);
 
         $usuario = $this->getUser();
         $rol = $usuario->getRoles();
@@ -268,12 +271,19 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_comercios', [
                 'comercio' => $comercio], Response::HTTP_SEE_OTHER);
         }
+        if ($formCat->isSubmitted() && $formCat->isValid()) {
+            $em->flush();
+
+            return $this->redirectToRoute('admin_comercios', [
+                'comercio' => $comercio], Response::HTTP_SEE_OTHER);
+        }
 
         $horarios = $em->getRepository(Horario::class)->findHorarioComercio($comercio, ['dia' => 'ASC']);
 
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
+            'formCat' => $formCat,
             'categorias' => $categorias,
             'fotos' => $comercio->getFotos(),
             'horas' => $horarios,
