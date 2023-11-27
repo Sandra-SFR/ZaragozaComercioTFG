@@ -1,12 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Zaragoza comercio{% endblock %}
-{# {% block header %} #}
-{# <div style="height: 3rem; background-color: #9b3838"> #}
-{# </div> #}
-{# {% endblock %} #}
+
 {% block body %}
-    <div class="buscador">
+    <div class="buscador shadow-3-strong">
         <div class="container-fluid text-center">
             <div class="row" style="color: black">
                 <h1>Zaragoza comerio</h1>
@@ -19,14 +16,15 @@
     <div class="">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="barra col-10 col-md-8 col-lg-6">
-                <div class="input-group">
-                    <input class="form-control sin-focus" type="text" id="search-input" placeholder="Buscar comercios"
-                           style="border: none; outline: none;" aria-describedby="lupa">
-                    <span class="input-group-text" id="lupa" style="border: none; outline: none;">
+                <div class="barra col-10 col-md-8 col-lg-6 shadow-3-strong">
+                    <div class="input-group">
+                        <input class="form-control sin-focus" type="text" id="search-input"
+                               placeholder="Buscar comercios"
+                               style="border: none; outline: none;" aria-describedby="lupa">
+                        <span class="input-group-text" id="lupa" style="border: none; outline: none;">
                     <i class="fas fa-magnifying-glass fa-lg" style="color: #7e868c"></i>
                     </span>
-                </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,7 +33,7 @@
     {#  Aquí pinta las tarjetas de comercio  #}
     <div class="row justify-content-center" id="search-results"></div>
 
-    <div class="divisor"></div>
+    {#    <div class="divisor"></div> #}
 
     {#  Aquí pinta las tarjetas de categoría #}
     <div class="container-fluid">
@@ -47,9 +45,9 @@
                 <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 10rem;">
                     <div class="categoria shadow-3-strong">
                         <a href="/categoria/{{ categoria.id }}">
-                            <i class="{{ categoria.icono }} fa-4x"></i>
+                            <i class="{{ categoria.icono }} fa-4x text-secondary"></i>
                             <div class="">
-                                <p class="">{{ categoria.nombre }} </p>
+                                <p class="text-secondary">{{ categoria.nombre }} </p>
                             </div>
                         </a>
                     </div>
@@ -58,21 +56,30 @@
         </div>
     </div>
 
+    <div class="divisor mt-5 mb-3"></div>
+
+    <div>
+        <div class="container-fluid mt-3">
+            <div class="intcomercio bg-body-secondary">
+                <h2>Introduce tu comercio</h2>
+            </div>
+        </div>
+    </div>
+
     <div class="divisor"></div>
 
     <div>
-        <div class="container-fluid">
-            <h2>Introduce tu comercio</h2>
+        <div class="container-fluid mb-3">
+            <div class="quees bg-body-tertiary">
+                <h2>¿Qué es esta mierda?</h2>
+            </div>
         </div>
     </div>
 
-    <div>
-        <div class="container-fluid">
-            <h2>¿Qué es esta mierda?</h2>
-        </div>
-    </div>
+    <div class="divisor"></div>
 
 {% endblock %}
+
 {% block js %}
 
     <script>
@@ -110,7 +117,7 @@
                                 const searchTermWithAccents = removeAccents(searchTerm);
                                 const urlWithAccents = '/buscar?search=' + searchTermWithAccents;
 
-                                    fetch(urlWithAccents)
+                                fetch(urlWithAccents)
                                     .then(response => response.json())
                                     .then(dataWithAccents => {
                                         dataWithAccents.forEach(comercio => {
