@@ -17,6 +17,8 @@
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
             rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;700&display=swap"
+          rel="stylesheet">
 
     <!-- B CDN -->
     <link
@@ -78,7 +80,7 @@
             </div>
 
             <div class="offcanvas offcanvas-start text-bg-ZC" tabindex="-1" id="offcanvasDarkNavbar"
-                 aria-labelledby="offcanvasDarkNavbarLabel">
+                 aria-labelledby="offcanvasDarkNavbarLabel" style="font-family: 'Roboto Light', sans-serif;">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
                         <a class="navbar-brand" href="#">
@@ -129,71 +131,6 @@
 
         </nav>
 
-        {#        <header class="p-3 text-bg-dark"> #}
-        {#            <div class="container-fluid"> #}
-        {#                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> #}
-        {#                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"> #}
-        {#                        <i class="fas fa-shop fa-2x" style="margin-right: 5px"></i> #}
-        {#                    </a> #}
-
-        {#                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"> #}
-        {#                        <li><a href="/" class="nav-link px-2 text-secondary"><i class="fas fa-z"></i><i #}
-        {#                                        class="fas fa-c"></i></a></li> #}
-        {#                        <li><a href="/comercio" class="nav-link px-2 text-white">Comercios</a></li> #}
-        {#                        <li><a href="/#categorias00" class="nav-link px-2 text-white">Categorias</a></li> #}
-        {#                        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li> #}
-        {#                    </ul> #}
-
-        {#                    {% if is_granted('ROLE_ADMIN') %} #}
-        {#                         Mostrar navegación específica para ROLE_ADMIN #}
-        {#                        <div class="text-end"> #}
-        {#                            <a href="/admin/"> #}
-        {#                                <button type="button" class="btn btn-outline-light me-2">Panel de Admin</button> #}
-        {#                            </a> #}
-        {#                        </div> #}
-        {#                    {% else %} #}
-        {#                        <div class="text-end"> #}
-        {#                            {% if app.user %} #}
-        {#                                <a href="{{ path('comercio_new') }}"> #}
-        {#                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button> #}
-        {#                                </a> #}
-        {#                            {% else %} #}
-        {#                                <a href="{{ path('app_login') }}"> #}
-        {#                                    <button type="button" class="btn btn-outline-light me-2">Registrar Comercio</button> #}
-        {#                                </a> #}
-        {#                            {% endif %} #}
-        {#                        </div> #}
-        {#                    {% endif %} #}
-
-
-        {#                    {% if app.user %} #}
-        {#                        <div class="text-end"> #}
-        {#                            <a href="{{ path('app_logout') }}" class="nav-link px-2 text-white"><i #}
-        {#                                        class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a> #}
-        {#                        </div> #}
-        {#                    {% endif %} #}
-        {#                </div> #}
-        {#            </div> #}
-
-        {#            <nav class="navbar navbar-dark bg-dark"> #}
-        {#            <div class="fixed-top"> #}
-        {#                <div class="collapse" id="navbarToggleExternalContent"> #}
-        {#                    <div class="bg-dark p-4"> #}
-        {#                        <h5 class="text-white h4">Collapsed content</h5> #}
-        {#                        <span class="text-muted">Toggleable via the navbar brand.</span> #}
-        {#                    </div> #}
-        {#                </div> #}
-        {#                <nav class="navbar navbar-dark bg-dark"> #}
-        {#                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation"> #}
-        {#                        <span class="navbar-toggler-icon"></span> #}
-        {#                    </button> #}
-        {#                </nav> #}
-        {#            </div> #}
-        {#            </nav> #}
-
-
-
-        {#        </header> #}
     {% endblock %}
 </header>
 <main>
@@ -204,7 +141,7 @@
     {% block footer %}
         <div class="container-fluid">
             <div class="container">
-                <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5">
+                <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5">
                     <div class="col mb-3">
                         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-ZC text-decoration-none">
                             <i class="fas fa-shop fa-2x" style="margin-right: 10px"></i><i class="fas fa-z"></i><i
@@ -278,21 +215,14 @@
 <script>
     window.addEventListener('scroll', function() {
         var navbar = document.getElementById('navprincipal');
-        var colort = document.getElementById('texto1');
-        var colori = document.getElementById('icono1');
-        var colori2 = document.getElementById('icono2');
 
         console.log(window.scrollY);
         if (window.scrollY == 0) {
-            navbar.classList.remove('navbar-ZC','bg-ZC', 'shadow-3-strong');
-            colort.classList.add('text-white');
-            colori.classList.add('text-white');
-            colori2.classList.add('text-white');
+            navbar.classList.remove('bg-dark', 'shadow-3-strong');
+            navbar.style.transition = 'background-color 0.5s ease';
         } else {
-            navbar.classList.add('navbar-ZC','bg-ZC','shadow-3-strong');
-            colort.classList.remove('text-white');
-            colori.classList.remove('text-white');
-            colori2.classList.remove('text-white');
+            navbar.classList.add('bg-dark','shadow-3-strong');
+            navbar.style.transition = 'background-color 0.5s ease';
         }
     });
 </script>

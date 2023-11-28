@@ -89,9 +89,9 @@
 
 /*# sourceMappingURL=style-2023-11-27-10-52-32-595.css.map */
 .btn-ZC {
-    color: #FDF9ED;
-    background-color: #ae0909;
-    border-color: #ae0909;
+    color: #FDF9ED !important;
+    background-color: #ae0909 !important;
+    border-color: #ae0909 !important;
 }
 
 .btn-ZC:hover {
@@ -148,6 +148,16 @@ body {
     border: none !important;
     box-shadow: none;
     text-shadow: none !important;
+    font-family: 'Roboto Light', sans-serif;
+}
+
+.fondo-iconos{
+    margin-top: -20px;
+    width: 100%;
+    height: 150px;
+    background-color: #b00808;
+    color: rgba(9, 9, 9, 0.08);
+    font-size: large;
 }
 
 .addCategoria {
@@ -203,19 +213,35 @@ body {
 
 .buscador {
     width: 100%;
-    height: 30rem;
+    height: 20rem;
     background-color: #1c1b1b;
     display: flex;
     justify-content: center;
     align-items: center;
     background-image: url('../../public/img/movidas-comerciales-zaragoza.jpg');
     background-size: cover;
+    color: black;
+    /*font-family: 'Nunito Sans', sans-serif;*/
+    font-size: 100px;
 }
 
 .intcomercio{
     width: 100%;
-    height: 300px;
+    height: 400px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Nunito Sans Bold', sans-serif;
+    color: black;
+    background-image: url('../../public/img/business-2846221_1280.jpg');
+    background-size: cover;
+        & a{
+            font-family: "Roboto Thin", sans-serif;
+            justify-content: center;
+            width: 250px;
+            color: white;
+        }
 }
 
 .quees{
@@ -252,7 +278,7 @@ body {
 }
 
 .barra {
-    margin-top: -15px;
+    margin-top: -20px;
     border-radius: 20px;
     border: 1px solid #d5cbcb;
     background-color: white;
