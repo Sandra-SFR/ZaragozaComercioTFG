@@ -49,30 +49,30 @@
                         data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
                         aria-label="Toggle navigation">
                     {#                    <span class="navbar-toggler-icon"></span> #}
-                    <i class="fa-solid fa-bars fa-1x text-white" id="icono1"></i>
+                    <i class="fa-solid fa-bars fa-1x" id="icono1"></i>
                 </button>
 
                 <!-- boton -->
                 <div class="text-end d-flex d-inline">
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a class="navbar-brand me-2 sin-sombra text-white" href="/admin/" id="texto1" >
+                        <a class="navbar-brand me-2 sin-sombra" href="/admin/" id="texto1" >
                             Panel de Admin
                         </a>
                     {% else %}
 
                         {% if app.user %}
-                            <a class="navbar-brand btn me-2 sin-sombra text-white" href="{{ path('comercio_new') }}" id="texto1">
+                            <a class="navbar-brand btn me-2 sin-sombra" href="{{ path('comercio_new') }}" id="texto1">
                                 Registrar Comercio
                             </a>
                         {% else %}
-                            <a class="navbar-brand btn me-2 sin-sombra text-white" href="{{ path('app_login') }}" id="texto1">
+                            <a class="navbar-brand btn me-2 sin-sombra" href="{{ path('app_login') }}" id="texto1">
                                 Registrar Comercio
                             </a>
                         {% endif %}
                     {% endif %}
 
                     {% if app.user %}
-                        <a class="navbar-brand ml-2 text-white" href="{{ path('app_logout') }}" id="icono2"><i
+                        <a class="navbar-brand ml-2" href="{{ path('app_logout') }}" id="icono2"><i
                                     class="fa-solid fa-arrow-right-from-bracket"></i></a>
                     {% endif %}
 
@@ -215,13 +215,22 @@
 <script>
     window.addEventListener('scroll', function() {
         var navbar = document.getElementById('navprincipal');
+        var ico1 = document.getElementById('icono1');
+        var ico2 = document.getElementById('icono2');
+        var texto = document.getElementById('texto1');
 
         console.log(window.scrollY);
         if (window.scrollY == 0) {
             navbar.classList.remove('bg-dark', 'shadow-3-strong');
+            ico1.classList.remove('text-white');
+            ico2.classList.remove('text-white');
+            texto.classList.remove('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
         } else {
             navbar.classList.add('bg-dark','shadow-3-strong');
+            ico1.classList.add('text-white');
+            ico2.classList.add('text-white');
+            texto.classList.add('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
         }
     });

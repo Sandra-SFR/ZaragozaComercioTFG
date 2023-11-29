@@ -151,7 +151,7 @@ body {
     font-family: 'Roboto Light', sans-serif;
 }
 
-.fondo-iconos{
+.fondo-rojo{
     margin-top: -20px;
     width: 100%;
     height: 150px;
@@ -213,12 +213,12 @@ body {
 
 .buscador {
     width: 100%;
-    height: 20rem;
+    height: 30rem;
     background-color: #1c1b1b;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../../public/img/movidas-comerciales-zaragoza.jpg');
+    background-image: url('../../public/img/zgz.png');
     background-size: cover;
     color: black;
     /*font-family: 'Nunito Sans', sans-serif;*/
