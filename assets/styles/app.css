@@ -1,3 +1,6 @@
+/*!*variables*!*/
+/*$color-fondo-crema: #fbfdf3;*/
+
 /* COLOR THEME ZC*/
 .btn-outline-ZC {
     color: #ae0909;
@@ -262,8 +265,7 @@ div, p, td, li {
 }
 
 .intcomercio{
-    background-color: #fcffec;
-
+    background-color: #fdfbf3;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -292,8 +294,7 @@ div, p, td, li {
 }
 
 .quees{
-    background-color: #fcffec;
-
+    background-color: #fdfbf3;
     color: black;
     text-align: center;
 }
