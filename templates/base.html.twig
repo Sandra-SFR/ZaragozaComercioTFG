@@ -71,6 +71,7 @@
                         {% endif %}
                     {% endif %}
 
+
                     {% if app.user %}
                         <a class="navbar-brand ml-2" href="{{ path('app_logout') }}" id="icono2"><i
                                     class="fa-solid fa-arrow-right-from-bracket"></i></a>
@@ -82,10 +83,10 @@
             <div class="offcanvas offcanvas-start text-bg-ZC" tabindex="-1" id="offcanvasDarkNavbar"
                  aria-labelledby="offcanvasDarkNavbarLabel" style="font-family: 'Roboto Light', sans-serif;">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                    <div class="offcanvas-title" id="offcanvasDarkNavbarLabel">
                         <a class="navbar-brand" href="#">
                             <i class="fas fa-shop fa-1x me-2"></i>Zaragoza comercio</a>
-                    </h5>
+                    </div>
                     <button type="button" class="btn-close btn-close-ZC" data-bs-dismiss="offcanvas"
                             aria-label="Close"></button>
                 </div>
@@ -131,7 +132,7 @@
 
         </nav>
 
-        <nav class="navbar bg-body-ZC ms-5 sin-sombra position-absolute">
+        <nav class="navbar bg-body-ZC ms-5 sin-sombra position-absolute top-0 d-none d-md-block">
             <div class="container-fluid justify-content-start">
                 <a class="navbar-brand" href="#">
                     Home
@@ -170,7 +171,7 @@
                     </div>
 
                     <div class="col mb-3">
-                        <h5>Cosas</h5>
+                        <h4>Cosas</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
@@ -184,7 +185,7 @@
                     </div>
 
                     <div class="col mb-3">
-                        <h5>Esas cosas</h5>
+                        <h4>Esas cosas</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
@@ -198,7 +199,7 @@
                     </div>
 
                     <div class="col mb-3">
-                        <h5>Más cosas</h5>
+                        <h4>Más cosas</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
                             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
@@ -233,17 +234,16 @@
         var ico2 = document.getElementById('icono2');
         var texto = document.getElementById('texto1');
 
-        console.log(window.scrollY);
         if (window.scrollY == 0) {
             navbar.classList.remove('bg-dark', 'shadow-3-strong');
             ico1.classList.remove('text-white');
-            ico2.classList.remove('text-white');
+            if (ico2){ico2.classList.remove('text-white');}
             texto.classList.remove('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
         } else {
             navbar.classList.add('bg-dark','shadow-3-strong');
             ico1.classList.add('text-white');
-            ico2.classList.add('text-white');
+            if (ico2){ico2.classList.add('text-white');}
             texto.classList.add('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
         }

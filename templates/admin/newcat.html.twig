@@ -7,7 +7,7 @@
     <div class="features-section crearComercio container">
         <h1 class="h3 mb-3 font-weight-normal">Crear Categoria</h1>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'id': 'formIdCat'}}) }}
 
         <div id="paso1" class="paso-formulario">
             <!-- Name input -->
@@ -63,6 +63,7 @@
 {% block js %}
     <script>
         var currentStep = 0;    // Función para los pasos del formulario
+        var formSubmitted = false; // Validar que el formulario solo se envie una vez
 
         showStep(currentStep);
 
@@ -126,16 +127,37 @@
         }
 
         function submitForm() {
+            // Si el formulario ya se ha enviado, no hacer nada
+            if (formSubmitted) {
+                return;
+            }
+
             // Si el paso actual es el último, valida la categoría antes de enviar el formulario
             if (currentStep === document.getElementsByClassName("paso-formulario").length - 1) {
-                if (!validateCategory()) {
+                if (!validateForm()) {
                     return;
                 }
             }
+            // Deshabilita el botón de envío para evitar envíos múltiples
+            document.getElementById("submitBtn").disabled = true;
 
-            // Enviar el formulario
-            document.forms["form"].submit();
+            formSubmitted = true;
+
+            // Envía el formulario
+            document.getElementById("formIdCat").submit();
         }
+
+        // function submitForm() {
+        //     // Si el paso actual es el último, valida la categoría antes de enviar el formulario
+        //     if (currentStep === document.getElementsByClassName("paso-formulario").length - 1) {
+        //         if (!validateCategory()) {
+        //             return;
+        //         }
+        //     }
+        //
+        //     // Enviar el formulario
+        //     document.forms["form"].submit();
+        // }
 
         function showError(field, message) {
             // Encuentra el elemento de mensaje de error asociado con el campo

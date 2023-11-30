@@ -135,6 +135,19 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Abril Fatface', serif;
 }
 
+.intcomercio, .quees {
+    font-family: 'Quicksand', sans-serif ;
+    /*& h2{*/
+    /*    font-family: 'Quicksand', sans-serif ;*/
+    /*}*/
+    & h3{
+        font-family: 'Quicksand', sans-serif ;
+    }
+    & h4{
+        font-family: 'Quicksand', sans-serif ;
+    }
+}
+
 button {
 
 }
@@ -226,7 +239,6 @@ div, p, td, li {
 
 .buscador {
     top: 0;
-    width: 100%;
     height: 30rem;
     background-color: #1c1b1b;
     display: flex;
@@ -234,29 +246,28 @@ div, p, td, li {
     align-items: center;
     background-image: url('../../public/img/zgz.png');
     background-size: cover;
+    background-position: center top;
     color: black;
 
     text-shadow: 1px 1px 1px white;
     & h1{
         font-size: 100px;
     }
-    & h3{
+    & h2{
         font-size: 50px;
     }
-    & h5{
+    & h3{
         font-size: 35px;
     }
 }
 
 .intcomercio{
     background-color: #fcffec;
-    width: 100%;
-    height: 350px;
+
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Nunito Sans Bold', sans-serif;
     color: black;
         & a{
             font-family: "Roboto Thin", sans-serif;
@@ -282,8 +293,8 @@ div, p, td, li {
 
 .quees{
     background-color: #fcffec;
-    width: 100%;
-    height: 350px;
+
+    color: black;
     text-align: center;
 }
 
@@ -380,19 +391,12 @@ div, p, td, li {
 }
 
 .categoria {
-    /*border-radius: 8px;*/
     text-align: center;
     background-color: #cee9ff;
-    width: 150px; /* Ancho deseado del cat */
-    height: 200px; /* Alto deseado del cat */
-    overflow: hidden;
-    padding: 2%;
+    min-height: 225px;
     border: none;
     color: #000000;
     text-shadow: 1px 1px 1px white;
-    /*background-image: url("../../public/img/pared3.PNG");*/
-    /*background-size: cover;*/
-    /*background-position: center;*/
 }
 
 .categoria i {
@@ -413,9 +417,9 @@ div, p, td, li {
 }
 
 .comercio img {
-    width: 100%; /* Ajusta el ancho de la imagen al 100% del contenedor */
-    height: 100%; /* Ajusta la altura de la imagen al 100% del contenedor */
-    object-fit: cover; /* Escala la imagen para llenar el contenedor sin deformarla */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .estado-pendiente {
@@ -701,5 +705,17 @@ div, p, td, li {
 
     .paso-formulario {
         width: 300px;
+    }
+
+    .buscador{
+        & h1{
+            font-size: 40px;
+        }
+        & h2{
+            font-size: 30px;
+        }
+        & h3{
+            font-size: 24px;
+        }
     }
 }
