@@ -265,7 +265,6 @@ div, p, td, li {
 }
 
 .intcomercio{
-    background-color: $color-fondo-crema;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -277,6 +276,11 @@ div, p, td, li {
             width: 250px;
             color: white;
         }
+}
+
+.quees{
+    color: black;
+    text-align: center;
 }
 
 .imagen-comercio{
@@ -291,12 +295,6 @@ div, p, td, li {
     background-size: cover;
     background-position: center center;
     height: 350px;
-}
-
-.quees{
-    background-color: $color-fondo-crema;
-    color: black;
-    text-align: center;
 }
 
 .error-message {

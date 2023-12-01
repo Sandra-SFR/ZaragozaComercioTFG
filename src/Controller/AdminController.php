@@ -73,7 +73,7 @@ class AdminController extends AbstractController
         $categorias = $em->getRepository(Categoria::class)->findAll();
         $numero = [];
         foreach ($categorias as $categoria) {
-            // Suponiendo que la relación se llama $comercios en la entidad Categoria
+
             $comercios = $categoria->getComercios();
             $numero[$categoria->getNombre()] = count($comercios);
         }
