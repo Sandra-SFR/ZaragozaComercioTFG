@@ -41,9 +41,10 @@
         <div class="row justify-content-center g-3 d-flex">
             {% for categoria in categorias %}
                 <div class="col-6 col-md-2 mt-3 ">
-                    <div class="shadow-3-strong categoria p-1">
+                    <div class="shadow-1-soft categoria p-1">
                         <a class="text-capitalize" href="/categoria/{{ categoria.id }}">
-                            <i class="{{ categoria.icono }} fa-4x"></i>
+{#                            <i class="{{ categoria.icono }} fa-4x"></i>#}
+                            <img class="icono-148" src={{ asset(categoria.icono) }} alt="icono" style="width: 150px">
                             <div class="">
                                 <p>{{ categoria.nombre }} </p>
                             </div>
@@ -156,7 +157,7 @@
                                                 console.log(comercio.estado);
                                                 searchResults.innerHTML +=
                                                     '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                                    '<div class="card shadow-3-strong">' +
+                                                    '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
                                                     '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
                                                     '<div class="card-body">' +
@@ -184,7 +185,7 @@
                                                 console.log(comercio.estado);
                                                 searchResults.innerHTML +=
                                                     '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                                    '<div class="card shadow-3-strong">' +
+                                                    '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
                                                     '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
                                                     '<div class="card-body">' +
@@ -205,7 +206,7 @@
                                         console.log(comercio.estado);
                                         searchResults.innerHTML +=
                                             '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
-                                            '<div class="card shadow-3-strong">' +
+                                            '<div class="text-capitalize card shadow-3-strong">' +
                                             '<a href="/comercio/' + comercio.id + '">' +
                                             '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
                                             '<div class="card-body">' +
