@@ -5,18 +5,62 @@
 {% block body %}
     <div class="mt-5"></div>
     <!-- Section: Split screen -->
-    <section class="">
-
-        <div class="container-fluid px-0">
-            <div class="row g-0">
+    <div class="m-md-5 m-lg-5">
+        <div class="container-fluid pt-md-5 pt-lg-5">
+            <div class="row g-0 contenedor-comercio">
                 <!-- First column -->
-                <div class="col-lg-6 vh-100 d-flex flex-column justify-content-center align-items-center">
+                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center"
+                     style="height: 450px">
 
                     <!--Header-->
                     <div class="">
                         <h1 class="display-2 fw-bold text-uppercase">{{ comercio.nombre }}</h1>
-                        <h2 class="display-4">Tienda de frikismo</h2>
+                        <h2 class="display-4 text-capitalize">{{ categoria }}</h2>
                     </div>
+
+                    {#                    <!--Info--> #}
+                    {#                    <div class="" style="margin-top: 8%; text-align: center"> #}
+                    {#                        <p class="display-10">{{ comercio.estado }}</p> #}
+                    {#                        <p class="display-10">{{ comercio.email }}</p> #}
+                    {#                        <p class="display-10">{{ comercio.telefono }}</p> #}
+                    {#                        <p class="display-10">{{ comercio.descripcion }}</p> #}
+                    {#                        <p class="display-10">{{ comercio.direccion }}</p> #}
+                    {#                    </div> #}
+
+                    <!-- First column -->
+                </div>
+
+                <!-- Second column -->
+                <div class="comercio-carousel col-lg-6 d-flex justify-content-center align-items-center">
+                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for foto in comercio.fotos %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}"
+                                         class="d-block" alt="...">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Second column -->
+
+            </div>
+        </div>
+
+        <div class="container-fluid pt-md-5 pt-lg-5">
+            <div class="row g-0">
+                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
 
                     <!--Info-->
                     <div class="" style="margin-top: 8%; text-align: center">
@@ -27,29 +71,150 @@
                         <p class="display-10">{{ comercio.direccion }}</p>
                     </div>
 
-                    <!-- First column -->
                 </div>
 
-                <!-- Second column -->
-                {% for foto in comercio.fotos %}
-                    <div class="comercio col-lg-6 vh-100 d-flex justify-content-center align-items-center">
-                        <img class="d-block vh-100 shadow-3-strong"
-                             src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}" alt="Foto comercio"
-                             style="border-bottom-left-radius: 4rem; width: 60rem;">
-                    </div>
-                {% endfor %}
+                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
 
-                <!-- Second column -->
+                    <!--Info-->
+                    <div class="" style="margin-top: 8%; text-align: center;">
+                        <table>
+                            <thead class="bg-light">
+                            <tr>
+                                <th>Día</th>
+                                <th>Apertura</th>
+                                <th>Cierre</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                            <td>Lunes</td>
+                            <td>
+                            {% for hora in horas %}
+                                {% if hora.nombreDia == 'Lunes' %}
+                                    <p>{{ hora.horaApertura|date('H:i') }} -
+                                    {{ hora.horaCierre|date('H:i') }}</p>
+                                    {% else %}
+                                        <p>Cerrado</p>
+                                {% endif %}
+
+                            {% endfor %}
+                                </td>
+                            </tr>
+
+                            <td>Martes</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Martes' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <td>Miercóles</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Miercoles' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <td>Jueves</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Jueves' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <td>Viernes</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Viernes' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <td>Martes</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Martes' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            <td>Martes</td>
+                            <tr>
+                                {% for hora in horas %}
+                                {% if hora.nombreDia == 'Martes' %}
+                                    <td></td>
+                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
+                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                {% else %}
+                                    <td></td>
+                                    <td colspan="2">Cerrado</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                        <input type="hidden"
+                               name="comercio"
+                               value="{{ comercio.id }}">
+
+                    </div>
+
+
+                </div>
+
             </div>
         </div>
-    </section>
-    <section>
 
-        <section>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
-            <div id="map" style="width: 100%; height: 400px;"></div>
-        </section>
 
+        <div class="container-fluid pt-md-5 pt-lg-5">
+            <div class="row g-0">
+
+                <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+                    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
+                    <div id="map" style="width: 100%; height: 400px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--mapa-->
+    <div>
         <script>
             // Función para inicializar el mapa
             function initMap() {
@@ -57,7 +222,7 @@
 
                 var geocoder = new google.maps.Geocoder();
 
-                geocoder.geocode({ 'address': direccion }, function (results, status) {
+                geocoder.geocode({'address': direccion}, function (results, status) {
                     if (status === 'OK') {
                         var mapOptions = {
                             center: results[0].geometry.location,
@@ -81,7 +246,12 @@
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
         </script>
-    </section>
+    </div>
+    <script>
+        var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExampleInterval'), {
+            interval: 5000
+        });
+    </script>
 {% endblock %}
 {% block js %}
 

@@ -66,7 +66,8 @@ class ComercioRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->execute();
-    }/**
+    }
+    /**
      * @return Comercio[] Returns an array of Comercio objects
      */
     public function buscadorComercios(string $searchTerm, array $orderBy = null, $limit = null, $offset = null): array
