@@ -64,7 +64,31 @@
 
                     <!--Info-->
                     <div class="" style="margin-top: 8%; text-align: center">
-                        <p class="display-10">{{ comercio.estado }}</p>
+                        {% set ahora = "now"|date("H:i") %}
+                        {% set diaActual = "now"|date("l") %}
+
+                        {% set diasSemana = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miercoles', 'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sabado', 'sunday': 'domingo'} %}
+                        {% set nombreDiaActual = diasSemana[diaActual|lower] %}
+
+                        {% set comercioAbierto = false %}
+
+                        {% for horario in horas %}
+                            {% set horaApertura = horario.horaApertura|date("H:i") %}
+                            {% set horaCierre = horario.horaCierre|date("H:i") %}
+                            {% set nombreDia = horario.nombreDia|lower %}
+
+                            {% if ahora >= horaApertura and ahora <= horaCierre and nombreDiaActual == nombreDia %}
+                                {% set comercioAbierto = true %}
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% if comercioAbierto %}
+                            <p class="estado-abierto badge badge-success rounded-pill d-inline">Abierto</p>
+                        {% else %}
+                            <p class="estado-cerrado badge badge-danger rounded-pill d-inline">Cerrado</p>
+                        {% endif %}
+{#                        <p class="display-10">{{ comercio.estado }}</p>#}
                         <p class="display-10">{{ comercio.email }}</p>
                         <p class="display-10">{{ comercio.telefono }}</p>
                         <p class="display-10">{{ comercio.descripcion }}</p>
@@ -75,123 +99,37 @@
 
                 <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
 
-                    <!--Info-->
+                    <!-- Horario -->
                     <div class="" style="margin-top: 8%; text-align: center;">
                         <table>
                             <thead class="bg-light">
                             <tr>
-                                <th>Día</th>
-                                <th>Apertura</th>
-                                <th>Cierre</th>
+                                <th colspan="5"> Horario </th>
                             </tr>
                             </thead>
-
                             <tbody>
-                            <tr>
-                            <td>Lunes</td>
-                            <td>
-                            {% for hora in horas %}
-                                {% if hora.nombreDia == 'Lunes' %}
-                                    <p>{{ hora.horaApertura|date('H:i') }} -
-                                    {{ hora.horaCierre|date('H:i') }}</p>
-                                    {% else %}
-                                        <p>Cerrado</p>
-                                {% endif %}
-
-                            {% endfor %}
-                                </td>
-                            </tr>
-
-                            <td>Martes</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Martes' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
+                            {% for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] %}
+                                {% set horariosParaDia = horas|filter(h => h.nombreDia == dia) %}
+                                {% if horariosParaDia|length > 0 %}
+                                    {% for loopIndex, hora in horariosParaDia %}
+                                        <tr>
+                                            {% if loopIndex == 0 %}
+                                                <td class="arriba" rowspan="{{ horariosParaDia|length }}">{{ dia }}</td>
+                                            {% endif %}
+                                            <td>{{ hora.horaApertura|date('H:i') }} - </td>
+                                            <td>{{ hora.horaCierre|date('H:i') }}</td>
+                                        </tr>
+                                    {% endfor %}
                                 {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
+                                    <tr>
+                                        <td>{{ dia }}</td>
+                                        <td colspan="2">Cerrado</td>
+                                    </tr>
                                 {% endif %}
-                            </tr>
                             {% endfor %}
-
-                            <td>Miercóles</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Miercoles' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-
-                            <td>Jueves</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Jueves' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-
-                            <td>Viernes</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Viernes' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-
-                            <td>Martes</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Martes' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-
-                            <td>Martes</td>
-                            <tr>
-                                {% for hora in horas %}
-                                {% if hora.nombreDia == 'Martes' %}
-                                    <td></td>
-                                    <td>{{ hora.horaApertura|date('H:i') }}</td>
-                                    <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                {% else %}
-                                    <td></td>
-                                    <td colspan="2">Cerrado</td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-
                             </tbody>
                         </table>
-                        <input type="hidden"
-                               name="comercio"
-                               value="{{ comercio.id }}">
-
+                        <input type="hidden" name="comercio" value="{{ comercio.id }}">
                     </div>
 
 
