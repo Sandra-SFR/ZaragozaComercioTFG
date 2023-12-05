@@ -58,6 +58,7 @@
                 <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
             </div>
             <div class="error-message"></div>
+
         </div>
         <!-- Foto input -->
         <div id="paso6" class="paso-formulario" style="display: none;">
@@ -118,6 +119,16 @@
 
 {% endblock %}
 {% block js %}
+{#    <script>#}
+{#        ClassicEditor#}
+{#            .create( document.querySelector( '#form5' ) )#}
+{#            .catch( error => {#}
+{#                console.error( error );#}
+{#            } )#}
+{#            .then( form5 => {#}
+{#                window.form5 = form5; // Almacena la instancia del editor en una variable global#}
+{#            });#}
+{#    </script>#}
     <script>
         var mapaOk = false;     // Validar dirección
         var imgOk = false;      // Validar imagen
@@ -177,6 +188,10 @@
             for (var i = 0; i < currentStepFields.length; i++) {
                 // Validación genérica para campos obligatorios usando HTML5 required
                 if (currentStepFields[i].hasAttribute('required') && currentStepFields[i].value.trim() === '') {
+
+                    // if(window.form5.getData().trim() != ''){
+                    //     return true;
+                    // }
                     // Mostrar mensaje de error debajo del campo
                     showError(currentStepFields[i], 'Por favor, complete este campo.');
                     return false;

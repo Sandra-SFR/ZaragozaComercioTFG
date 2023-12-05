@@ -32,6 +32,8 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
             rel="stylesheet"
     />
+    <!-- CKeditor CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -45,12 +47,28 @@
     {% block header %}
         <nav class="navbar fixed-top sin-sombra" id="navprincipal">
             <div class="container-fluid nav-principal" >
+                <div class="justify-content-start d-inline d-flex">
                 <button class="navbar-toggler navbar-brand" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
                         aria-label="Toggle navigation">
                     {#                    <span class="navbar-toggler-icon"></span> #}
                     <i class="fa-solid fa-bars fa-1x" id="icono1"></i>
                 </button>
+
+
+                    <a class="navbar-brand" href="/">
+                        Zaragoza comercio
+                    </a>
+
+                    <a class="navbar-brand" href="/comercio">
+                        Comercios
+                    </a>
+
+                    <a class="navbar-brand" href="/#categorias00">
+                        Categorias
+                    </a>
+
+                </div>
 
                 <!-- boton -->
                 <div class="text-end d-flex d-inline">
@@ -129,22 +147,21 @@
                     </ul>
                 </div>
             </div>
-
         </nav>
 
-        <nav class="navbar bg-body-ZC ms-5 sin-sombra position-absolute top-0 d-none d-md-block">
-            <div class="container-fluid justify-content-start">
-                <a class="navbar-brand" href="#">
-                    Home
-                </a>
-                <a class="navbar-brand" href="#">
-                    Comercios
-                </a>
-                <a class="navbar-brand" href="#">
-                    Categorias
-                </a>
-            </div>
-        </nav>
+{#        <nav class="navbar bg-body-ZC ms-5 sin-sombra position-absolute top-0 d-none d-md-block">#}
+{#            <div class="container-fluid justify-content-start">#}
+{#                <a class="navbar-brand" href="/">#}
+{#                    Home#}
+{#                </a>#}
+{#                <a class="navbar-brand" href="/comercio">#}
+{#                    Comercios#}
+{#                </a>#}
+{#                <a class="navbar-brand" href="/#categorias00">#}
+{#                    Categorias#}
+{#                </a>#}
+{#            </div>#}
+{#        </nav>#}
 
     {% endblock %}
 </header>
