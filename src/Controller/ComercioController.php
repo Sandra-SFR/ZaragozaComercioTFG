@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\ComercioService;
 
 #[Route('/comercio')]
 class ComercioController extends AbstractController
@@ -18,6 +19,7 @@ class ComercioController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $comercios = $em->getRepository(Comercio::class)->findBy([],['nombre'=>'ASC']);
+
 
         return $this->render('comercio/index.html.twig', [
             'comercios'=>$comercios,
@@ -33,11 +35,16 @@ class ComercioController extends AbstractController
 
         $horarios = $em->getRepository(Horario::class)->findHorarioComercio($comercio, ['dia' => 'ASC']);
 
+        $comercioService = new ComercioService();
+        $horas = $horarios;
+        $estadoComercio = $comercioService->verificarEstadoComercio($horas);
+
 
         return $this->render('comercio/comercio.html.twig', [
             'comercio'=>$comercio,
             'categoria' => $categoria,
             'horas' => $horarios,
+            'estado' => $estadoComercio,
         ]);
     }
 }

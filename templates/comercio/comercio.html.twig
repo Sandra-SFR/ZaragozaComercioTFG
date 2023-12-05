@@ -64,31 +64,12 @@
 
                     <!--Info-->
                     <div class="" style="margin-top: 8%; text-align: center">
-                        {% set ahora = "now"|date("H:i") %}
-                        {% set diaActual = "now"|date("l") %}
 
-                        {% set diasSemana = {'monday': 'lunes', 'tuesday': 'martes', 'wednesday': 'miercoles', 'thursday': 'jueves', 'friday': 'viernes', 'saturday': 'sabado', 'sunday': 'domingo'} %}
-                        {% set nombreDiaActual = diasSemana[diaActual|lower] %}
-
-                        {% set comercioAbierto = false %}
-
-                        {% for horario in horas %}
-                            {% set horaApertura = horario.horaApertura|date("H:i") %}
-                            {% set horaCierre = horario.horaCierre|date("H:i") %}
-                            {% set nombreDia = horario.nombreDia|lower %}
-
-                            {% if ahora >= horaApertura and ahora <= horaCierre and nombreDiaActual == nombreDia %}
-                                {% set comercioAbierto = true %}
-                            {% endif %}
-                        {% endfor %}
-
-
-                        {% if comercioAbierto %}
+                        {% if estado == 'Abierto' %}
                             <p class="estado-abierto badge badge-success rounded-pill d-inline">Abierto</p>
                         {% else %}
                             <p class="estado-cerrado badge badge-danger rounded-pill d-inline">Cerrado</p>
                         {% endif %}
-{#                        <p class="display-10">{{ comercio.estado }}</p>#}
                         <p class="display-10">{{ comercio.email }}</p>
                         <p class="display-10">{{ comercio.telefono }}</p>
                         <p class="display-10">{{ comercio.descripcion }}</p>
@@ -100,7 +81,7 @@
                 <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
 
                     <!-- Horario -->
-                    <div class="" style="margin-top: 8%; text-align: center;">
+                    <div class="horario">
                         <table>
                             <thead class="bg-light">
                             <tr>
@@ -111,10 +92,12 @@
                             {% for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] %}
                                 {% set horariosParaDia = horas|filter(h => h.nombreDia == dia) %}
                                 {% if horariosParaDia|length > 0 %}
-                                    {% for loopIndex, hora in horariosParaDia %}
+                                    {% set loopIndex = 0 %}
+                                    {% for  hora in horariosParaDia %}
                                         <tr>
                                             {% if loopIndex == 0 %}
                                                 <td class="arriba" rowspan="{{ horariosParaDia|length }}">{{ dia }}</td>
+                                                {% set loopIndex = loopIndex + 1 %}
                                             {% endif %}
                                             <td>{{ hora.horaApertura|date('H:i') }} - </td>
                                             <td>{{ hora.horaCierre|date('H:i') }}</td>
