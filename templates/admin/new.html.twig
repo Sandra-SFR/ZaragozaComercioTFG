@@ -130,7 +130,19 @@
 {% block js %}
     <script>
         ClassicEditor
-            .create(document.querySelector('#descripcionLarga'))
+            .create(document.querySelector('#descripcionLarga'), {
+                toolbar: {
+                    items: [
+                        'undo', 'redo',
+                        '|', 'heading',
+                        '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                        '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                        '|', 'uploadImage', 'blockQuote', 'codeBlock',
+                        '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+                    ],
+                    shouldNotGroupWhenFull: false
+                }
+            })
             .catch(error => {
                 console.error(error);
             })
@@ -140,34 +152,6 @@
                     mostrarConteo(descripcionLarga);
                 })
             });
-
-        function contarPalabras(descripcionLarga) {
-            // Eliminar espacios en blanco al principio y al final del texto
-            var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
-                palabra.replace('&nbsp;', '');
-                palabra.replace('</p>', '');
-                console.log(palabra);
-                return palabra.length > 0;
-            });
-            // // Dividir el texto en palabras usando un espacio en blanco como delimitador
-            // var palabras = textoSinEspacios.split(/\s+/);
-
-            // Contar la cantidad de palabras
-            return textoSinEspacios.length;
-        }
-
-        function quitarHtml(html){
-            var elementoTemporal = document.createElement('div');
-            elementoTemporal.innerHTML = html;
-            return elementoTemporal.textContent || elementoTemporal.innerText || '';
-        }
-
-        function mostrarConteo(texto) {
-            var descripcionLarga = quitarHtml(texto.getData());
-            var resultado = contarPalabras(descripcionLarga);
-            var resultadoElemento = document.getElementById('resultado');
-            resultadoElemento.textContent = "Palabras: " + resultado;
-        }
     </script>
 
     <script>

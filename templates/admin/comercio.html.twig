@@ -374,7 +374,19 @@
     <script>
         // Ckeditor
         ClassicEditor
-            .create(document.querySelector('#descripcionLargaEdit'))
+            .create(document.querySelector('#descripcionLargaEdit'), {
+                toolbar: {
+                    items: [
+                        'undo', 'redo',
+                        '|', 'heading',
+                        '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                        '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                        '|', 'uploadImage', 'blockQuote', 'codeBlock',
+                        '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+                    ],
+                    shouldNotGroupWhenFull: false
+                }
+            } )
             .catch(error => {
                 console.error(error);
             })
