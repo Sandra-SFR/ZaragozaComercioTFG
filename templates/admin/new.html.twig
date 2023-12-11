@@ -54,10 +54,18 @@
         <div id="paso5" class="paso-formulario" style="display: none;">
             <div class="form-outline mb-4">
             <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="form5"
-                      rows="4" required></textarea>
+                      rows="2" required></textarea>
                 <label class="form-label" for="form5">{{ field_label(form.descripcion) }}</label>
             </div>
             <div class="error-message"></div>
+            <div class="form-outline mb-4">
+            <textarea name="{{ field_name(form.descripcionLarga) }}" class="form-control" id="descripcionLarga"
+                      placeholder="Descripción larga de tu comercio"></textarea>
+
+            </div>
+            <p>
+                Recomendamos una longitud de texto superior a las 200 palabras: <span id="resultado"></span>
+            </p>
 
         </div>
         <!-- Foto input -->
@@ -107,7 +115,8 @@
 
         <!-- Botón de envío -->
         <br>
-        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="button" onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
+        <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="button"
+                onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
 
         {{ form_end(form) }}
 
@@ -119,16 +128,48 @@
 
 {% endblock %}
 {% block js %}
-{#    <script>#}
-{#        ClassicEditor#}
-{#            .create( document.querySelector( '#form5' ) )#}
-{#            .catch( error => {#}
-{#                console.error( error );#}
-{#            } )#}
-{#            .then( form5 => {#}
-{#                window.form5 = form5; // Almacena la instancia del editor en una variable global#}
-{#            });#}
-{#    </script>#}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#descripcionLarga'))
+            .catch(error => {
+                console.error(error);
+            })
+            .then(descripcionLarga => {
+                window.descripcionLarga = descripcionLarga; // Almacena la instancia del editor en una variable global
+                descripcionLarga.model.document.on('change:data', () => {
+                    mostrarConteo(descripcionLarga);
+                })
+            });
+
+        function contarPalabras(descripcionLarga) {
+            // Eliminar espacios en blanco al principio y al final del texto
+            var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
+                palabra.replace('&nbsp;', '');
+                palabra.replace('</p>', '');
+                console.log(palabra);
+                return palabra.length > 0;
+            });
+            // // Dividir el texto en palabras usando un espacio en blanco como delimitador
+            // var palabras = textoSinEspacios.split(/\s+/);
+
+            // Contar la cantidad de palabras
+            return textoSinEspacios.length;
+        }
+
+        function quitarHtml(html){
+            var elementoTemporal = document.createElement('div');
+            elementoTemporal.innerHTML = html;
+            return elementoTemporal.textContent || elementoTemporal.innerText || '';
+        }
+
+        function mostrarConteo(texto) {
+            var descripcionLarga = quitarHtml(texto.getData());
+            var resultado = contarPalabras(descripcionLarga);
+            var resultadoElemento = document.getElementById('resultado');
+            resultadoElemento.textContent = "Palabras: " + resultado;
+        }
+    </script>
+
     <script>
         var mapaOk = false;     // Validar dirección
         var imgOk = false;      // Validar imagen
@@ -150,7 +191,7 @@
 
         function nextPrev(n) {
             // Validar campos antes de avanzar
-            console.log('validateForm: ' ,validateForm());
+            console.log('validateForm: ', validateForm());
             if (n === 1 && !validateForm()) {
                 // La validación falló, no avanzar
                 return false;
@@ -196,7 +237,7 @@
                     showError(currentStepFields[i], 'Por favor, complete este campo.');
                     return false;
                 }
-                if (currentStepFields[i].type === 'email'){
+                if (currentStepFields[i].type === 'email') {
                     console.log('ifEmail: ', currentStepFields[i]);
                 }
                 // Validación específica para el campo de correo electrónico
@@ -224,7 +265,7 @@
                 }
 
                 // Validación específica para el campo de categoria
-                if (currentStepFields[i].id === 'categoria1' && !validateCategory()){
+                if (currentStepFields[i].id === 'categoria1' && !validateCategory()) {
                     showError(currentStepFields[i], 'Por favor, seleccione una categoria.');
                     return false;
                 }
@@ -238,7 +279,7 @@
             // Utiliza una expresión regular simple para validar el formato del correo electrónico
             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if(!emailRegex.test(email.value)){
+            if (!emailRegex.test(email.value)) {
                 showError(email, 'El email debe tener un formato válido.');
                 return false;
             }
@@ -251,7 +292,7 @@
             // Utiliza una expresión regular para validar que el número de teléfono tenga exactamente 6 dígitos
             var phoneRegex = /^\d{9}$/;
 
-            if(!phoneRegex.exec(phoneNumber.value)){
+            if (!phoneRegex.exec(phoneNumber.value)) {
                 showError(phoneNumber, 'El número debe tener 9 digitos.');
                 return false;
             }
@@ -332,6 +373,7 @@
             errorElement.textContent = message;
             errorElement.style.color = 'red';
         }
+
         function hideError(field) {
             // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
             var errorElement = field.parentElement.parentElement.querySelector('.error-message');

@@ -62,7 +62,7 @@
                 <!-- Tab navs -->
             </div>
 
-            <div class="col-9" id="navVertical2">
+            <div class="col-9 mb-5" id="navVertical2">
                 <!-- Tab content -->
                 <div class="tab-content" id="v-tabs-tabContent">
                     <!-- content comercio -->
@@ -114,6 +114,12 @@
                                         rows="4">{{ comercio.descripcion }}</textarea>
                                         <label class="form-label"
                                                for="form5">{{ field_label(form.descripcion) }}</label>
+                                    </div>
+                                    <!-- Descripcion larga input -->
+                                    <div class="form-outline mb-3">
+                                        <textarea name="{{ field_name(form.descripcionLarga) }}" class="form-control" id="descripcionLargaEdit"
+                                                  rows="4">{{ comercio.descripcionLarga | raw }}</textarea>
+                                        <label class="form-label" for="descripcionLargaEdit"></label>
                                     </div>
 
                                     {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
@@ -366,6 +372,20 @@
 {% endblock %}
 {% block js %}
     <script>
+        // Ckeditor
+        ClassicEditor
+            .create(document.querySelector('#descripcionLargaEdit'))
+            .catch(error => {
+                console.error(error);
+            })
+            .then(descripcionLargaEdit => {
+                window.descripcionLargaEdit = descripcionLargaEdit; // Almacena la instancia del editor en una variable global
+                descripcionLargaEdit.model.document.on('change:data', () => {
+                    mostrarConteo(descripcionLargaEdit);
+                })
+            });
+
+        // tabpane
         window.addEventListener('scroll', function() {
             var navbar = document.getElementById('navVertical');
             var navbar2 = document.getElementById('navVertical2');
@@ -379,6 +399,7 @@
             }
         });
 
+        // foto destacada
         function destacada(id) {
             var url = '/admin/foto/' + id + '/destacar';
             var envio = {'id': id};
@@ -397,6 +418,7 @@
                 })
         }
 
+        // add horario
         function nuevoHorario() {
             var comercio = {{ comercio.id }};
             var dia = document.getElementById('dia').value;

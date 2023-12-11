@@ -44,6 +44,8 @@ class ComercioCreateForm extends AbstractType
             ->add('descripcion', TextareaType::class, [
                 'constraints' => [new NotBlank()],
             ])
+            ->add('descripcionLarga', TextareaType::class, [
+            ])
             ->add('estado', ChoiceType::class, [
                 'choices' => [
                     'Pendiente' => 1,

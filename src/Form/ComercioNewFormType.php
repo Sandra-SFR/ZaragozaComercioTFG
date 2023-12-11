@@ -37,6 +37,9 @@ class ComercioNewFormType extends AbstractType
                 'constraints' => [new NotBlank()],
                 'label' => 'Añade una breve descripción de tu comerio'
             ])
+            ->add('descripcionLarga', TextareaType::class, [
+                'label' => 'Añade una descripción larga de tu comercio(opcional, recomendable para seo)'
+            ])
             ->add('categorias', EntityType::class, [
                 'class' => Categoria::class,
                 'label' => 'Selecciona una categoría',

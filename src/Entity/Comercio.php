@@ -47,6 +47,9 @@ class Comercio
     #[ORM\ManyToMany(targetEntity: Categoria::class, inversedBy: 'comercios')]
     private Collection $categorias;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $descripcionLarga = null;
+
     public function __construct()
     {
         $this->horarios = new ArrayCollection();
@@ -223,6 +226,18 @@ class Comercio
     public function removeCategoria(Categoria $categoria): static
     {
         $this->categorias->removeElement($categoria);
+
+        return $this;
+    }
+
+    public function getDescripcionLarga(): ?string
+    {
+        return $this->descripcionLarga;
+    }
+
+    public function setDescripcionLarga(?string $descripcionLarga): static
+    {
+        $this->descripcionLarga = $descripcionLarga;
 
         return $this;
     }

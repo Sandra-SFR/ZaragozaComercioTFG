@@ -56,15 +56,15 @@
                 </button>
 
 
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand d-none d-md-block" href="/">
                         Zaragoza comercio
                     </a>
 
-                    <a class="navbar-brand" href="/comercio">
+                    <a class="navbar-brand d-none d-md-block" href="/comercio">
                         Comercios
                     </a>
 
-                    <a class="navbar-brand" href="/#categorias00">
+                    <a class="navbar-brand d-none d-md-block" href="/#categorias00">
                         Categorias
                     </a>
 
@@ -111,7 +111,7 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/">Zaragoza comercio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/comercio">Comercios</a>
@@ -245,6 +245,7 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
 ></script>
 <script>
+    // navbar
     window.addEventListener('scroll', function() {
         var navbar = document.getElementById('navprincipal');
         var ico1 = document.getElementById('icono1');
@@ -265,6 +266,34 @@
             navbar.style.transition = 'background-color 0.5s ease';
         }
     });
+
+    // editor para descripcion
+
+    function contarPalabras(descripcionLarga) {
+        // Eliminar espacios en blanco al principio y al final del texto
+        var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
+            palabra.replace('&nbsp;', '');
+            palabra.replace('</p>', '');
+            console.log(palabra);
+            return palabra.length > 0;
+        });
+
+        // Contar la cantidad de palabras
+        return textoSinEspacios.length;
+    }
+
+    function quitarHtml(html){
+        var elementoTemporal = document.createElement('div');
+        elementoTemporal.innerHTML = html;
+        return elementoTemporal.textContent || elementoTemporal.innerText || '';
+    }
+
+    function mostrarConteo(texto) {
+        var descripcionLarga = quitarHtml(texto.getData());
+        var resultado = contarPalabras(descripcionLarga);
+        var resultadoElemento = document.getElementById('resultado');
+        resultadoElemento.textContent = "Palabras: " + resultado;
+    }
 </script>
 
 {% block js %}
