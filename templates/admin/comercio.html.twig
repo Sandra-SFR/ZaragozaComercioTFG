@@ -58,6 +58,24 @@
                             aria-selected="false"
                     >Fotos</a
                     >
+                    <a
+                            data-mdb-tab-init
+                            class="nav-link"
+                            id="v-tabs-eliminar-tab"
+                            href="#v-tabs-eliminar"
+                            role="tab"
+                            data-mdb-toggle="pill"
+                            aria-controls="v-tabs-eliminar"
+                            aria-selected="false"
+                    >
+                        <button type="button" class="btn btn-link btn-sm btn-rounded nav-link"
+                                data-mdb-toggle="modal"
+                                data-mdb-target="#borrarComercio">
+                            Eliminar comercio
+                            <i class="fas fa-trash-can fa-1x px-1" style="color: #B0413E"></i>
+                        </button>
+                    </a
+                    >
                 </div>
                 <!-- Tab navs -->
             </div>
@@ -142,43 +160,43 @@
                                                    style="color: green">{{ button_label|default('') }}</i></a>
                                         </button>
 
-                                        <button type="button" class="btn btn-link btn-sm btn-rounded"
-                                                data-mdb-toggle="modal"
-                                                data-mdb-target="#borrarFoto">
-                                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>
-                                        </button>
+{#                                        <button type="button" class="btn btn-link btn-sm btn-rounded"#}
+{#                                                data-mdb-toggle="modal"#}
+{#                                                data-mdb-target="#borrarFoto">#}
+{#                                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>#}
+{#                                        </button>#}
 
-                                        <!-- Modal Borrar-->
-                                        <div class="modal fade" id="borrarFoto" tabindex="-1"
-                                             aria-labelledby="borrarLabel"
-                                             aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar
-                                                            el
-                                                            comercio?</h5>
-                                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Será eliminado definitivamente y los archivos asociados a
-                                                            este.</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-mdb-dismiss="modal">
-                                                            Cancelar
-                                                        </button>
-                                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">
-                                                            <button type="button" class="btn btn-primary">Aceptar
-                                                            </button>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Modal Borrar-->
+{#                                        <!-- Modal Borrar-->#}
+{#                                        <div class="modal fade" id="borrarFoto" tabindex="-1"#}
+{#                                             aria-labelledby="borrarLabel"#}
+{#                                             aria-hidden="true">#}
+{#                                            <div class="modal-dialog">#}
+{#                                                <div class="modal-content">#}
+{#                                                    <div class="modal-header">#}
+{#                                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar#}
+{#                                                            el#}
+{#                                                            comercio?</h5>#}
+{#                                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"#}
+{#                                                                aria-label="Close"></button>#}
+{#                                                    </div>#}
+{#                                                    <div class="modal-body">#}
+{#                                                        <p>Será eliminado definitivamente y los archivos asociados a#}
+{#                                                            este.</p>#}
+{#                                                    </div>#}
+{#                                                    <div class="modal-footer">#}
+{#                                                        <button type="button" class="btn btn-secondary"#}
+{#                                                                data-mdb-dismiss="modal">#}
+{#                                                            Cancelar#}
+{#                                                        </button>#}
+{#                                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">#}
+{#                                                            <button type="button" class="btn btn-primary">Aceptar#}
+{#                                                            </button>#}
+{#                                                        </a>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <!-- Modal Borrar-->#}
                                     </div>
                                 </div>
                                 {{ form_end(form) }}
@@ -287,6 +305,7 @@
                                    value="{{ comercio.id }}">
                         </div>
                     </div>
+
                     <!-- content fotos -->
                     <div
                             class="tab-pane fade"
@@ -362,6 +381,60 @@
                         </div>
                         <!-- Añadir fotos al comercio -->
                     </div>
+
+                    <!-- content eliminar -->
+                    <div
+                            class="tab-pane fade"
+                            id="v-tabs-eliminar"
+                            role="tabpanel"
+                            aria-labelledby="v-tabs-eliminar-tab"
+                    >
+                        <h1 class="mb-5" style="text-align: center; margin-top: 5%">Eliminar comercio</h1>
+                        <!--Horarios del comercio-->
+                        <div class="row">
+                            <p class="mt-5 text-center">Eliminar este comercio de forma permanente</p>
+{#                            <button type="button" class="btn btn-link btn-sm btn-rounded"#}
+{#                                    data-mdb-toggle="modal"#}
+{#                                    data-mdb-target="#borrarComercio">#}
+{#                                <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i>#}
+{#                            </button>#}
+
+                            <!-- Modal Borrar-->
+                            <div class="modal fade" id="borrarComercio" tabindex="-1"
+                                 aria-labelledby="borrarLabel2"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="borrarLabel2">¿Está seguro de borrar
+                                                el
+                                                comercio?</h5>
+                                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Será eliminado definitivamente y los archivos asociados a
+                                                este.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-mdb-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                            <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">
+                                                <button type="button" class="btn btn-primary">Aceptar
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Borrar-->
+                        </div>
+                    </div>
+
+                <!--otro content nuevo-->
+
                 </div>
             </div>
             <!-- Tab content -->
