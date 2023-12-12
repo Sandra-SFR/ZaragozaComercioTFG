@@ -40,11 +40,21 @@ class ComercioController extends AbstractController
         $estadoComercio = $comercioService->verificarEstadoComercio($horas);
 
 
+        $fotos = $comercio->getFotos()->getValues();
+        $archivos = array_map(function ($foto){
+            return $foto->getArchivo();
+        }, $fotos);
+        $fotosJson = json_encode($archivos);
+
+
+
+
         return $this->render('comercio/comercio.html.twig', [
             'comercio'=>$comercio,
             'categoria' => $categoria,
             'horas' => $horarios,
             'estado' => $estadoComercio,
+            'fotos' => $fotosJson,
         ]);
     }
 }

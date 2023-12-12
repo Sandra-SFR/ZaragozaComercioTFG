@@ -291,6 +291,24 @@
     function mostrarConteo(texto) {
         var descripcionLarga = quitarHtml(texto.getData());
         var resultado = contarPalabras(descripcionLarga);
+
+
+            if(resultado <= 200){
+                document.getElementById("resultado").classList.add( "text-bg-danger");
+                document.getElementById("resultado").classList.remove("text-bg-warning");
+                document.getElementById("resultado").classList.remove("text-bg-success");
+
+            }else if(resultado > 200 && resultado <= 300){
+                document.getElementById("resultado").classList.remove("text-bg-danger");
+                document.getElementById("resultado").classList.remove("text-bg-success");
+                document.getElementById("resultado").classList.add("text-bg-warning");
+            }else{
+                document.getElementById("resultado").classList.remove("text-bg-warning");
+                document.getElementById("resultado").classList.remove("text-bg-danger");
+                document.getElementById("resultado").classList.add("text-bg-success");
+            }
+
+
         var resultadoElemento = document.getElementById('resultado');
         resultadoElemento.textContent = "Palabras: " + resultado;
     }

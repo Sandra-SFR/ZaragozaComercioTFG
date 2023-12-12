@@ -218,7 +218,7 @@ div, p, td, li {
     box-shadow: 0 0 4px #000;
     background-color: #93c5fd;
     top: 20px;
-    height: 500px;
+    height: 510px;
 
     & .progress {
         position: absolute;
@@ -405,7 +405,6 @@ div, p, td, li {
 }
 
 .horario{
-    margin-top: 8%;
     text-align: center !important;
 }
 
@@ -449,6 +448,32 @@ div, p, td, li {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+
+#galeria-container {
+    position: relative;
+}
+
+.galeria {
+    width: 100%;
+    height: 196px;
+}
+
+.galeria img{
+    object-fit: cover;
+    height: 180px;
+    width: 180px;
+}
+
+#anterior,
+#siguiente {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    background: none;
+    border: none;
 }
 
 .estado-pendiente {
