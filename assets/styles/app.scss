@@ -450,7 +450,6 @@ div, p, td, li {
     object-fit: cover;
 }
 
-
 #galeria-container {
     position: relative;
 }
@@ -466,14 +465,57 @@ div, p, td, li {
     width: 180px;
 }
 
-#anterior,
-#siguiente {
+#anterior {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     font-size: 24px;
     background: none;
     border: none;
+}
+#siguiente {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    font-size: 24px;
+    background: none;
+    border: none;
+}
+
+.slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    width: 100%;
+    height: 300px; /* Ajusta la altura según tus necesidades */
+}
+
+.btn-slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
 }
 
 .estado-pendiente {

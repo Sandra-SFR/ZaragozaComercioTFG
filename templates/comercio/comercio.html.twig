@@ -188,31 +188,84 @@
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
         </script>
     </div>
+
+{% endblock %}
+{% block js %}
     <script>
         //galeria de imagenes
         var fotosJson = JSON.parse("{{fotos|e("js")}}");
         var fotosGaleria = fotosJson.slice(0,6);
-        let index = 0;
-        const imagenes = document.querySelectorAll('.cuadro-galeria');
+        var galeria = document.getElementById("bucle-galeria");
+        let index = 6;
+        // const imagenes = document.querySelectorAll('.cuadro-galeria');
         cargarFotos();
 
         function cargarFotos() {
-            var galeria = document.getElementById("bucle-galeria");
             fotosGaleria.forEach((url)=> {
-                var div = document.createElement('div');
-                div.className = 'cuadro-galeria col-6 col-md-3 col-lg-2';
-                var img = document.createElement('img');
-                img.className = 'rounded-2';
-                img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + url;
-
-                div.appendChild(img);
-                galeria.appendChild(div);
+                divImagen(url);
             })
         }
 
         function cambiarImagen(step) {
-            index = (index + step + imagenes.length) % imagenes.length;
-            mostrarImagen(index);
+            var cuadros = document.getElementsByClassName('cuadro-galeria');
+            console.log(index);
+
+            if (step == 1){
+                cuadros[0].remove();
+                if(fotosJson.length > index){
+                    var foto = fotosJson[index];
+                    index++;
+                }else if(fotosJson.length == index){
+                    index = 0;
+                    foto = fotosJson[index];
+                    index++;
+                }else{
+                    foto = fotosJson[index];
+                    index++;
+                }
+
+                divImagen(foto);
+
+            }else if(step == -1){
+                cuadros[cuadros.length-1].remove();
+                if(fotosJson.length > index && index > 0){
+                    var foto = fotosJson[index];
+                    index--;
+                }else if(0 >= index){
+                    foto = fotosJson[index];
+                    index = fotosJson.length;
+                    index--;
+                }else{
+                    index = 0;
+                    foto = fotosJson[index];
+                    index = fotosJson.length;
+                    index--;
+                }
+
+                var div = document.createElement('div');
+                div.className = 'cuadro-galeria col-6 col-md-3 col-lg-2';
+                var img = document.createElement('img');
+                img.className = 'rounded-2';
+                img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
+
+                div.appendChild(img);
+                var firstChild = galeria.firstChild;
+
+                galeria.insertBefore(div, firstChild);
+            }
+            // index = (index + step + imagenes.length) % imagenes.length;
+            // mostrarImagen(index);
+        }
+
+        function divImagen(foto){
+            var div = document.createElement('div');
+            div.className = 'cuadro-galeria col-6 col-md-3 col-lg-2';
+            var img = document.createElement('img');
+            img.className = 'rounded-2';
+            img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
+
+            div.appendChild(img);
+            galeria.appendChild(div);
         }
 
         function mostrarImagen(index) {
@@ -233,7 +286,4 @@
             interval: 5000
         });
     </script>
-{% endblock %}
-{% block js %}
-
 {% endblock %}
