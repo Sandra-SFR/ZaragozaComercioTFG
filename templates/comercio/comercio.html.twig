@@ -206,6 +206,11 @@
             })
         }
 
+        if (fotosJson.length <= 6){
+            document.getElementById('anterior').style.display = 'none';
+            document.getElementById('siguiente').style.display = 'none';
+        }
+
         function cambiarImagen(step) {
             var cuadros = document.getElementsByClassName('cuadro-galeria');
             console.log(index);
@@ -243,7 +248,7 @@
                 }
 
                 var div = document.createElement('div');
-                div.className = 'cuadro-galeria col-6 col-md-3 col-lg-2';
+                div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
                 var img = document.createElement('img');
                 img.className = 'rounded-2';
                 img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
@@ -259,7 +264,7 @@
 
         function divImagen(foto){
             var div = document.createElement('div');
-            div.className = 'cuadro-galeria col-6 col-md-3 col-lg-2';
+            div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
             var img = document.createElement('img');
             img.className = 'rounded-2';
             img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
