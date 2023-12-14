@@ -445,6 +445,7 @@
 {% endblock %}
 {% block js %}
     <script>
+        var pestana = window.location.hash;
         // Ckeditor
         ClassicEditor
             .create(document.querySelector('#descripcionLargaEdit'), {
@@ -489,6 +490,10 @@
             var url = '/admin/foto/' + id + '/destacar';
             var envio = {'id': id};
 
+            var activeTabId = 'v-tabs-fotos-tab';
+            localStorage.setItem('activeTabId', activeTabId);
+            console.log('activeTabId:', activeTabId);
+
             fetch(url, {
                 method: 'POST',
                 body: envio
@@ -496,7 +501,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('chachi');
-                    location.reload();
+                    location.reload(pestana);
                 })
                 .catch(error => {
                     console.log(error);
@@ -517,6 +522,11 @@
             formData.append('horaApertura', horaApertura);
             formData.append('horaCierre', horaCierre);
 
+
+            var activeTabId = 'v-tabs-horarios-tab';
+            localStorage.setItem('activeTabId', activeTabId);
+            console.log('activeTabId:', activeTabId);
+
             fetch(url, {
                     method: 'POST',
                     body: formData
@@ -531,5 +541,17 @@
                     console.log(error);
                 })
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Recupera y muestra el ID de la pestaña almacenada en el almacenamiento local
+            var storedTabId = localStorage.getItem('activeTabId');
+            console.log('storedTabId:', storedTabId);
+
+            if (storedTabId) {
+                document.getElementById(storedTabId).click();
+                localStorage.removeItem('activeTabId');
+            }
+
+        });
     </script>
 {% endblock %}
