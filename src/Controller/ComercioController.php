@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Comercio;
 use App\Entity\Horario;
-use App\Form\ComercioCreateForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ComercioService;
@@ -19,7 +17,6 @@ class ComercioController extends AbstractController
     public function index(EntityManagerInterface $em): Response
     {
         $comercios = $em->getRepository(Comercio::class)->findBy([],['nombre'=>'ASC']);
-
 
         return $this->render('comercio/index.html.twig', [
             'comercios'=>$comercios,
@@ -39,15 +36,11 @@ class ComercioController extends AbstractController
         $horas = $horarios;
         $estadoComercio = $comercioService->verificarEstadoComercio($horas);
 
-
         $fotos = $comercio->getFotos()->getValues();
         $archivos = array_map(function ($foto){
             return $foto->getArchivo();
         }, $fotos);
         $fotosJson = json_encode($archivos);
-
-
-
 
         return $this->render('comercio/comercio.html.twig', [
             'comercio'=>$comercio,
