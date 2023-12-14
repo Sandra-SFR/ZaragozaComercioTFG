@@ -211,6 +211,7 @@
             document.getElementById('siguiente').style.display = 'none';
         }
 
+        //manejador de la galeria
         function cambiarImagen(step) {
             var cuadros = document.getElementsByClassName('cuadro-galeria');
             console.log(index);
@@ -253,15 +254,18 @@
                 img.className = 'rounded-2';
                 img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
 
+                img.onclick = function() {
+                    abrirModal(img.src);
+                };
+
                 div.appendChild(img);
                 var firstChild = galeria.firstChild;
 
                 galeria.insertBefore(div, firstChild);
             }
-            // index = (index + step + imagenes.length) % imagenes.length;
-            // mostrarImagen(index);
         }
 
+        //imagenes galeria
         function divImagen(foto){
             var div = document.createElement('div');
             div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
@@ -269,22 +273,37 @@
             img.className = 'rounded-2';
             img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
 
+            img.onclick = function() {
+                abrirModal(img.src);
+            };
+
             div.appendChild(img);
             galeria.appendChild(div);
         }
 
-        function mostrarImagen(index) {
-            // Lógica para mostrar la imagen actual en un modal.
-            // Puedes usar bibliotecas como Bootstrap o crear tu propio modal con JavaScript.
-        }
+        //modal imagenes
+        function abrirModal(src) {
+            var modal = document.getElementById('myModal');
 
-        // Asigna eventos a las imágenes para abrir el modal.
-        imagenes.forEach((imagen, i) => {
-            imagen.addEventListener('click', () => {
-                index = i;
-                mostrarImagen(index);
-            });
-        });
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'myModal';
+                modal.className = 'modal modal-galeria';
+                modal.onclick = function () {
+                    modal.style.display = 'none';
+                };
+
+                document.body.appendChild(modal);
+            }
+
+            var modalImg = document.createElement('img');
+            modalImg.src = src;
+
+            modal.innerHTML = '';
+            modal.appendChild(modalImg);
+
+            modal.style.display = 'block';
+        }
 
         //carousel
         var myCarousel = new bootstrap.Carousel(document.getElementById('carouselExampleInterval'), {
