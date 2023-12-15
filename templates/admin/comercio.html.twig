@@ -3,7 +3,7 @@
 {% block title %}{{ comercio.nombre }}{% endblock %}
 {% block body %}
     <div class="mt-5"></div>
-    <section class="container-fluid" >
+    <section class="container-fluid">
         <!-- Tabs nav vertical -->
         <div class="row w-100">
             <div class="col-3" id="navVertical">
@@ -128,14 +128,16 @@
                                     </div>
                                     <!-- Descripcion input -->
                                     <div class="form-outline mb-3">
-                                        <textarea name="{{ field_name(form.descripcion) }}" class="form-control" id="textAreaExample"
-                                        rows="4">{{ comercio.descripcion }}</textarea>
+                                        <textarea name="{{ field_name(form.descripcion) }}" class="form-control"
+                                                  id="textAreaExample"
+                                                  rows="4">{{ comercio.descripcion }}</textarea>
                                         <label class="form-label"
                                                for="form5">{{ field_label(form.descripcion) }}</label>
                                     </div>
                                     <!-- Descripcion larga input -->
                                     <div class="form-outline mb-3">
-                                        <textarea name="{{ field_name(form.descripcionLarga) }}" class="form-control" id="descripcionLargaEdit"
+                                        <textarea name="{{ field_name(form.descripcionLarga) }}" class="form-control"
+                                                  id="descripcionLargaEdit"
                                                   rows="4">{{ comercio.descripcionLarga | raw }}</textarea>
                                         <label class="form-label" for="descripcionLargaEdit"></label>
                                     </div>
@@ -160,43 +162,43 @@
                                                    style="color: green">{{ button_label|default('') }}</i></a>
                                         </button>
 
-{#                                        <button type="button" class="btn btn-link btn-sm btn-rounded"#}
-{#                                                data-mdb-toggle="modal"#}
-{#                                                data-mdb-target="#borrarFoto">#}
-{#                                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i>#}
-{#                                        </button>#}
+                                        {#                                        <button type="button" class="btn btn-link btn-sm btn-rounded" #}
+                                        {#                                                data-mdb-toggle="modal" #}
+                                        {#                                                data-mdb-target="#borrarFoto"> #}
+                                        {#                                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></i> #}
+                                        {#                                        </button> #}
 
-{#                                        <!-- Modal Borrar-->#}
-{#                                        <div class="modal fade" id="borrarFoto" tabindex="-1"#}
-{#                                             aria-labelledby="borrarLabel"#}
-{#                                             aria-hidden="true">#}
-{#                                            <div class="modal-dialog">#}
-{#                                                <div class="modal-content">#}
-{#                                                    <div class="modal-header">#}
-{#                                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar#}
-{#                                                            el#}
-{#                                                            comercio?</h5>#}
-{#                                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"#}
-{#                                                                aria-label="Close"></button>#}
-{#                                                    </div>#}
-{#                                                    <div class="modal-body">#}
-{#                                                        <p>Será eliminado definitivamente y los archivos asociados a#}
-{#                                                            este.</p>#}
-{#                                                    </div>#}
-{#                                                    <div class="modal-footer">#}
-{#                                                        <button type="button" class="btn btn-secondary"#}
-{#                                                                data-mdb-dismiss="modal">#}
-{#                                                            Cancelar#}
-{#                                                        </button>#}
-{#                                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}">#}
-{#                                                            <button type="button" class="btn btn-primary">Aceptar#}
-{#                                                            </button>#}
-{#                                                        </a>#}
-{#                                                    </div>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                        </div>#}
-{#                                        <!-- Modal Borrar-->#}
+                                        {#                                        <!-- Modal Borrar--> #}
+                                        {#                                        <div class="modal fade" id="borrarFoto" tabindex="-1" #}
+                                        {#                                             aria-labelledby="borrarLabel" #}
+                                        {#                                             aria-hidden="true"> #}
+                                        {#                                            <div class="modal-dialog"> #}
+                                        {#                                                <div class="modal-content"> #}
+                                        {#                                                    <div class="modal-header"> #}
+                                        {#                                                        <h5 class="modal-title" id="borrarLabel">¿Está seguro de borrar #}
+                                        {#                                                            el #}
+                                        {#                                                            comercio?</h5> #}
+                                        {#                                                        <button type="button" class="btn-close" data-mdb-dismiss="modal" #}
+                                        {#                                                                aria-label="Close"></button> #}
+                                        {#                                                    </div> #}
+                                        {#                                                    <div class="modal-body"> #}
+                                        {#                                                        <p>Será eliminado definitivamente y los archivos asociados a #}
+                                        {#                                                            este.</p> #}
+                                        {#                                                    </div> #}
+                                        {#                                                    <div class="modal-footer"> #}
+                                        {#                                                        <button type="button" class="btn btn-secondary" #}
+                                        {#                                                                data-mdb-dismiss="modal"> #}
+                                        {#                                                            Cancelar #}
+                                        {#                                                        </button> #}
+                                        {#                                                        <a href="{{ path('comercio_delete', {'id': comercio.id}) }}"> #}
+                                        {#                                                            <button type="button" class="btn btn-primary">Aceptar #}
+                                        {#                                                            </button> #}
+                                        {#                                                        </a> #}
+                                        {#                                                    </div> #}
+                                        {#                                                </div> #}
+                                        {#                                            </div> #}
+                                        {#                                        </div> #}
+                                        {#                                        <!-- Modal Borrar--> #}
                                     </div>
                                 </div>
                                 {{ form_end(form) }}
@@ -213,36 +215,63 @@
                     >
                         <h1 class="mt-5 mb-5" style="text-align: center;">Categoría</h1>
 
-                        {{ form_start(formCat)  }}
+{#                        {{ form_start(formCat) }}#}
+{#                        <!-- Categoria input -->#}
+{#                        <div class="form-outline mb-3">#}
+{#                            <label style="display: none">{{ field_label(formCat.categorias) }}</label>#}
+{#                            <div class="row">#}
+{#                                {% for categoria in categorias %}#}
+{#                                    <div class="form-check form-group mb-4 col-4">#}
+{#                                        <input class="form-check-input" type="radio"#}
+{#                                               value="{{ categoria.id }}"#}
+{#                                               name="{{ field_name(formCat.categorias) }}"#}
+{#                                               id="categoria{{ categoria.id }}"#}
+{#                                                {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>#}
+{#                                        <label class="form-check-label text-capitalize"#}
+{#                                               for="categoria{{ categoria.id }}">#}
+{#                                            {{ categoria.nombre }}#}
+{#                                        </label>#}
+{#                                    </div>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                            #}{# boton de guardar #}
+{#                            <div style="text-align: center; margin-top: 3%">#}
+{#                                <button type="submit" class="btn btn-link btn-sm btn-rounded">#}
+{#                                    <a href="{{ path('admin_comercios') }}">#}
+{#                                        <i class="far fa-square-check fa-2x"#}
+{#                                           style="color: green">{{ button_label|default('') }}</i></a>#}
+{#                                </button>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        {{ form_end(formCat) }}#}
+
                         <!-- Categoria input -->
                         <div class="form-outline mb-3">
-                            <label style="display: none">{{ field_label(formCat.categorias) }}</label>
                             <div class="row">
                                 {% for categoria in categorias %}
-                                    <div class="form-check form-group mb-4 col-4">
-                                        <input class="form-check-input" type="radio"
-                                               value="{{ categoria.id }}"
-                                               name="{{ field_name(formCat.categorias) }}"
-                                               id="categoria{{ categoria.id }}"
-                                                {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
-                                        <label class="form-check-label text-capitalize"
-                                               for="categoria{{ categoria.id }}">
-                                            {{ categoria.nombre }}
-                                        </label>
-                                    </div>
+                                <div class="form-check form-group mb-4 col-4">
+                                    <input onclick="obtenerIdSeleccionado()" class="form-check-input" type="radio"
+                                           value="{{ categoria.id }}"
+                                           name="categoria"
+                                           id="categoria{{ categoria.id }}"
+                                            {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
+                                    <label class="form-check-label text-capitalize"
+                                           for="categoria{{ categoria.id }}">
+                                        {{ categoria.nombre }}
+                                    </label>
+                                </div>
                                 {% endfor %}
                             </div>
-                            {#boton de guardar#}
                             <div style="text-align: center; margin-top: 3%">
-                                <button type="submit" class="btn btn-link btn-sm btn-rounded">
-                                    <a href="{{ path('admin_comercios') }}">
+                                <button onclick="nuevaCategoria()" class="btn btn-link btn-sm btn-rounded">
                                         <i class="far fa-square-check fa-2x"
-                                           style="color: green">{{ button_label|default('') }}</i></a>
+                                           style="color: green">{{ button_label|default('') }}</i>
                                 </button>
                             </div>
+
                         </div>
-                        {{ form_end(formCat) }}
                     </div>
+
                     <!-- content horarios -->
                     <div
                             class="tab-pane fade"
@@ -292,7 +321,6 @@
                                     <td><input type="time" name="horaCierre" id="horaCierre"></td>
                                     <td>
                                         <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded">
-
                                             <i class="far fa-square-check fa-2x"
                                                style="color: green">{{ button_label|default('') }}</i>
                                         </button>
@@ -393,11 +421,6 @@
                         <!--Horarios del comercio-->
                         <div class="row">
                             <p class="mt-5 text-center">Eliminar este comercio de forma permanente</p>
-{#                            <button type="button" class="btn btn-link btn-sm btn-rounded"#}
-{#                                    data-mdb-toggle="modal"#}
-{#                                    data-mdb-target="#borrarComercio">#}
-{#                                <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i>#}
-{#                            </button>#}
 
                             <!-- Modal Borrar-->
                             <div class="modal fade" id="borrarComercio" tabindex="-1"
@@ -433,7 +456,7 @@
                         </div>
                     </div>
 
-                <!--otro content nuevo-->
+                    <!--otro content nuevo-->
 
                 </div>
             </div>
@@ -460,7 +483,7 @@
                     ],
                     shouldNotGroupWhenFull: false
                 }
-            } )
+            })
             .catch(error => {
                 console.error(error);
             })
@@ -472,7 +495,7 @@
             });
 
         // tabpane
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             var navbar = document.getElementById('navVertical');
             var navbar2 = document.getElementById('navVertical2');
 
@@ -484,6 +507,56 @@
                 navbar2.classList.add('offset-3');
             }
         });
+
+
+        function obtenerCategoriasSeleccionadas() {
+            return Array.from(document.querySelectorAll('input[name="categoria"]:checked')).map(input => input.value);
+        }
+
+        function obtenerIdSeleccionado() {
+            var inputSeleccionado = document.querySelector('input[name="categoria"]:checked');
+            if (inputSeleccionado) {
+                var idStr = inputSeleccionado.id.replace('categoria', '');
+                return parseInt(idStr, 10);
+            }
+            return null;
+        }
+
+        function nuevaCategoria() {
+            console.log('La función nuevaCategoria() se ha llamado correctamente.');
+            console.log(obtenerCategoriasSeleccionadas());
+            console.log(obtenerIdSeleccionado());
+
+            var comercio = {{ comercio.id }};
+            var categorias = obtenerCategoriasSeleccionadas();
+            var ids = obtenerIdSeleccionado();
+
+            var url = '/admin/comercio/' + comercio + '/edit/cat';
+            var formData = {
+                comercio: comercio,
+                categorias: categorias,
+                ids: ids
+            };
+
+            var activeTabId = 'v-tabs-categorias-tab';
+            localStorage.setItem('activeTabId', activeTabId);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Categorías actualizadas exitosamente');
+                    location.reload(pestana);
+                })
+                .catch(error => {
+                    console.log('Error al actualizar categorías:', error);
+                });
+        }
 
         // foto destacada
         function destacada(id) {
@@ -535,14 +608,14 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('chachi');
-                    location.reload();
+                    location.reload(pestana);
                 })
                 .catch(error => {
                     console.log(error);
                 })
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Recupera y muestra el ID de la pestaña almacenada en el almacenamiento local
             var storedTabId = localStorage.getItem('activeTabId');
             console.log('storedTabId:', storedTabId);

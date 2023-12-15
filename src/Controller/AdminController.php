@@ -240,15 +240,12 @@ class AdminController extends AbstractController
     public function edit(int $id, Request $request, Comercio $comercio, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ComercioCreateForm::class, $comercio);
-        $formCat = $this->createForm(ComercioCategoriaFormType::class, $comercio);
         $form->handleRequest($request);
-        $formCat->handleRequest($request);
 
         $usuario = $this->getUser();
         $rol = $usuario->getRoles();
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
-        $categorias = $em->getRepository(Categoria::class)->findAll();
 
         if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
@@ -258,7 +255,7 @@ class AdminController extends AbstractController
             ]);
         }
 
-        // Obtén la categoría actual del comercio
+        $categorias = $em->getRepository(Categoria::class)->findAll();
         $categoriaActual = $comercio->getCategorias();
 
         $ids = array_map(function($categoria) {
@@ -268,14 +265,7 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
 
-            return $this->redirectToRoute('admin_comercios', [
-                'comercio' => $comercio], Response::HTTP_SEE_OTHER);
-        }
-        if ($formCat->isSubmitted() && $formCat->isValid()) {
-            $em->flush();
-
-            return $this->redirectToRoute('admin_comercios', [
-                'comercio' => $comercio], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
         }
 
         $horarios = $em->getRepository(Horario::class)->findHorarioComercio($comercio, ['dia' => 'ASC']);
@@ -283,12 +273,42 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
-            'formCat' => $formCat,
             'categorias' => $categorias,
             'fotos' => $comercio->getFotos(),
             'horas' => $horarios,
             'ids' => $ids,
         ]);
+    }
+
+    #[Route('/comercio/{id}/edit/cat', name: 'comercio_edit_cat', methods: ['POST'])]
+    public function editCat(Request $request, Comercio $comercio, EntityManagerInterface $em): Response
+    {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para editar categorías.']);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $borrarCat = $comercio->getCategorias()->getValues();
+
+        foreach ($borrarCat as $categoria) {
+            $comercio->removeCategoria($categoria);
+        }
+
+        $ids = $data['ids'] ?? null;
+
+        $nuevaCategoria = $em->getRepository(Categoria::class)->find($ids);
+
+        if ($nuevaCategoria) {
+            $comercio->addCategoria($nuevaCategoria);
+            $em->flush();
+            return $this->json(['code' => 200]);
+        }
+
+        return $this->json(['code' => 200]);
     }
 
     #[Route('/categoria/{id}/edit', name: 'categoria_edit', methods: ['GET', 'POST'])]
@@ -320,7 +340,6 @@ class AdminController extends AbstractController
         return $this->render('admin/categoria.html.twig', [
             'categoria' => $categoria,
             'form' => $form,
-
         ]);
     }
 
