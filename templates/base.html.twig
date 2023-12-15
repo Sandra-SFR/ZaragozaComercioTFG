@@ -47,7 +47,7 @@
     {% block header %}
         <nav class="navbar fixed-top sin-sombra" id="navprincipal">
             <div class="container-fluid nav-principal" >
-                <div class="justify-content-start d-inline d-flex">
+                <div id="navprinc" class="justify-content-start d-inline d-flex">
                 <button class="navbar-toggler navbar-brand" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
                         aria-label="Toggle navigation">
@@ -55,16 +55,15 @@
                     <i class="fa-solid fa-bars fa-1x" id="icono1"></i>
                 </button>
 
-
-                    <a class="navbar-brand d-none d-md-block" href="/">
+                    <a id="zc" class="navbar-brand d-none d-md-block" href="/">
                         Zaragoza comercio
                     </a>
 
-                    <a class="navbar-brand d-none d-md-block" href="/comercio">
+                    <a id="comercios" class="navbar-brand d-none d-md-block" href="/comercio">
                         Comercios
                     </a>
 
-                    <a class="navbar-brand d-none d-md-block" href="/#categorias00">
+                    <a id="categorias" class="navbar-brand d-none d-md-block" href="/#categorias00">
                         Categorias
                     </a>
 
@@ -94,7 +93,6 @@
                         <a class="navbar-brand ml-2" href="{{ path('app_logout') }}" id="icono2"><i
                                     class="fa-solid fa-arrow-right-from-bracket"></i></a>
                     {% endif %}
-
                 </div>
             </div>
 
@@ -148,20 +146,6 @@
                 </div>
             </div>
         </nav>
-
-{#        <nav class="navbar bg-body-ZC ms-5 sin-sombra position-absolute top-0 d-none d-md-block">#}
-{#            <div class="container-fluid justify-content-start">#}
-{#                <a class="navbar-brand" href="/">#}
-{#                    Home#}
-{#                </a>#}
-{#                <a class="navbar-brand" href="/comercio">#}
-{#                    Comercios#}
-{#                </a>#}
-{#                <a class="navbar-brand" href="/#categorias00">#}
-{#                    Categorias#}
-{#                </a>#}
-{#            </div>#}
-{#        </nav>#}
 
     {% endblock %}
 </header>
@@ -246,11 +230,14 @@
 ></script>
 <script>
     // navbar
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function (token, force) {
         var navbar = document.getElementById('navprincipal');
         var ico1 = document.getElementById('icono1');
         var ico2 = document.getElementById('icono2');
         var texto = document.getElementById('texto1');
+        var zc = document.getElementById('zc');
+        var comercios = document.getElementById('comercios');
+        var categorias = document.getElementById('categorias');
 
         if (window.scrollY == 0) {
             navbar.classList.remove('bg-dark', 'shadow-3-strong');
@@ -258,17 +245,22 @@
             if (ico2){ico2.classList.remove('text-white');}
             texto.classList.remove('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
+            zc.classList.add('d-md-block');
+            comercios.classList.add('d-md-block');
+            categorias.classList.add('d-md-block');
         } else {
             navbar.classList.add('bg-dark','shadow-3-strong');
             ico1.classList.add('text-white');
             if (ico2){ico2.classList.add('text-white');}
             texto.classList.add('text-white');
             navbar.style.transition = 'background-color 0.5s ease';
+            zc.classList.remove('d-md-block');
+            comercios.classList.remove('d-md-block');
+            categorias.classList.remove('d-md-block');
         }
     });
 
-    // editor para descripcion
-
+    // editor para descripcion larga
     function contarPalabras(descripcionLarga) {
         // Eliminar espacios en blanco al principio y al final del texto
         var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
@@ -291,7 +283,6 @@
     function mostrarConteo(texto) {
         var descripcionLarga = quitarHtml(texto.getData());
         var resultado = contarPalabras(descripcionLarga);
-
 
             if(resultado <= 200){
                 document.getElementById("resultado").classList.add( "text-bg-danger");
