@@ -26,6 +26,8 @@ class ComercioController extends AbstractController
     #[Route('/{id}', name: 'app_comercio', methods: ['GET'])]
     public function comercio($id, EntityManagerInterface $em): Response
     {
+        date_default_timezone_set('Europe/Madrid');
+
         $comercio = $em->getRepository(Comercio::class)->find($id);
         $categorias = $comercio->getCategorias()->getValues();
         $categoria = $categorias[0]->getNombre();
