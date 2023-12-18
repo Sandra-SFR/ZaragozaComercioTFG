@@ -258,7 +258,7 @@ class AdminController extends AbstractController
         $categorias = $em->getRepository(Categoria::class)->findAll();
         $categoriaActual = $comercio->getCategorias();
 
-        $ids = array_map(function($categoria) {
+        $ids = array_map(function ($categoria) {
             return $categoria->getId();
         }, $categoriaActual->getValues());
 
@@ -407,26 +407,26 @@ class AdminController extends AbstractController
     }
 
     #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['POST'])]
-    public function deleteFoto(Request $request,Foto $foto, EntityManagerInterface $em): Response
+    public function deleteFoto(Request $request, Foto $foto, EntityManagerInterface $em): Response
     {
         $comercioId = $foto->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
         if ($request->isMethod('POST')) {
-        $fs = new Filesystem();
+            $fs = new Filesystem();
 
-        $currentDir = $this->getParameter('kernel.project_dir');
-        $path = $currentDir . '/storage/' . $comercio->getId() . '/';
+            $currentDir = $this->getParameter('kernel.project_dir');
+            $path = $currentDir . '/storage/' . $comercio->getId() . '/';
 
-        $file = $foto->getArchivo();
+            $file = $foto->getArchivo();
 
-        $fs->remove($path . "thumb/" . $file);
-        $fs->remove($path . $file);
+            $fs->remove($path . "thumb/" . $file);
+            $fs->remove($path . $file);
 
-        $em->remove($foto);
-        $em->flush();
+            $em->remove($foto);
+            $em->flush();
 
-        $this->addFlash('success', 'La foto ha sido eliminada con éxito.');
+            $this->addFlash('success', 'La foto ha sido eliminada con éxito.');
         }
 
         return $this->json(['code' => 200]);
@@ -500,7 +500,7 @@ class AdminController extends AbstractController
 
             $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
 
-            }
+        }
         return $this->json(['code' => 200]);
     }
 }

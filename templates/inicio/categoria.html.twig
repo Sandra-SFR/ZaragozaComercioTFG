@@ -24,8 +24,9 @@
                                      class="card-img-top d-flex align-items-center" alt="Foto comercio"
                                      style="border-bottom-left-radius: 4rem; height: 12rem;">
                             {% else %}
-                                <!-- Puedes agregar un mensaje o imagen de reemplazo si no hay fotos disponibles -->
-                                <p>No hay fotos disponibles</p>
+                                <img src="{{ asset('img/tienda.jpg') }}"
+                                     class="card-img-top d-flex align-items-center" alt="Foto comercio"
+                                     style="border-bottom-left-radius: 4rem; height: 12rem;">
                             {% endif %}
                             <div class="card-body">
                                 <p class="card-text">{{ comercio.nombre }} </p>

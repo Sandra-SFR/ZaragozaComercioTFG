@@ -3,210 +3,208 @@
 {% block title %}{{ comercio.nombre }}{% endblock %}
 {# TODO: detalle del comercio que ve el usario #}
 {% block body %}
-    <div class="mt-5"></div>
-    <!-- Section: Split screen -->
-    <div>
-        <div class="container-fluid p-md-0 pt-md-5 pt-lg-5">
-            <div class="row g-0 contenedor-comercio">
-                <!-- First column -->
-                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center"
-                     style="height: 450px">
+<div class="mt-5"></div>
+<!-- Section: Split screen -->
+<div>
+    <div class="container-fluid p-md-0 pt-md-5 pt-lg-5">
+        <div class="row g-0 contenedor-comercio">
+            <!-- First column -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center"
+                 style="height: 450px">
 
-                    <!--Header-->
-                    <div class="">
-                        <h1 class="display-2 fw-bold text-uppercase">{{ comercio.nombre }}</h1>
-                        <h2 class="display-4 text-capitalize">{{ categoria }}</h2>
-                    </div>
-                    <!-- First column -->
+                <!--Header-->
+                <div class="">
+                    <h1 class="display-2 fw-bold text-uppercase">{{ comercio.nombre }}</h1>
+                    <h2 class="display-4 text-capitalize">{{ categoria }}</h2>
                 </div>
+                <!-- First column -->
+            </div>
 
-                <!-- Second column -->
-                <div class="comercio-carousel col-lg-6 d-flex justify-content-center align-items-center">
-                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
+            <!-- Second column -->
+            <div class="comercio-carousel col-lg-6 d-flex justify-content-center align-items-center">
+                <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% if comercio.fotos is not empty %}
                             {% for foto in comercio.fotos %}
                                 <div class="carousel-item {% if loop.first %}active{% endif %}">
                                     <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}"
                                          class="d-block" alt="...">
                                 </div>
                             {% endfor %}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                                data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                                data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        {% else %}
+                        <div class="carousel-item active">
+                            <img src="{{ asset('img/tienda.jpg') }}"
+                                 class="d-block" alt="...">
+                        {% endif %}
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <!-- Second column -->
             </div>
+            <!-- Second column -->
         </div>
+    </div>
 
-        <div class="container-fluid bg-body-tertiary">
-            <div class="container pt-md-5 pt-lg-5 pb-5 ">
-                <div class="row g-0">
-                    <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+    <div class="container-fluid bg-body-tertiary">
+        <div class="container pt-md-5 pt-lg-5 pb-5 ">
+            <div class="row g-0">
+                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
 
-                        <!--Info-->
-                        <div class="text-center">
+                    <!--Info-->
+                    <div class="text-center">
 
-                            {% if estado == 'Abierto' %}
-                                <p class="estado-abierto badge badge-success rounded-pill d-inline">Abierto</p>
-                            {% else %}
-                                <p class="estado-cerrado badge badge-danger rounded-pill d-inline">Cerrado</p>
-                            {% endif %}
-                            <p class="display-10">{{ comercio.email }}</p>
-                            <p class="display-10">{{ comercio.telefono }}</p>
-                            <p class="display-10">{{ comercio.descripcion }}</p>
-                            <p class="display-10">{{ comercio.direccion }}</p>
-                        </div>
-
+                        {% if estado == 'Abierto' %}
+                            <p class="estado-abierto badge badge-success rounded-pill d-inline">Abierto</p>
+                        {% else %}
+                            <p class="estado-cerrado badge badge-danger rounded-pill d-inline">Cerrado</p>
+                        {% endif %}
+                        <p class="display-10">{{ comercio.email }}</p>
+                        <p class="display-10">{{ comercio.telefono }}</p>
+                        <p class="display-10">{{ comercio.descripcion }}</p>
+                        <p class="display-10">{{ comercio.direccion }}</p>
                     </div>
 
-                    <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+                </div>
 
-                        <!-- Horario -->
-                        <div class="horario">
-                            <table>
-                                <thead class="bg-light">
-                                <tr>
-                                    <th colspan="5"> Horario</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] %}
-                                    {% set horariosParaDia = horas|filter(h => h.nombreDia == dia) %}
-                                    {% if horariosParaDia|length > 0 %}
-                                        {% set loopIndex = 0 %}
-                                        {% for  hora in horariosParaDia %}
-                                            <tr>
-                                                {% if loopIndex == 0 %}
-                                                    <td class="arriba"
-                                                        rowspan="{{ horariosParaDia|length }}">{{ dia }}</td>
-                                                    {% set loopIndex = loopIndex + 1 %}
-                                                {% endif %}
-                                                <td>{{ hora.horaApertura|date('H:i') }} -</td>
-                                                <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
+                <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+
+                    <!-- Horario -->
+                    <div class="horario">
+                        <table>
+                            <thead class="bg-light">
+                            <tr>
+                                <th colspan="5"> Horario</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for dia in ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo'] %}
+                                {% set horariosParaDia = horas|filter(h => h.nombreDia == dia) %}
+                                {% if horariosParaDia|length > 0 %}
+                                    {% set loopIndex = 0 %}
+                                    {% for  hora in horariosParaDia %}
                                         <tr>
-                                            <td>{{ dia }}</td>
-                                            <td colspan="2">Cerrado</td>
+                                            {% if loopIndex == 0 %}
+                                                <td class="arriba"
+                                                    rowspan="{{ horariosParaDia|length }}">{{ dia }}</td>
+                                                {% set loopIndex = loopIndex + 1 %}
+                                            {% endif %}
+                                            <td>{{ hora.horaApertura|date('H:i') }} -</td>
+                                            <td>{{ hora.horaCierre|date('H:i') }}</td>
                                         </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <input type="hidden" name="comercio" value="{{ comercio.id }}">
-                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td>{{ dia }}</td>
+                                        <td colspan="2">Cerrado</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="comercio" value="{{ comercio.id }}">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Galeria de imagenes -->
-    <div id="galeria-container" class="container">
-        <div class="galeria">
-            <div id="bucle-galeria" class="row">
-{#                {% for foto in comercio.fotos %}#}
-{#                    <div class="cuadro-galeria col-6 col-md-3 col-lg-2">#}
-{#                        <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ foto.archivo) }}" alt=""#}
-{#                             class=" rounded-2">#}
-{#                    </div>#}
-{#                {% endfor %}#}
-
-
-            </div>
+<!-- Galeria de imagenes -->
+<div id="galeria-container" class="container">
+    <div class="galeria">
+        <div id="bucle-galeria" class="row">
         </div>
-        <button id="anterior" onclick="cambiarImagen(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-        <button id="siguiente" onclick="cambiarImagen(1)"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
+    <button id="anterior" onclick="cambiarImagen(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button id="siguiente" onclick="cambiarImagen(1)"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
 
-    <!-- Descripcion larga -->
-    <div class="container">
-        <div class="row g-0">
-            <div class="d-flex flex-column justify-content-center align-items-center">
+<!-- Descripcion larga -->
+<div class="container">
+    <div class="row g-0">
+        <div class="d-flex flex-column justify-content-center align-items-center">
 
-                <!--Info-->
-                <div class="" style="margin-top: 8%;">
-                    <p>{{ comercio.descripcionLarga | raw }}</p>
-                </div>
+            <!--Info-->
+            <div class="" style="margin-top: 8%;">
+                <p>{{ comercio.descripcionLarga | raw }}</p>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container pt-md-5 pt-lg-5">
-        <div class="row g-0">
+<div class="container pt-md-5 pt-lg-5">
+    <div class="row g-0">
 
-            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
-                <div id="map" style="width: 100%; height: 400px;"></div>
-            </div>
-
+        <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
+            <div id="map" style="width: 100%; height: 400px;"></div>
         </div>
+
     </div>
-    </div>
+</div>
+</div>
 
-    <!--mapa-->
-    <div>
-        <script>
-            // Función para inicializar el mapa
-            function initMap() {
-                var direccion = "{{ comercio.direccion }}";
+<!--mapa-->
+<div>
+    <script>
+        // Función para inicializar el mapa
+        function initMap() {
+            var direccion = "{{ comercio.direccion }}";
 
-                var geocoder = new google.maps.Geocoder();
+            var geocoder = new google.maps.Geocoder();
 
-                geocoder.geocode({'address': direccion}, function (results, status) {
-                    if (status === 'OK') {
-                        var mapOptions = {
-                            center: results[0].geometry.location,
-                            zoom: 15
-                        };
+            geocoder.geocode({'address': direccion}, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
 
-                        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location,
-                            title: 'Ubicación del Comercio'
-                        });
-                    } else {
-                        alert('Geocodificación fallida debido a: ' + status);
-                    }
-                });
-            }
-        </script>
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                } else {
+                    alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
+    </script>
 
-        <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
-        </script>
-    </div>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
+    </script>
+</div>
 
 {% endblock %}
 {% block js %}
     <script>
         //galeria de imagenes
-        var fotosJson = JSON.parse("{{fotos|e("js")}}");
-        var fotosGaleria = fotosJson.slice(0,6);
+        var fotosJson = JSON.parse("{{ fotos|e("js") }}");
+        var fotosGaleria = fotosJson.slice(0, 6);
         var galeria = document.getElementById("bucle-galeria");
         let index = 6;
         // const imagenes = document.querySelectorAll('.cuadro-galeria');
         cargarFotos();
 
         function cargarFotos() {
-            fotosGaleria.forEach((url)=> {
+            fotosGaleria.forEach((url) => {
                 divImagen(url);
             })
         }
 
-        if (fotosJson.length <= 6){
+        if (fotosJson.length <= 6) {
             document.getElementById('anterior').style.display = 'none';
             document.getElementById('siguiente').style.display = 'none';
         }
@@ -216,32 +214,32 @@
             var cuadros = document.getElementsByClassName('cuadro-galeria');
             console.log(index);
 
-            if (step == 1){
+            if (step == 1) {
                 cuadros[0].remove();
-                if(fotosJson.length > index){
+                if (fotosJson.length > index) {
                     var foto = fotosJson[index];
                     index++;
-                }else if(fotosJson.length == index){
+                } else if (fotosJson.length == index) {
                     index = 0;
                     foto = fotosJson[index];
                     index++;
-                }else{
+                } else {
                     foto = fotosJson[index];
                     index++;
                 }
 
                 divImagen(foto);
 
-            }else if(step == -1){
-                cuadros[cuadros.length-1].remove();
-                if(fotosJson.length > index && index > 0){
+            } else if (step == -1) {
+                cuadros[cuadros.length - 1].remove();
+                if (fotosJson.length > index && index > 0) {
                     var foto = fotosJson[index];
                     index--;
-                }else if(0 >= index){
+                } else if (0 >= index) {
                     foto = fotosJson[index];
                     index = fotosJson.length;
                     index--;
-                }else{
+                } else {
                     index = 0;
                     foto = fotosJson[index];
                     index = fotosJson.length;
@@ -254,7 +252,7 @@
                 img.className = 'rounded-2';
                 img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
 
-                img.onclick = function() {
+                img.onclick = function () {
                     abrirModal(img.src);
                 };
 
@@ -266,14 +264,14 @@
         }
 
         //imagenes galeria
-        function divImagen(foto){
+        function divImagen(foto) {
             var div = document.createElement('div');
             div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
             var img = document.createElement('img');
             img.className = 'rounded-2';
             img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
 
-            img.onclick = function() {
+            img.onclick = function () {
                 abrirModal(img.src);
             };
 
