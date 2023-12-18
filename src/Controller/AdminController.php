@@ -489,18 +489,23 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig');
     }
 
-    #[Route('/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
-    public function deleteHorario(Horario $horario, EntityManagerInterface $em): Response
+    #[Route('comercio/{id}/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
+    public function deleteHorario(Request $request, Horario $horario, EntityManagerInterface $em): Response
     {
         $comercioId = $horario->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
-        $em->remove($horario);
-        $em->flush();
+        if ($request->isMethod('POST')) {
 
-        $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
+            $em->remove($horario);
+            $em->flush();
 
-        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+            $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
+
+            }
+
+//        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+        return $this->json(['code' => 200]);
     }
 
 }

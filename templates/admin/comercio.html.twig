@@ -297,8 +297,9 @@
                                         <td>{{ hora.nombreDia }}</td>
                                         <td>{{ hora.horaApertura|date('H:i') }}</td>
                                         <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                        <td><a href="{{ path('horario_delete', {'id': hora.id}) }}"><i
-                                                        class="fas fa-trash-can fa-1x" style="color: #B0413E"></i></a>
+{#                                        <td><a href="{{ path('horario_delete', {'id': hora.id}) }}"><i#}
+{#                                                        class="fas fa-trash-can fa-1x" style="color: #B0413E"></i></a>#}
+                                        <td onclick="borrarHorario({{ hora.id }})"><i class="fas fa-trash-can fa-1x" style="color: #B0413E"></i>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -603,6 +604,28 @@
             fetch(url, {
                     method: 'POST',
                     body: formData
+                }
+            )
+                .then(response => response.json())
+                .then(data => {
+                    console.log('chachi');
+                    location.reload(pestana);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        function borrarHorario(id) {
+            var envio = {'id': id};
+            var url = '/horario/' + id + '/delete';
+
+            var activeTabId = 'v-tabs-horarios-tab';
+            localStorage.setItem('activeTabId', activeTabId);
+            console.log('activeTabId:', activeTabId);
+
+            fetch(url, {
+                    method: 'POST',
+                    body: envio
                 }
             )
                 .then(response => response.json())
