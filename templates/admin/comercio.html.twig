@@ -251,7 +251,7 @@
                                     <td><input type="time" name="horaApertura" id="horaApertura"></td>
                                     <td><input type="time" name="horaCierre" id="horaCierre"></td>
                                     <td>
-                                        <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded">
+                                        <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded" id="sbmBtn">
                                             <i class="far fa-square-check fa-2x"
                                                style="color: green">{{ button_label|default('') }}</i>
                                         </button>
@@ -329,7 +329,7 @@
                                                         value="{{ comercio.id }}">
                                             </div>
                                             <div class="modal-footer">
-                                                <button onclick="nuevaFoto({{ comercio.id }})" class="btn btn-primary">Subir Foto
+                                                <button onclick="nuevaFoto({{ comercio.id }})" class="btn btn-primary" id="sbmBtn2">Subir Foto
                                                 </button>
                                             </div>
                                     </div>
@@ -455,12 +455,15 @@
             var url = '/admin/foto/new';
             var formData = new FormData();
             var inputFile = document.querySelector('input[name="foto"]');  // Ajusta el selector según tu HTML
+            var submitButton = document.querySelector('#sbmBtn2');
 
             formData.append('foto', inputFile.files[0]);
             formData.append('comercio', id);
 
             var activeTabId = 'v-tabs-fotos-tab';
             localStorage.setItem('activeTabId', activeTabId);
+
+            submitButton.disabled = true;
 
             fetch(url, {
                 method: 'POST',
@@ -473,6 +476,11 @@
                 })
                 .catch(error => {
                     console.error('Error al añadir nueva foto:', error);
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        submitButton.disabled = false;
+                    }, 3000);
                 });
         }
 
@@ -538,6 +546,7 @@
             var horaCierre = document.getElementById('horaCierre').value;
             var url = '/admin/horario/new';
             var formData = new FormData();
+            var submitButton = document.querySelector('#sbmBtn');
 
             formData.append('comercio', comercio);
             formData.append('dia', dia);
@@ -547,9 +556,11 @@
             var activeTabId = 'v-tabs-horarios-tab';
             localStorage.setItem('activeTabId', activeTabId);
 
+            submitButton.disabled = true;
+
             fetch(url, {
                     method: 'POST',
-                    body: formData
+                    body: formData,
                 }
             )
                 .then(response => response.json())
@@ -560,7 +571,13 @@
                 .catch(error => {
                     console.log(error);
                 })
+                .finally(() => {
+                    setTimeout(() => {
+                        submitButton.disabled = false;
+                    }, 3000);
+                });
         }
+
         function borrarHorario(id) {
             var envio = {'id': id};
             var url = '/horario/' + id + '/delete';
@@ -614,5 +631,6 @@
                 localStorage.removeItem('activeTabId');
             }
         });
+
     </script>
 {% endblock %}
