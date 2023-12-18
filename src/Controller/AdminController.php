@@ -402,30 +402,9 @@ class AdminController extends AbstractController
             }
             $entityManager->persist($foto);
             $entityManager->flush();
-
-            return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
-//            return $this->json(['code' => 200]);
         }
-        return $this->render('admin/comercio.html.twig');
+        return $this->json(['code' => 200]);
     }
-
-//    #[Route('comercio/{id}/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
-//    public function deleteHorario(Request $request, Horario $horario, EntityManagerInterface $em): Response
-//    {
-//        $comercioId = $horario->getComercio();
-//        $comercio = $em->getRepository(Comercio::class)->find($comercioId);
-//
-//        if ($request->isMethod('POST')) {
-//
-//            $em->remove($horario);
-//            $em->flush();
-//
-//            $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
-//
-//        }
-////        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
-//        return $this->json(['code' => 200]);
-//    }
 
     #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['POST'])]
     public function deleteFoto(Request $request,Foto $foto, EntityManagerInterface $em): Response
@@ -450,7 +429,6 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'La foto ha sido eliminada con éxito.');
         }
 
-//        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
         return $this->json(['code' => 200]);
     }
 
@@ -523,8 +501,6 @@ class AdminController extends AbstractController
             $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
 
             }
-//        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
         return $this->json(['code' => 200]);
     }
-
 }
