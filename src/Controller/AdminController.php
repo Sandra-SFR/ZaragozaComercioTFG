@@ -404,18 +404,36 @@ class AdminController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+//            return $this->json(['code' => 200]);
         }
-
         return $this->render('admin/comercio.html.twig');
     }
 
+//    #[Route('comercio/{id}/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
+//    public function deleteHorario(Request $request, Horario $horario, EntityManagerInterface $em): Response
+//    {
+//        $comercioId = $horario->getComercio();
+//        $comercio = $em->getRepository(Comercio::class)->find($comercioId);
+//
+//        if ($request->isMethod('POST')) {
+//
+//            $em->remove($horario);
+//            $em->flush();
+//
+//            $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
+//
+//        }
+////        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+//        return $this->json(['code' => 200]);
+//    }
+
     #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['POST'])]
-    public function deleteFoto(Foto $foto, EntityManagerInterface $em): Response
+    public function deleteFoto(Request $request,Foto $foto, EntityManagerInterface $em): Response
     {
         $comercioId = $foto->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
-
+        if ($request->isMethod('POST')) {
         $fs = new Filesystem();
 
         $currentDir = $this->getParameter('kernel.project_dir');
@@ -430,8 +448,10 @@ class AdminController extends AbstractController
         $em->flush();
 
         $this->addFlash('success', 'La foto ha sido eliminada con éxito.');
+        }
 
-        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+//        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
+        return $this->json(['code' => 200]);
     }
 
     #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET', 'POST'])]
@@ -503,7 +523,6 @@ class AdminController extends AbstractController
             $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
 
             }
-
 //        return $this->redirectToRoute('comercio_edit', ['id' => $comercio->getId()]);
         return $this->json(['code' => 200]);
     }
