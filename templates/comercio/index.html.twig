@@ -12,7 +12,7 @@
                 <div class="card shadow-3-strong">
                     <a href="/comercio/{{ comercio.id }}">
                         {% if comercio.fotos|length > 0 %}
-                            <img src="{{ asset('storage/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
+                            <img src="{{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
                                  class="card-img-top d-flex align-items-center" alt="Foto comercio"
                                  style="border-bottom-left-radius: 4rem; height: 12rem;">
                         {% else %}

@@ -250,10 +250,10 @@
                 div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
                 var img = document.createElement('img');
                 img.className = 'rounded-2';
-                img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
+                img.src = "{{ asset('storage/thumb/' ~ comercio.id ~ '/') }}" + foto;
 
                 img.onclick = function () {
-                    abrirModal(img.src);
+                    abrirModal(foto, {{ comercio.id }});
                 };
 
                 div.appendChild(img);
@@ -269,10 +269,10 @@
             div.className = 'cuadro-galeria col-6 col-md-4 col-lg-2 text-center';
             var img = document.createElement('img');
             img.className = 'rounded-2';
-            img.src = "{{ asset('storage/' ~ comercio.id ~ '/') }}" + foto;
+            img.src = "{{ asset('storage/thumb/' ~ comercio.id ~ '/') }}" + foto;
 
             img.onclick = function () {
-                abrirModal(img.src);
+                abrirModal(foto,{{ comercio.id }});
             };
 
             div.appendChild(img);
@@ -280,7 +280,7 @@
         }
 
         //modal imagenes
-        function abrirModal(src) {
+        function abrirModal(foto, id) {
             var modal = document.getElementById('myModal');
 
             if (!modal) {
@@ -295,7 +295,7 @@
             }
 
             var modalImg = document.createElement('img');
-            modalImg.src = src;
+            modalImg.src = `/storage/${id}/${foto}`;
 
             modal.innerHTML = '';
             modal.appendChild(modalImg);
