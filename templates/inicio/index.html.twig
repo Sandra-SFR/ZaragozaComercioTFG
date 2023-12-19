@@ -119,6 +119,7 @@
         const searchResults = document.getElementById('search-results');
         let controller = new AbortController();
         let timeout;
+        var imgComercio;
 
         searchInput.addEventListener('input', function () {
 
@@ -155,11 +156,12 @@
                                         dataWithAccents.forEach(comercio => {
                                             if (comercio.estado != 1 && comercio.estado != 3) {
                                                 console.log(comercio.estado);
+                                                imagenComercio(comercio);
                                                 searchResults.innerHTML +=
                                                     '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
                                                     '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
-                                                    '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                     imgComercio +
                                                     '<div class="card-body">' +
                                                     '<p class="card-text">' + comercio.nombre + '</p>' +
                                                     '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
@@ -176,18 +178,18 @@
                                 // Intenta buscar palabras clave en la descripción
                                 const urlWithKeywords = '/buscar?search=' + searchTerm + '&searchInDescripcionKeywords=true';
 
-
                                 fetch(urlWithKeywords)
                                     .then(response => response.json())
                                     .then(dataWithKeywords => {
                                         dataWithKeywords.forEach(comercio => {
                                             if (comercio.estado != 1 && comercio.estado != 3) {
                                                 console.log(comercio.estado);
+                                                imagenComercio(comercio);
                                                 searchResults.innerHTML +=
                                                     '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
                                                     '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
-                                                    '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                                    imgComercio +
                                                     '<div class="card-body">' +
                                                     '<p class="card-text">' + comercio.nombre + '</p>' +
                                                     '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
@@ -204,11 +206,12 @@
                                 data.forEach(comercio => {
                                     if (comercio.estado != 1 && comercio.estado != 3) {
                                         console.log(comercio.estado);
+                                        imagenComercio(comercio);
                                         searchResults.innerHTML +=
                                             '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
                                             '<div class="text-capitalize card shadow-3-strong">' +
                                             '<a href="/comercio/' + comercio.id + '">' +
-                                            '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">' +
+                                            imgComercio +
                                             '<div class="card-body">' +
                                             '<p class="card-text">' + comercio.nombre + '</p>' +
                                             '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
@@ -225,6 +228,15 @@
                 }
             }, 300);
         });
+
+        function imagenComercio(comercio){
+            console.log(comercio);
+            if (comercio.foto) {
+                imgComercio = '<img src="/storage/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">';
+            } else{
+                imgComercio = '<img src="/img/tienda.jpg" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">';
+            }
+        }
 
         // Función para eliminar acentos y caracteres especiales
         function removeAccents(str) {
