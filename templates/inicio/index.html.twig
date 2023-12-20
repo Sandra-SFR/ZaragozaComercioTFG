@@ -19,10 +19,9 @@
                 <div class="barra col-10 col-md-8 col-lg-6 shadow-3-strong">
                     <div class="input-group">
                         <input class="form-control sin-focus" type="text" id="search-input"
-                               placeholder="Buscar comercios"
-                               style="border: none; outline: none;" aria-describedby="lupa">
-                        <span class="input-group-text" id="lupa" style="border: none; outline: none;">
-                    <i class="fas fa-magnifying-glass fa-lg" style="color: #7e868c"></i>
+                               placeholder="Buscar comercios" aria-describedby="lupa">
+                        <span class="input-group-text" id="lupa">
+                    <i class="fas fa-magnifying-glass fa-lg"></i>
                     </span>
                     </div>
                 </div>
@@ -80,8 +79,6 @@
                         {% endif %}
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -100,10 +97,7 @@
                         Cosas que hacen cosas y dicen cosas.
                     </h3>
                 </div>
-
                 <div class="col-md-3 imagen-quees"></div>
-
-
             </div>
         </div>
     </div>
@@ -157,7 +151,7 @@
                                                 console.log(comercio.estado);
                                                 imagenComercio(comercio);
                                                 searchResults.innerHTML +=
-                                                    '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                    '<div class="comercio-card col-6 col-md-4 col-lg-3 mt-3">' +
                                                     '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
                                                      imgComercio +
@@ -185,7 +179,7 @@
                                                 console.log(comercio.estado);
                                                 imagenComercio(comercio);
                                                 searchResults.innerHTML +=
-                                                    '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                                    '<div class="comercio-card col-6 col-md-4 col-lg-3 mt-3">' +
                                                     '<div class="text-capitalize card shadow-3-strong">' +
                                                     '<a href="/comercio/' + comercio.id + '">' +
                                                     imgComercio +
@@ -207,13 +201,13 @@
                                         console.log(comercio.estado);
                                         imagenComercio(comercio);
                                         searchResults.innerHTML +=
-                                            '<div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">' +
+                                            '<div class="comercio-card col-6 col-md-4 col-lg-3 mt-3">' +
                                             '<div class="text-capitalize card shadow-3-strong">' +
                                             '<a href="/comercio/' + comercio.id + '">' +
                                             imgComercio +
                                             '<div class="card-body">' +
                                             '<p class="card-text">' + comercio.nombre + '</p>' +
-                                            '<p class="card-text" style="font-size: small">' + comercio.categoria + '</p>' +
+                                            '<p class="card-small card-text">' + comercio.categoria + '</p>' +
                                             '</div>' +
                                             '</a>' +
                                             '</div>';
@@ -230,9 +224,9 @@
 
         function imagenComercio(comercio){
             if (comercio.foto) {
-                imgComercio = '<img src="/storage/thumb/' + comercio.id + '/' + comercio.foto + '" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">';
+                imgComercio = '<img src="/storage/thumb/' + comercio.id + '/' + comercio.foto + '" class="card-top card-img-top d-flex align-items-center" "' + comercio.nombre + '">';
             } else{
-                imgComercio = '<img src="/img/tienda.jpg" class="card-img-top d-flex align-items-center" alt="Foto comercio" style="border-bottom-left-radius: 4rem; height: 12rem;">';
+                imgComercio = '<img src="/img/tienda.jpg" class="card-top card-img-top d-flex align-items-center" alt="' + comercio.nombre + '">';
             }
         }
 
@@ -241,5 +235,4 @@
             return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         }
     </script>
-
 {% endblock %}

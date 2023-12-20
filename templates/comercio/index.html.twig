@@ -8,22 +8,20 @@
     <div class="row justify-content-center">
         {% for comercio in comercios %}
             {% if comercio.estado == '2' or comercio.estado == '4' %}
-            <div class="col-6 col-md-4 col-lg-3 mt-3" style="width: 20rem;">
-                <div class="card shadow-3-strong">
-                    <a href="/comercio/{{ comercio.id }}">
-                        {% if comercio.fotos|length > 0 %}
-                            <img src="{{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
-                                 class="card-img-top d-flex align-items-center" alt="Foto comercio"
-                                 style="border-bottom-left-radius: 4rem; height: 12rem;">
-                        {% else %}
-                            <img src="{{ asset('img/tienda.jpg') }}"
-                                 class="card-img-top d-flex align-items-center" alt="Foto comercio"
-                                 style="border-bottom-left-radius: 4rem; height: 12rem;">
-                        {% endif %}
-                        <div class="card-body">
-                            <p class="card-text">{{ comercio.nombre }} </p>
-                            <p class="card-text text-capitalize" style="font-size: small;">{{ comercio.categorias[0].nombre }}</p>
-                        </div>
+                <div class="comercio-card col-6 col-md-4 col-lg-3 mt-3">
+                    <div class="card shadow-3-strong">
+                        <a href="/comercio/{{ comercio.id }}">
+                            {% if comercio.fotos|length > 0 %}
+                                <img src="{{ asset('storage/thumb/' ~ comercio.id ~ '/' ~ comercio.fotos[0].archivo) }}"
+                                     class="card-top card-img-top d-flex align-items-center" alt="{{ comercio.nombre }}">
+                            {% else %}
+                                <img src="{{ asset('img/tienda.jpg') }}"
+                                     class="card-top card-img-top d-flex align-items-center" alt="{{ comercio.nombre }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <p class="card-text">{{ comercio.nombre }} </p>
+                                <p class="card-small card-text text-capitalize">{{ comercio.categorias[0].nombre }}</p>
+                            </div>
                     </a>
                 </div>
             </div>

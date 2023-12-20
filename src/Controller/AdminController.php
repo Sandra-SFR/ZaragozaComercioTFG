@@ -37,6 +37,16 @@ class AdminController extends AbstractController
     #[Route('/', name: 'admin')]
     public function index(): Response
     {
+        $user = $this->getUser();
+        $rol = $user->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.png',
+            ]);
+        }
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);
