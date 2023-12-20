@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="mt-5"></div>
-    <section class="container " style="margin-top: 10%">
-        <h1 style="text-align: center; margin-top: 5%">Editar categoria</h1>
+    <section class="container mt-5">
+        <h1 class="text-center mt-3">Editar categoria</h1>
         <div class="">
             <div class="row">
 
@@ -24,16 +24,16 @@
                         <label class="form-label" for="form5Example2">{{ field_label(form.icono) }}</label>
                     </div>
 
-                    <div style="text-align: center; margin-top: 3%">
+                    <div class="text-center mt-3">
                         <button type="submit" class="btn btn-link btn-sm btn-rounded">
                             <a href="{{ path('admin_categorias') }}">
-                                <i class="far fa-square-check fa-2x"
-                                   style="color: green">{{ button_label|default('') }}</i></a>
+                                <i class="far fa-square-check fa-2x green"
+                                  >{{ button_label|default('') }}</i></a>
                         </button>
 
                         <a href="{{ path('categoria_delete', {'id': categoria.id}) }}"
                            class="btn btn-link btn-sm btn-rounded">
-                            <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i></a>
+                            <i class="fas fa-trash-can fa-2x red"></i></a>
                     </div>
 
                 </div>
@@ -42,7 +42,6 @@
             </div>
         </div>
     </section>
-    {% block footer %}{% endblock %}
 {% endblock %}
 {% block js %}
 {% endblock %}

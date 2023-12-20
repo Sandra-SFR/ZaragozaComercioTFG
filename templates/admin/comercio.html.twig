@@ -72,7 +72,7 @@
                                 data-mdb-toggle="modal"
                                 data-mdb-target="#borrarComercio">
                             Eliminar comercio
-                            <i class="fas fa-trash-can fa-1x px-1" style="color: #B0413E"></i>
+                            <i class="fas fa-trash-can fa-1x px-1 red"></i>
                         </button>
                     </a
                     >
@@ -90,7 +90,7 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-comercio-tab"
                     >
-                        <h1 style="text-align: center; margin-top: 5%">Editar comercio</h1>
+                        <h1 class="text-center mt-3">Editar comercio</h1>
                         <div class="">
                             <div class="row">
 
@@ -149,8 +149,8 @@
                                             <label class="form-label"
                                                    for="form20">{{ field_label(form.estado) }}</label>
                                             <div class="form-notch">
-                                                <div class="form-notch-leading" style="width: 9px;"></div>
-                                                <div class="form-notch-middle" style="width: 46.2px;"></div>
+                                                <div class="form-notch-leading w9"></div>
+                                                <div class="form-notch-middle w46"></div>
                                                 <div class="form-notch-trailing"></div>
                                             </div>
                                         </div>
@@ -158,8 +158,8 @@
                                     <div style="text-align: center; margin-top: 3%">
                                         <button type="submit" class="btn btn-link btn-sm btn-rounded">
                                             <a href="{{ path('admin_comercios') }}">
-                                                <i class="far fa-square-check fa-2x"
-                                                   style="color: green">{{ button_label|default('') }}</i></a>
+                                                <i class="far fa-square-check fa-2x green"
+                                                >{{ button_label|default('') }}</i></a>
                                         </button>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-categorias-tab"
                     >
-                        <h1 class="mt-5 mb-5" style="text-align: center;">Categoría</h1>
+                        <h1 class="mt-5 mb-5 text-center">Categoría</h1>
 
                         <!-- Categoria input -->
                         <div class="form-outline mb-3">
@@ -194,10 +194,10 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <div style="text-align: center; margin-top: 3%">
+                            <div class="text-center mt-3">
                                 <button onclick="nuevaCategoria()" class="btn btn-link btn-sm btn-rounded">
-                                        <i class="far fa-square-check fa-2x"
-                                           style="color: green">{{ button_label|default('') }}</i>
+                                        <i class="far fa-square-check fa-2x green"
+                                           >{{ button_label|default('') }}</i>
                                 </button>
                             </div>
 
@@ -211,7 +211,7 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-horarios-tab"
                     >
-                        <h1 style="text-align: center; margin-top: 5%">Horarios</h1>
+                        <h1 class="text-center mt-3">Horarios</h1>
                         <!--Horarios del comercio-->
                         <div class="row">
                             <table>
@@ -229,7 +229,7 @@
                                         <td>{{ hora.nombreDia }}</td>
                                         <td>{{ hora.horaApertura|date('H:i') }}</td>
                                         <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                        <td onclick="borrarHorario({{ hora.id }})"><i class="fas fa-trash-can fa-1x" style="color: #B0413E"></i>
+                                        <td onclick="borrarHorario({{ hora.id }})"><i class="fas fa-trash-can fa-1x red"></i>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -252,8 +252,8 @@
                                     <td><input type="time" name="horaCierre" id="horaCierre"></td>
                                     <td>
                                         <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded" id="sbmBtn">
-                                            <i class="far fa-square-check fa-2x"
-                                               style="color: green">{{ button_label|default('') }}</i>
+                                            <i class="far fa-square-check fa-2x green"
+                                              >{{ button_label|default('') }}</i>
                                         </button>
                                     </td>
                                 </tr>
@@ -272,7 +272,7 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-fotos-tab"
                     >
-                        <h1 style="text-align: center; margin-top: 5%">Añadir fotos</h1>
+                        <h1 class="text-center mt-3">Añadir fotos</h1>
                         <!-- Ver fotos del comercio -->
                         <div class="row gap-2 mb-2">
                             {% for foto in comercio.fotos %}
@@ -283,16 +283,16 @@
                                             <button onclick="destacada({{ foto.id }})"
                                                     class="btn btn-link btn-sm btn-rounded">
                                                 {% if foto.isDestacada %}
-                                                    <i class="fas fa-star fa-2x"
-                                                       style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                                    <i class="fas fa-star fa-2x yellow"
+                                                       >{{ button_label|default('') }}</i>
                                                 {% else %}
-                                                    <i class="far fa-star fa-2x"
-                                                       style="color: #e3e32d">{{ button_label|default('') }}</i>
+                                                    <i class="far fa-star fa-2x yellow"
+                                                       >{{ button_label|default('') }}</i>
                                                 {% endif %}
                                             </button>
 
                                             <button onclick="borrarFoto({{ foto.id }})" class="btn btn-link btn-sm btn-rounded">
-                                                <i class="fas fa-trash-can fa-2x" style="color: #B0413E"></i>
+                                                <i class="fas fa-trash-can fa-2x red"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -346,7 +346,7 @@
                             role="tabpanel"
                             aria-labelledby="v-tabs-eliminar-tab"
                     >
-                        <h1 class="mb-5" style="text-align: center; margin-top: 5%">Eliminar comercio</h1>
+                        <h1 class="text-center mt-3 mb-3">Eliminar comercio</h1>
                         <!--Horarios del comercio-->
                         <div class="row">
                             <p class="mt-5 text-center">Eliminar este comercio de forma permanente</p>
@@ -393,7 +393,6 @@
         </div>
         <!-- Tabs nav vertical -->
     </section>
-    {% block footer %}{% endblock %}
 {% endblock %}
 {% block js %}
     <script>

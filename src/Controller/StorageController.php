@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comercio;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -16,7 +14,6 @@ class StorageController extends AbstractController
     #[Route('/', name: 'app_storage')]
     public function index(): Response
     {
-
         return $this->render('storage/index.html.twig', [
             'controller_name' => 'StorageController',
         ]);
@@ -26,10 +23,8 @@ class StorageController extends AbstractController
     public function getFileThumb($comercio_id ,string $filename)
     {
         // Obtener la ruta actual del archivo
-        //TODO: quitar todo
         $currentDir = __DIR__;
         // La ruta real al archivo en la carpeta "storage"
-//        $filePath = $this->getParameter('kernel.project_dir') . '/storage/' . $filename;
         $filePath = $currentDir.'/../../storage/' . $comercio_id . '/thumb/' . $filename; // Ruta completa al archivo
 
         // Verificar que el archivo exista
@@ -53,7 +48,6 @@ class StorageController extends AbstractController
         // Obtener la ruta actual del archivo
         $currentDir = __DIR__;
         // La ruta real al archivo en la carpeta "storage"
-//        $filePath = $this->getParameter('kernel.project_dir') . '/storage/' . $filename;
         $filePath = $currentDir.'/../../storage/' . $comercio_id . '/' . $filename; // Ruta completa al archivo
 
         // Verificar que el archivo exista
@@ -70,6 +64,4 @@ class StorageController extends AbstractController
 
         return $response;
     }
-
-
 }

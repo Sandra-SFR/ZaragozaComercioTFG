@@ -9,6 +9,8 @@
 
         {{ form_start(form, {'attr': {'id': 'formIdCat'}}) }}
 
+        <div class="sirulo" id="sirulo"></div>
+
         <div id="paso1" class="paso-formulario">
             <!-- Name input -->
             <div class="form-outline mb-4">
@@ -26,18 +28,18 @@
             <div class="error-message"></div>
 
             <div>
-                <p>Para añadir un icono pon la clase sin comillas:</p>
-                <a href="https://fontawesome.com/search?o=r&m=free">Iconos font awesome</a>
+                <p>Para añadir un icono pon el nombre del archivo con img/ detante:</p>
+                <p>Carga la imagen en la carpeta public/img</p>
             </div>
         </div>
 
-        <div id="paso3" class="paso-formulario" style="display: none;">
+        <div id="paso3" class="paso-formulario d-none">
 
         </div>
 
         <!-- Barra de progreso -->
         <div class="progress mb-4">
-            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+            <div id="progressBar" class="progress-bar" role="progressbar" aria-valuenow="0"
                  aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
@@ -52,14 +54,9 @@
         <!-- Botón de envío -->
         <br>
         <button class="btn btn-lg btn-primary btn-floating submitBtn" id="submitBtn" type="submit"  onclick="submitForm()"><i class="fa-regular fa-floppy-disk"></i></button>
-
         {{ form_end(form) }}
 
     </div>
-
-    <a href="{{ path('admin_categorias') }}">back to list</a>
-
-{% block footer %}{% endblock %}
 
 {% endblock %}
 {% block js %}
@@ -89,6 +86,7 @@
             // Avanzar al siguiente paso
             currentStep += n;
             showStep(currentStep);
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
         }
 
         function updateProgressBar(n) {
@@ -149,21 +147,10 @@
             document.getElementById("formIdCat").submit();
         }
 
-        // function submitForm() {
-        //     // Si el paso actual es el último, valida la categoría antes de enviar el formulario
-        //     if (currentStep === document.getElementsByClassName("paso-formulario").length - 1) {
-        //         if (!validateCategory()) {
-        //             return;
-        //         }
-        //     }
-        //
-        //     // Enviar el formulario
-        //     document.forms["form"].submit();
-        // }
-
         function showError(field, message) {
             // Encuentra el elemento de mensaje de error asociado con el campo
             var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            document.getElementById("sirulo").classList.add("sirulo-profe");
 
             // Muestra el mensaje de error y aplica el estilo
             errorElement.textContent = message;
@@ -172,16 +159,17 @@
         function hideError(field) {
             // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
             var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
             errorElement.textContent = '';
         }
 
         function hideAllErrors() {
             // Oculta todos los mensajes de error en el formulario
             var errorElements = document.querySelectorAll('.error-message');
+            document.getElementById("sirulo").classList.remove("sirulo-profe");
             errorElements.forEach(function (element) {
                 element.textContent = '';
             });
         }
-
     </script>
 {% endblock %}

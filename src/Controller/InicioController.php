@@ -32,7 +32,6 @@ class InicioController extends AbstractController
         // Realiza la búsqueda en la base de datos
         $comercios = $em->getRepository(Comercio::class)->buscadorComercios($searchTerm);
 
-
         // Convierte los resultados en un formato JSON
         $result = [];
         foreach ($comercios as $comercio) {
@@ -45,7 +44,6 @@ class InicioController extends AbstractController
                 'estado' => $comercio['estado'],
             ];
         }
-
         return new JsonResponse($result);
     }
 
@@ -62,5 +60,4 @@ class InicioController extends AbstractController
             'categoria' => $categoria,
         ]);
     }
-
 }

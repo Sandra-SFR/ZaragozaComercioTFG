@@ -25,7 +25,7 @@
             <td></td>
             <td>
                 <button type="button" class="btn btn-link btn-sm btn-rounded">
-                    <a href="/admin/comercio/new"><i class="fa-regular fa-square-plus fa-2x" style="color: green"></i></a>
+                    <a href="/admin/comercio/new"><i class="fa-regular fa-square-plus fa-2x green"></i></a>
                 </button>
             </td>
         </tr>
@@ -39,18 +39,15 @@
                         {% if comercio.archivo != null %}
                             <img
                                     src="/storage/{{ comercio.id }}/{{ comercio.archivo }}"
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
+                                    alt="{{ comercio.nombre }}"
+                                    class="rounded-circle wh45"
                             />
                         {% else %}
                             <img
                                     src="/img/tienda.jpg"
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
+                                    alt="{{ comercio.nombre }}"
+                                    class="rounded-circle wh45"
                             />
-
                         {% endif %}
 
                         <div class="ms-3">

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Comercio;
 use App\Entity\Foto;
-use App\Form\FotoCreateForm;
 use Doctrine\ORM\EntityManagerInterface;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
@@ -18,8 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/foto')]
 class FotoController extends AbstractController
 {
-
-
     #[Route('/', name: 'foto_index')]
     public function index(): Response
     {
@@ -45,13 +42,8 @@ class FotoController extends AbstractController
     public function newNo(Request $request, EntityManagerInterface $em): Response
     {
         $helpers = $this->get("app.helpers");
-
         $id = $request->get("id", null);
-
-//        $title = $request->get("title", null);
-
         $hash = $request->get("authorization", null);
-
         $check = $helpers->authCheck($hash);
 
         if ($check) {
@@ -72,10 +64,9 @@ class FotoController extends AbstractController
             foreach ($files as $file) {
 
                 if (!empty($file) && $file != null && is_object($register)) {
-
                     $type = $file->getMimeType();
-
                     $privilege = $register->getPrivilege();
+
                     if ($privilege < 3) {
                         $f = "uploads/events/event_".$comercio->getId();
                         $size = 0;
@@ -90,7 +81,6 @@ class FotoController extends AbstractController
                                 $file_name = uniqid() . ".jpg";
                                 $path = "uploads/events/event_" . $id . "/";
                                 $file->move($path, $file_name);
-//                                $zipName = $comercio->getCode() . '.zip';
 
                                 $fs = new Filesystem();
 
@@ -103,9 +93,6 @@ class FotoController extends AbstractController
                                 if (!$fs->exists($path . "thumb")) {
                                     $fs->mkdir($path . "thumb", 0775);
                                 }
-//                                if ($fs->exists($path . $zipName)) {
-//                                    $fs->remove($path . $zipName);
-//                                }
 
                                 $helpers->resizeImage($path, $file_name, 2000, 2000, "large");
                                 $helpers->resizeImage($path, $file_name, 600, 600, "medium");
@@ -113,30 +100,9 @@ class FotoController extends AbstractController
 
                                 $fs->remove($path . $file_name);
 
-//                                $zip = new ZipArchive();
-//                                if ($zip->open($path . $zipName, ZipArchive::CREATE)) {
-//                                    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path . "large"), RecursiveIteratorIterator::LEAVES_ONLY);
-//                                    foreach ($files as $name => $filename) {
-//                                        if (!is_dir($filename)) {
-//                                            $new_filename = substr($name, strrpos($name, '/') + 1);
-//                                            $zip->addFile($filename, $new_filename);
-//                                        }
-//                                    }
-//
-//                                    $ok = $zip->close();
-//                                } else {
-//                                    echo "maaaal";
-//                                }
-//
-//                                $createdAt = new \Datetime('now');
-
                                 $photo = new Foto();
                                 $photo->setArchivo($file_name);
-//                                $photo->setImagePath($path);
                                 $photo->setComercio($comercio);
-//                                $photo->setTitle($title);
-//                                $photo->setUser($user);
-//                                $photo->setCreatedAt($createdAt);
 
                                 $em->persist($photo);
                                 $em->flush();
@@ -190,11 +156,8 @@ class FotoController extends AbstractController
     public function edit(int $id, Request $request, Comercio $comercio, EntityManagerInterface $em): Response
     {
         $helpers = $this->get("app.helpers");
-
         $hash = $request->get("authorization", null);
-
         $check = $helpers->authCheck($hash);
-
         $json = $request->get("json", null);
 
         if ($check) {
@@ -260,7 +223,6 @@ class FotoController extends AbstractController
                 "msg" => "Authorization not valid"
             );
         }
-
         return $helpers->toJson($data);
     }
 
@@ -313,28 +275,12 @@ class FotoController extends AbstractController
                         $fs->remove($path . $zipName);
                     }
 
-//                    $zip = new ZipArchive();
-//                    if ($zip->open($path . $zipName, ZipArchive::CREATE)) {
-//                        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path . "large"), RecursiveIteratorIterator::LEAVES_ONLY);
-//                        foreach ($files as $name => $filename) {
-//                            if (!is_dir($filename)) {
-//                                $new_filename = substr($name, strrpos($name, '/') + 1);
-//                                $zip->addFile($filename, $new_filename);
-//                            }
-//                        }
-//
-//                        $ok = $zip->close();
-//                    } else {
-//                        echo "maaaal";
-//                    }
-
                     if (is_object($comments)) {
                         $em->remove($comments);
                         $em->flush();
                     }
 
                     $em->remove($photo);
-
                     $em->flush();
 
                     $data = array(
@@ -363,7 +309,6 @@ class FotoController extends AbstractController
                 "msg" => "Authorization not valid"
             );
         }
-
         return $helpers->toJson($data);
     }
 
@@ -433,7 +378,6 @@ class FotoController extends AbstractController
                 "msg" => "Authorization not valid"
             );
         }
-
         return $helpers->toJson($data);
     }
 }

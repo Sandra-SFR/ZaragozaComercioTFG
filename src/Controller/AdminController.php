@@ -1,20 +1,14 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Categoria;
 use App\Form\CategoriaNewFormType;
-use App\Form\ComercioCategoriaFormType;
 use App\Form\ComercioNewFormType;
 use DateTime;
 use App\Entity\Comercio;
 use App\Entity\Foto;
 use App\Entity\Horario;
 use App\Form\ComercioCreateForm;
-use App\Form\CategoriaCreateFormType;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -22,7 +16,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
 
 #[Route('/admin')]
 class AdminController extends AbstractController
@@ -509,7 +502,6 @@ class AdminController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'El horario ha sido eliminada con éxito.');
-
         }
         return $this->json(['code' => 200]);
     }
