@@ -35,12 +35,16 @@ class AdminController extends AbstractController
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($user, ['nombre' => 'ASC'], 20, 0);
 
 
-        if (in_array('ROLE_USER', $rol)){
+        if (in_array('ROLE_ADMIN', $rol)){
+            return $this->render('admin/index.html.twig', [
+                'controller_name' => 'AdminController',
+            ]);
+        }else if (in_array('ROLE_USER', $rol)){
             return $this->render('admin/comercios.html.twig', [
                 'comercios' => $comercios,
                 'controller_name' => 'Comercios',
             ]);
-        }else if (!in_array('ROLE_ADMIN', $rol)) {
+        }else if(!in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
