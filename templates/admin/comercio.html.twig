@@ -5,8 +5,8 @@
     <div class="mt-5"></div>
     <section class="container-fluid">
         <!-- Tabs nav vertical -->
-        <div class="row w-100">
-            <div class="col-3" id="navVertical">
+        <div class="row w-100 p10">
+            <div class="col-md-3" id="navVertical">
                 <!-- Tab navs -->
                 <div
                         class="nav flex-column nav-tabs text-center mt-5"
@@ -80,7 +80,7 @@
                 <!-- Tab navs -->
             </div>
 
-            <div class="col-9 mb-5" id="navVertical2">
+            <div class="col-md-9 mb-5" id="navVertical2">
                 <!-- Tab content -->
                 <div class="tab-content" id="v-tabs-tabContent">
                     <!-- content comercio -->
@@ -427,10 +427,10 @@
             var navbar = document.getElementById('navVertical');
             var navbar2 = document.getElementById('navVertical2');
 
-            if (window.scrollY === 0) {
+            if (window.scrollY === 0 ) {
                 navbar.classList.remove('fixed-top');
                 navbar2.classList.remove('offset-3');
-            } else {
+            } else if(window.innerWidth > 600) {
                 navbar.classList.add('fixed-top', 'mt-4');
                 navbar2.classList.add('offset-3');
             }

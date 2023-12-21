@@ -28,12 +28,19 @@ class AdminController extends AbstractController
     }
 
     #[Route('/', name: 'admin')]
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
         $rol = $user->getRoles();
+        $comercios = $em->getRepository(Comercio::class)->findNombresComercios($user, ['nombre' => 'ASC'], 20, 0);
 
-        if (!in_array('ROLE_ADMIN', $rol)) {
+
+        if (in_array('ROLE_USER', $rol)){
+            return $this->render('admin/comercios.html.twig', [
+                'comercios' => $comercios,
+                'controller_name' => 'Comercios',
+            ]);
+        }else if (!in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
