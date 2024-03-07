@@ -99,14 +99,4 @@ class ComercioRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
-//    public function findOneBySomeField($value): ?Comercio
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
