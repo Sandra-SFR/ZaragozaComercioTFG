@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ usuario.nombre }}{% endblock %}
+
+{% block body %}
+    <div class="mt-5"></div>
+    <section class="container mt-5">
+        <h1 class="text-center mt-3">Editar cuenta</h1>
+        <div class="">
+            <div class="row">
+
+                {{ form_start(form) }}
+                <div class="col">
+                    <!-- Name input -->
+                    <div class="form-outline mb-3 mt-5">
+                        <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example1" class="form-control"
+                               value="{{ usuario.nombre }}"/>
+                        <label class="form-label" for="form5Example1">{{ field_label(form.nombre) }}</label>
+                    </div>
+                    <!-- Icono input -->
+                    <div class="form-outline mb-3">
+                        <input name="{{ field_name(form.email) }}" type="text" id="form5Example2" class="form-control"
+                               value="{{ usuario.email }}"/>
+                        <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
+                    </div>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <!-- Rol input -->
+                    <div class="form-outline mb-3">
+                        <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"
+                               value="{{ usuario.roles[0] }}"/>
+                        <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>
+                    </div>
+                        {% else %}
+{#                            TODO: esto es ñapa (editable en navegador, no esta bien)#}
+                            <!-- Rol input -->
+                            <div class="form-outline mb-3 d-none">
+                                <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"
+                                       value="{{ usuario.roles[0] }}"/>
+                                <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>
+                            </div>
+                    {% endif %}
+
+                    <div class="form-outline mb-4">
+                        <input name="{{ field_name(form.password) }}" type="password" id="form1Example4" class="form-control" />
+                        <label class="form-label" for="form1Example4">{{ field_label(form.password) }}</label>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                            <a href="{{ path('admin_usuarios') }}">
+                                <i class="far fa-square-check fa-2x green"
+                                >{{ button_label|default('') }}</i></a>
+                        </button>
+
+                        <a href="{{ path('categoria_delete', {'id': usuario.id}) }}"
+                           class="btn btn-link btn-sm btn-rounded">
+                            <i class="fas fa-trash-can fa-2x red"></i></a>
+                    </div>
+
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+{% endblock %}

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -39,6 +40,12 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'usuario', targetEntity: Comercio::class, orphanRemoval: true)]
     private Collection $comercios;
+
+    /**
+     * @Groups({"usuario"})
+     * esto evita que respuestas recursivas en los endpoints API Json
+     */
+    private $relacionBidireccional;
 
     public function __construct()
     {

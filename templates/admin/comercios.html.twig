@@ -17,7 +17,6 @@
         </tr>
         </thead>
         <tbody>
-        {% if is_granted('ROLE_ADMIN') %}
         <tr class="addCategoria">
             <td>Añadir uno nuevo</td>
             <td></td>
@@ -29,7 +28,6 @@
                 </button>
             </td>
         </tr>
-        {% endif %}
         {% for comercio in comercios %}
             <tr>
                 <td>

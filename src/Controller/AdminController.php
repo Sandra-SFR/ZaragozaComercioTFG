@@ -1,9 +1,13 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Categoria;
+use App\Entity\Usuario;
 use App\Form\CategoriaNewFormType;
 use App\Form\ComercioNewFormType;
+use App\Form\UsuarioNewType;
+use App\Security\AuthAuthenticator;
 use DateTime;
 use App\Entity\Comercio;
 use App\Entity\Foto;
@@ -14,9 +18,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
+//TODO: revisar permisos
+
+/**
+ * Endpoints Admin
+ * Vista admin: solo el usuario con el rol 'ROLE_ADMIN' tiene permiso
+ * Vista user: solo los usuarios con el rol 'ROLE_USER' tienen permiso
+ * es la parte administrativa con interfaz grafica
+ **/
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
@@ -27,6 +41,10 @@ class AdminController extends AbstractController
         $this->fotoController = $fotoController;
     }
 
+    /**
+     * Endpoint para acceder al panel de administrador
+     * requiere Auth (JWT) y 'ROLE_ADMIN'
+     **/
     #[Route('/', name: 'admin')]
     public function index(EntityManagerInterface $em): Response
     {
@@ -35,16 +53,16 @@ class AdminController extends AbstractController
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($user, ['nombre' => 'ASC'], 20, 0);
 
 
-        if (in_array('ROLE_ADMIN', $rol)){
+        if (in_array('ROLE_ADMIN', $rol)) {
             return $this->render('admin/index.html.twig', [
                 'controller_name' => 'AdminController',
             ]);
-        }else if (in_array('ROLE_USER', $rol)){
+        } else if (in_array('ROLE_USER', $rol)) {
             return $this->render('admin/comercios.html.twig', [
                 'comercios' => $comercios,
                 'controller_name' => 'Comercios',
             ]);
-        }else if(!in_array('ROLE_ADMIN', $rol)) {
+        } else if (!in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
                 'mensaje' => 'haha no tienes poder aquí',
@@ -99,12 +117,52 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/usuarios', name: 'admin_usuarios', methods: ['GET'])]
+    public function usuarios(EntityManagerInterface $em): Response
+    {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.webp',
+            ]);
+        }
+
+        $usuarios = $em->getRepository(Usuario::class)->findAll();
+        $numero = [];
+        foreach ($usuarios as $usuario) {
+
+            $comercios = $usuario->getComercios();
+            $numero[$usuario->getNombre()] = count($comercios);
+        }
+
+        return $this->render('admin/usuarios.html.twig', [
+            'usuarios' => $usuarios,
+            'numero' => $numero,
+            'controller_name' => 'Usuarios',
+        ]);
+    }
+
     #[Route('/comercio/new', name: 'comercio_new', methods: ['GET'])]
     public function new(EntityManagerInterface $em): Response
     {
         $comercio = new Comercio();
         $categorias = $em->getRepository(Categoria::class)->findAll();
         $form = $this->createForm(ComercioNewFormType::class, $comercio);
+
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol) && !in_array('ROLE_USER', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.webp',
+            ]);
+        }
 
         return $this->render('admin/new.html.twig', [
             'comercio' => $comercio,
@@ -123,6 +181,12 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         $user = $this->getUser();
+
+        $rol = $user->getRoles();
+
+        if (!in_array('ROLE_USER', $rol) && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para crear comercios.']);
+        }
 
         if ($user) {
 
@@ -357,9 +421,63 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/usuario/{id}/edit', name: 'usuario_edit', methods: ['GET', 'POST'])]
+    public function editUsuario(int $id, Request $request, Usuario $usuario, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AuthAuthenticator $authenticator, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(UsuarioNewType::class, $usuario);
+        $form->handleRequest($request);
+
+        $user = $this->getUser();
+        $rol = $user->getRoles();
+
+        $usuario = $em->getRepository(Usuario::class)->find($id);
+
+        if ($user != $usuario && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.webp',
+            ]);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $usuario->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $usuario,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $em->flush();
+
+            if (!in_array('ROLE_ADMIN', $rol)) {
+                return $userAuthenticator->authenticateUser(
+                    $usuario,
+                    $authenticator,
+                    $request
+                );
+            }
+
+            return $this->redirectToRoute('admin_usuarios', [
+                'usuario' => $usuario], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('admin/usuario.html.twig', [
+            'usuario' => $usuario,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['POST'])]
     public function delete(Comercio $comercio, EntityManagerInterface $entityManager): Response
     {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para borrar este comercio.']);
+        }
+
         //buscar la carpeta de fotos del comercio
         $fs = new Filesystem();
         $currentDir = __DIR__;
@@ -378,6 +496,17 @@ class AdminController extends AbstractController
     #[Route('/categoria/{id}/delete', name: 'categoria_delete', methods: ['POST'])]
     public function deleteCategoria(Categoria $categoria, EntityManagerInterface $entityManager): Response
     {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.webp',
+            ]);
+        }
+
         $entityManager->remove($categoria);
         $entityManager->flush();
 
@@ -389,10 +518,17 @@ class AdminController extends AbstractController
     #[Route('/foto/new', name: 'foto_add', methods: ['POST'])]
     public function addFoto(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
         if ($request->isMethod('POST')) {
             $file = $request->files->get('foto');
             $comercioId = $request->get('comercio');
             $comercio = $entityManager->getRepository(Comercio::class)->find($comercioId);
+
+            if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+                return $this->json(['code' => 403, 'message' => 'No tienes permisos para añadir fotos.']);
+            }
 
             if ($file) {
                 $currentDir = $this->getParameter('kernel.project_dir');
@@ -426,6 +562,13 @@ class AdminController extends AbstractController
         $comercioId = $foto->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para borrar fotos.']);
+        }
+
         if ($request->isMethod('POST')) {
             $fs = new Filesystem();
 
@@ -452,6 +595,13 @@ class AdminController extends AbstractController
         $comercioId = $foto->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
 
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para destacar fotos.']);
+        }
+
         if ($request->isMethod('POST')) {
             // Desactivar todas las fotos destacadas del comercio
             foreach ($comercio->getFotos() as $f) {
@@ -470,6 +620,9 @@ class AdminController extends AbstractController
     #[Route('/horario/new', name: 'horario_add', methods: ['POST'])]
     public function addHorario(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
         if ($request->isMethod('POST')) {
             // Obtener los valores del formulario
             $horaAperturaStr = $request->request->get('horaApertura');
@@ -479,6 +632,10 @@ class AdminController extends AbstractController
             // Buscar el comercio por su ID
             $comercioId = $request->get('comercio');
             $comercio = $entityManager->getRepository(Comercio::class)->find($comercioId);
+
+            if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+                return $this->json(['code' => 403, 'message' => 'No tienes permisos para añadir horarios.']);
+            }
 
             $horaApertura = DateTime::createFromFormat('H:i', $horaAperturaStr);
             $horaCierre = DateTime::createFromFormat('H:i', $horaCierreStr);
@@ -506,6 +663,13 @@ class AdminController extends AbstractController
     {
         $comercioId = $horario->getComercio();
         $comercio = $em->getRepository(Comercio::class)->find($comercioId);
+
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if ($usuario !== $comercio->getUsuario() && !in_array('ROLE_ADMIN', $rol)) {
+            return $this->json(['code' => 403, 'message' => 'No tienes permisos para borrar horarios.']);
+        }
 
         if ($request->isMethod('POST')) {
 

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ComercioRepository::class)]
 class Comercio
@@ -49,6 +50,12 @@ class Comercio
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $descripcionLarga = null;
+
+    /**
+     * @Groups({"comercio"})
+     * esto evita que respuestas recursivas en los endpoints API Json
+     */
+    private $relacionBidireccional;
 
     public function __construct()
     {
@@ -241,4 +248,5 @@ class Comercio
 
         return $this;
     }
+
 }
