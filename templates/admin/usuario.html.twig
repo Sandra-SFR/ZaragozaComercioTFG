@@ -24,22 +24,23 @@
                         <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
                     </div>
 
-                    {% if is_granted('ROLE_ADMIN') %}
-                    <!-- Rol input -->
-                    <div class="form-outline mb-3">
-                        <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"
-                               value="{{ usuario.roles[0] }}"/>
-                        <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>
-                    </div>
-                        {% else %}
+{#                    {% if is_granted('ROLE_ADMIN') %}#}
+{#                    <!-- Rol input -->#}
+{#                    <div class="form-outline mb-3">#}
+{#                        <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"#}
+{#                               value="{{ usuario.roles[0] }}"/>#}
+{#                        <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>#}
+{#                    </div>#}
+{#                        {% else %}#}
 {#                            TODO: esto es ñapa (editable en navegador, no esta bien)#}
-                            <!-- Rol input -->
-                            <div class="form-outline mb-3 d-none">
-                                <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"
-                                       value="{{ usuario.roles[0] }}"/>
-                                <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>
-                            </div>
-                    {% endif %}
+{#                            <!-- Rol input -->#}
+{#                            <div class="form-outline mb-3 d-none">#}
+{#                                <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"#}
+{#                                       value="{{ usuario.roles[0] }}"/>#}
+{#                                <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>#}
+{#                            </div>#}
+{#                    {% endif %}#}
+
 
                     <div class="form-outline mb-4">
                         <input name="{{ field_name(form.password) }}" type="password" id="form1Example4" class="form-control" />
