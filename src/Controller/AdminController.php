@@ -532,6 +532,10 @@ class AdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
+        if ($rol == 'ROLE_USER'){
+            return $this->redirectToRoute('app_logout');
+        }
+
         $this->addFlash('success', 'El usuario ha sido eliminado con éxito.');
 
         return $this->redirectToRoute('admin_usuarios');

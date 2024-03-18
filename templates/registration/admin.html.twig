@@ -12,17 +12,21 @@
     {{ form_start(registrationForm) }}
         <!-- Email input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example2" class="form-control" />
-            <label class="form-label" for="form5Example2">{{ field_label(registrationForm.email) }}</label>
+            <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example1" class="form-control" />
+            <label class="form-label" for="form5Example1">{{ field_label(registrationForm.email) }}</label>
         </div>
         <!-- Name input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example1" class="form-control" />
-            <label class="form-label" for="form5Example1">{{ field_label(registrationForm.nombre) }}</label>
+            <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control" />
+            <label class="form-label" for="form5Example2">{{ field_label(registrationForm.nombre) }}</label>
         </div>
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example2" class="form-control" />
-            <label class="form-label" for="form1Example2">{{ field_label(registrationForm.password) }}</label>
+            <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3" class="form-control" />
+            <label class="form-label" for="form1Example3">{{ field_label(registrationForm.password) }}</label>
+        </div>
+        <div class="form-outline mb-4">
+            <input name="" type="password" id="form1Example4" class="form-control" />
+            <label class="form-label" for="form1Example4">Password</label>
         </div>
 
         <!-- Checkbox -->
