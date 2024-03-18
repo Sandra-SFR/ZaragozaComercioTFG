@@ -5,7 +5,7 @@
 {% block body %}
     <div class="mt-5"></div>
     <div class="features-section">
-    <h1>Register</h1>
+    <h1>Registrar un usuario</h1>
 
     {{ form_errors(registrationForm) }}
 
@@ -45,10 +45,5 @@
 
         <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
     {{ form_end(registrationForm) }}
-        <div class="justify-content-center mt-5">
-            <h6>¿Ya tienes cuenta?
-                <a href="{{ path('app_login') }}"> Inicia sesión aquí.</a>
-            </h6>
-        </div>
     </div>
 {% endblock %}

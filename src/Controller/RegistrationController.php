@@ -18,45 +18,24 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AuthAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
-        $user = new Usuario();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-
-            $user->setRoles(['ROLE_USER']);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // do anything else you need here, like send an email
-
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->registro($request, $userPasswordHasher, $userAuthenticator, $authenticator, $entityManager);
     }
 
-    //TODO: dejar esto fino
     #[Route('/register/admin', name: 'app_register_admin')]
     public function registerAdmin(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AuthAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    {
+        return $this->registro($request, $userPasswordHasher, $userAuthenticator, $authenticator, $entityManager);
+    }
+
+    private function registro(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AuthAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
         $user = new Usuario();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        $usuario = $this->getUser();
+        $rol = $usuario ? $usuario->getRoles() : ['null'];
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -72,10 +51,26 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
+            //comprueba si no es el administrador, y si no lo es lo loguea
+            if (!in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+                return $userAuthenticator->authenticateUser(
+                    $user,
+                    $authenticator,
+                    $request
+                );
+            } else {
+                return $this->redirectToRoute('admin_usuarios');
+            }
         }
 
-        return $this->render('registration/admin.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        if (!in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+            return $this->render('registration/register.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]);
+        } else {
+            return $this->render('registration/admin.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]);
+        }
     }
 }
