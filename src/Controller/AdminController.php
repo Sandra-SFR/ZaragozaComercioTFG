@@ -515,6 +515,28 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_categorias');
     }
 
+    #[Route('/usuario/{id}/delete', name: 'usuario_delete', methods: ['POST'])]
+    public function deleteUsuario(Usuario $user, EntityManagerInterface $entityManager): Response
+    {
+        $usuario = $this->getUser();
+        $rol = $usuario->getRoles();
+
+        if (!in_array('ROLE_ADMIN', $rol)) {
+            return $this->render('error/error.html.twig', [
+                'codigo' => 403,
+                'mensaje' => 'haha no tienes poder aquí',
+                'imagen' => 'img/sirulogandalf.webp',
+            ]);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'El usuario ha sido eliminado con éxito.');
+
+        return $this->redirectToRoute('admin_usuarios');
+    }
+
     #[Route('/foto/new', name: 'foto_add', methods: ['POST'])]
     public function addFoto(Request $request, EntityManagerInterface $entityManager): Response
     {

@@ -12,6 +12,10 @@ categoria_delete:
     path: '/categoria/{id}/delete'
     controller: App\Controller\AdminController::deleteCategoria
 
+usuario_delete:
+    path: '/usuario/{id}/delete'
+    controller: App\Controller\AdminController::deleteUsuario
+
 foto_delete:
     path: '/foto/{id}/delete'
     controller: App\Controller\AdminController::deleteFoto

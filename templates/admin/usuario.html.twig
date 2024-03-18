@@ -32,7 +32,7 @@
 {#                        <label class="form-label" for="form5Example3">{{ field_label(form.roles) }}</label>#}
 {#                    </div>#}
 {#                        {% else %}#}
-{#                            TODO: esto es ñapa (editable en navegador, no esta bien)#}
+{#                            TODO: esto es ï¿½apa (editable en navegador, no esta bien)#}
 {#                            <!-- Rol input -->#}
 {#                            <div class="form-outline mb-3 d-none">#}
 {#                                <input name="{{ field_name(form.roles) }}" type="text" id="form5Example3" class="form-control"#}
@@ -54,7 +54,7 @@
                                 >{{ button_label|default('') }}</i></a>
                         </button>
 
-                        <a href="{{ path('categoria_delete', {'id': usuario.id}) }}"
+                        <a href="{{ path('usuario_delete', {'id': usuario.id}) }}"
                            class="btn btn-link btn-sm btn-rounded">
                             <i class="fas fa-trash-can fa-2x red"></i></a>
                     </div>
