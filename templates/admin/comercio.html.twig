@@ -137,9 +137,12 @@
                                     <!-- Descripcion larga input -->
                                     <div class="form-outline mb-3">
                                         <textarea name="{{ field_name(form.descripcionLarga) }}" class="form-control"
-                                                  id="descripcionLargaEdit"
+                                                  id="descripcionLarga"
                                                   rows="4">{{ comercio.descripcionLarga | raw }}</textarea>
-                                        <label class="form-label" for="descripcionLargaEdit"></label>
+                                        <label class="form-label" for="descripcionLarga"></label>
+                                        <p class="text-center">
+                                            Recomendamos una longitud de texto superior a las 200 palabras: <span class="badge rounded-pill text-white" id="resultado"></span>
+                                        </p>
                                     </div>
 
                                     {% if comercio.estado != 1 or is_granted('ROLE_ADMIN') %}
@@ -399,7 +402,7 @@
         var pestana = window.location.hash;
         // Ckeditor
         ClassicEditor
-            .create(document.querySelector('#descripcionLargaEdit'), {
+            .create(document.querySelector('#descripcionLarga'), {
                 toolbar: {
                     items: [
                         'undo', 'redo',
@@ -415,10 +418,10 @@
             .catch(error => {
                 console.error(error);
             })
-            .then(descripcionLargaEdit => {
-                window.descripcionLargaEdit = descripcionLargaEdit; // Almacena la instancia del editor en una variable global
-                descripcionLargaEdit.model.document.on('change:data', () => {
-                    mostrarConteo(descripcionLargaEdit);
+            .then(descripcionLarga => {
+                window.descripcionLarga = descripcionLarga; // Almacena la instancia del editor en una variable global
+                descripcionLarga.model.document.on('change:data', () => {
+                    mostrarConteo(descripcionLarga);
                 })
             });
 
