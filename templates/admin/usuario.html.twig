@@ -9,18 +9,18 @@
         <div class="">
             <div class="row">
 
-                {{ form_start(form) }}
+                {{ form_start(form, {'attr': {'id': 'formId'}}) }}
                 <div class="col">
                     <!-- Name input -->
                     <div class="form-outline mb-3 mt-5">
                         <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example1" class="form-control"
-                               value="{{ usuario.nombre }}"/>
+                               value="{{ usuario.nombre }}" required/>
                         <label class="form-label" for="form5Example1">{{ field_label(form.nombre) }}</label>
                     </div>
                     <!-- Icono input -->
                     <div class="form-outline mb-3">
                         <input name="{{ field_name(form.email) }}" type="text" id="form5Example2" class="form-control"
-                               value="{{ usuario.email }}"/>
+                               value="{{ usuario.email }}" required/>
                         <label class="form-label" for="form5Example2">{{ field_label(form.email) }}</label>
                     </div>
 
@@ -29,14 +29,21 @@
                                class="form-control" required/>
                         <label class="form-label" for="form1Example4">{{ field_label(form.password) }}</label>
                     </div>
+                    <div>
+                        <div class="form-outline mb-4">
+                            <input name="" type="password" id="form1Example5" class="form-control" required/>
+                            <label class="form-label" for="form1Example5">Password</label>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
 
                     {% if is_granted('ROLE_ADMIN') %}
-{#                        <div class="form-outline mb-4">#}
-{#                            <input name="{{ field_name(form.roles) }}" type="text" id="form1Example5"#}
-{#                                   class="form-control" value="{{ usuario.roles[0] }}"/>#}
-{#                            <label class="form-label" for="form1Example5">{{ field_label(form.roles) }}</label>#}
-{#                        </div>#}
-
+                        <div class="form-check form-switch">
+                            <input name="{{ field_name(form.admin) }}" class="form-check-input" type="checkbox"
+                                   role="switch" id="flexSwitchCheckDefault"
+                                    {% if usuario.roles[0] == 'ROLE_ADMIN' %} checked {% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Es administrador.</label>
+                        </div>
                     {% endif %}
 
                     <div class="text-center mt-3">
@@ -53,29 +60,31 @@
 
                 </div>
                 {{ form_end(form) }}
-                {% if is_granted('ROLE_ADMIN') %}
-                <div class="form-check form-switch">
-                    <input name="rol" class="form-check-input" type="checkbox"
-                           role="switch" id="flexSwitchCheckDefault"
-                            {% if usuario.roles[0] == 'ROLE_ADMIN' %} checked {% endif %}
-                           onchange="cambiaRol()">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Es administrador.</label>
-                </div>
-                {% endif %}
             </div>
         </div>
     </section>
 {% endblock %}
 {% block js %}
     <script>
-        function cambiaRol() {
-            var valor = document.getElementById("flexSwitchCheckDefault").value;
-            if(valor == 'on'){
-                document.getElementById("flexSwitchCheckDefault").value = "['ROLE_ADMIN']";
-            }else{
-                document.getElementById("flexSwitchCheckDefault").value = "['ROLE_USER']";
+        document.getElementById("formId").addEventListener("submit", function (event) {
+            var password = document.getElementById("form1Example4").value;
+            var confirmPassword = document.getElementById("form1Example5").value;
+
+            if (password !== confirmPassword) {
+                showError(document.getElementById("form1Example5"), 'Los campos Password deben coincidir.');
+                console.log(password, confirmPassword);
+                event.preventDefault();
             }
-            console.log(valor);
+        });
+
+        function showError(field, message) {
+            // Encuentra el elemento de mensaje de error asociado con el campo
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+
+            // Muestra el mensaje de error y aplica el estilo
+            errorElement.textContent = message;
+            errorElement.style.color = 'red';
         }
+
     </script>
 {% endblock %}

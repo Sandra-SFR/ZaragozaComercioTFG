@@ -24,10 +24,6 @@ class UsuarioNewType extends AbstractType
         $this->tokenStorage = $tokenStorage;
     }
 
-    private function isAdmin($user)
-    {
-        return in_array('ROLE_ADMIN', $user->getRoles());
-    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -53,26 +49,34 @@ class UsuarioNewType extends AbstractType
             ->add('nombre')
         ;
 
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-//            $form = $event->getForm();
-//            $data = $event->getData();
-//
-//            if ($data instanceof Usuario) {
-//                $token = $this->tokenStorage->getToken();
-//
-//                if ($token) {
-//                    $user = $token->getUser();
-//
-//                    // Oculta el campo de estado si el estado es "Pendiente" y no es administrador
-//                    if (!$this->isAdmin($user)) {
-//                        $form->remove('roles', ArrayAdapter::class);
-//                    }else{
-//                        $form->add('roles');
-//                    }
-//
-//                }
-//            }
-//        });
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+            $data = $event->getData();
+
+            if ($data instanceof Usuario) {
+                $token = $this->tokenStorage->getToken();
+
+                if ($token) {
+                    $user = $token->getUser();
+
+                    // Oculta el campo de estado si el estado es "Pendiente" y no es administrador
+                    if (!$this->isAdmin($user)) {
+                        $form->remove('admin');
+                    }else{
+                        $form->add('admin',CheckboxType::class, [
+                            'mapped' => false,
+                            'required' => false,
+                            ]);
+                    }
+
+                }
+            }
+        });
+    }
+
+    private function isAdmin($user)
+    {
+        return in_array('ROLE_ADMIN', $user->getRoles());
     }
 
     public function configureOptions(OptionsResolver $resolver): void

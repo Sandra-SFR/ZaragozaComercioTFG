@@ -432,8 +432,6 @@ class AdminController extends AbstractController
 
         $usuario = $em->getRepository(Usuario::class)->find($id);
 
-
-
         if ($user != $usuario && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
@@ -450,10 +448,19 @@ class AdminController extends AbstractController
                 )
             );
 
-            dd($usuario, $form);
+            //si es administrador comprobara el campo para asignar roles
+            if(in_array('ROLE_ADMIN', $rol)){
+                $valorAdmin = $form->get('admin')->getData();
+                if($valorAdmin){
+                    $usuario->setRoles(['ROLE_ADMIN']);
+                }else{
+                    $usuario->setRoles(['ROLE_USER']);
+                }
+            }
 
             $em->flush();
 
+            //si no es administrador cambia la autentificacion por los nuevos datos de usuario
             if (!in_array('ROLE_ADMIN', $rol)) {
                 return $userAuthenticator->authenticateUser(
                     $usuario,

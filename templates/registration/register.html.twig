@@ -5,49 +5,54 @@
 {% block body %}
     <div class="mt-5"></div>
     <div class="features-section">
-    <h1>Register</h1>
+        <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm, {'attr': {'id': 'formId'}}) }}
+        {{ form_start(registrationForm, {'attr': {'id': 'formId'}}) }}
         <!-- Email input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example1" class="form-control" />
+            <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example1" class="form-control"
+                   required/>
             <label class="form-label" for="form5Example1">{{ field_label(registrationForm.email) }}</label>
         </div>
         <!-- Name input -->
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control" />
+            <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control"
+                   required/>
             <label class="form-label" for="form5Example2">{{ field_label(registrationForm.nombre) }}</label>
         </div>
         <div class="form-outline mb-4">
-            <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3" class="form-control" required  />
+            <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3"
+                   class="form-control" required/>
             <label class="form-label" for="form1Example3">{{ field_label(registrationForm.password) }}</label>
         </div>
         <div>
-        <div class="form-outline mb-4">
-            <input name="" type="password" id="form1Example4" class="form-control" required />
-            <label class="form-label" for="form1Example4">Password</label>
-        </div>
-        <div class="error-message"></div>
+            <div class="form-outline mb-4">
+                <input name="" type="password" id="form1Example4" class="form-control" required/>
+                <label class="form-label" for="form1Example4">Password</label>
+            </div>
+            <div class="error-message"></div>
         </div>
 
         <!-- Checkbox -->
         <div class="form-check d-flex justify-content-left mb-1">
-            <input name="{{ field_name(registrationForm.agreeTerms) }}" class="form-check-input me-2" type="checkbox" value="" id="form5Example5" checked />
+            <input name="{{ field_name(registrationForm.agreeTerms) }}" class="form-check-input me-2" type="checkbox"
+                   value="" id="form5Example5" checked/>
             <label class="form-check-label" for="form5Example5">
                 {{ field_label(registrationForm.agreeTerms) }}
             </label>
         </div>
         <div class="form-check d-flex justify-content-left mb-2">
-            <input name="{{ field_name(registrationForm.envio) }}" class="form-check-input me-2" type="checkbox" value="" id="form5Example6" checked />
+            <input name="{{ field_name(registrationForm.envio) }}" class="form-check-input me-2" type="checkbox"
+                   value="" id="form5Example6" checked/>
             <label class="form-check-label" for="form5Example6">
                 {{ field_label(registrationForm.envio) }}
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block mb-4" id="submitBtn" >Register</button>
-    {{ form_end(registrationForm) }}
+        <button type="submit" class="btn btn-primary btn-block mb-4" id="submitBtn">Register</button>
+        {{ form_end(registrationForm) }}
         <div class="justify-content-center mt-5">
             <h6>¿Ya tienes cuenta?
                 <a href="{{ path('app_login') }}"> Inicia sesión aquí.</a>
@@ -58,12 +63,12 @@
 
 {% block js %}
     <script>
-        document.getElementById("formId").addEventListener("submit", function(event) {
+        document.getElementById("formId").addEventListener("submit", function (event) {
             var password = document.getElementById("form1Example3").value;
             var confirmPassword = document.getElementById("form1Example4").value;
 
             if (password !== confirmPassword) {
-                showError(document.getElementById("form1Example4"), 'Por favor, seleccione una categoría.');
+                showError(document.getElementById("form1Example4"), 'Los campos Password deben coincidir.');
                 console.log(password, confirmPassword);
                 event.preventDefault();
             }
