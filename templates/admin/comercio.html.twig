@@ -123,14 +123,14 @@
                                     <div class="form-outline mb-3">
                                         <input name="{{ field_name(form.direccion) }}" type="text" id="form1"
                                                class="form-control"
-                                               value="{{ comercio.direccion }}"/>
+                                               value="{{ comercio.direccion }}" required/>
                                         <label class="form-label" for="form1">{{ field_label(form.direccion) }}</label>
                                     </div>
                                     <!-- Descripcion input -->
                                     <div class="form-outline mb-3">
                                         <textarea name="{{ field_name(form.descripcion) }}" class="form-control"
-                                                  id="textAreaExample"
-                                                  rows="4">{{ comercio.descripcion }}</textarea>
+                                                  id="textAreaExample" maxlength="255"
+                                                  rows="4" required>{{ comercio.descripcion }} </textarea>
                                         <label class="form-label"
                                                for="form5">{{ field_label(form.descripcion) }}</label>
                                     </div>

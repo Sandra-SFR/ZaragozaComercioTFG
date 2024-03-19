@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
+            // aquí se puede añadir que mande un email
 
             //comprueba si no es el administrador, y si no lo es lo loguea
             if (!in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {

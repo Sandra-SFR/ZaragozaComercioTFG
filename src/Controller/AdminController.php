@@ -432,6 +432,8 @@ class AdminController extends AbstractController
 
         $usuario = $em->getRepository(Usuario::class)->find($id);
 
+
+
         if ($user != $usuario && !in_array('ROLE_ADMIN', $rol)) {
             return $this->render('error/error.html.twig', [
                 'codigo' => 403,
@@ -447,6 +449,8 @@ class AdminController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
+            dd($usuario, $form);
 
             $em->flush();
 

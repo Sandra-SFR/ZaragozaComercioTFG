@@ -26,6 +26,11 @@ class ComercioCreateForm extends AbstractType
     {
         $this->tokenStorage = $tokenStorage;
     }
+
+    private function isAdmin($usuario)
+    {
+        return in_array('ROLE_ADMIN', $usuario->getRoles());
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -91,11 +96,6 @@ class ComercioCreateForm extends AbstractType
                 }
             }
         });
-    }
-
-    private function isAdmin($usuario)
-    {
-        return in_array('ROLE_ADMIN', $usuario->getRoles());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
