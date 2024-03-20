@@ -69,8 +69,8 @@
                         Comercios
                     </a>
 
-                    <a id="categorias" class="navbar-brand d-none d-md-block" href="/#categorias00">
-                        Categorias
+                    <a id="categoriass" class="navbar-brand d-none d-md-block" href="/#categorias">
+                        Categorías
                     </a>
 
                 </div>
@@ -121,7 +121,7 @@
                             <a class="nav-link" href="/comercio">Comercios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/#categorias00">Categorías</a>
+                            <a class="nav-link" href="/#categorias">Categorías</a>
                         </li>
                         {% if app.user %}
                         <li class="nav-item dropdown">
@@ -180,43 +180,43 @@
                     </div>
 
                     <div class="col mb-3">
-                        <h4>Cosas</h4>
+                        <h4>Mapa Web</h4>
                         <ul class="nav flex-column">
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
+                            <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-body-secondary">Inicio</a></li>
+                            <li class="nav-item mb-2"><a href="/#categorias" class="nav-link p-0 text-body-secondary">Categorías</a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
+                            <li class="nav-item mb-2"><a href="/comercio/" class="nav-link p-0 text-body-secondary">Comercios</a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Mapa</a></li>
+                            <li class="nav-item mb-2"><a href="{{ path('comercio_new') }}" class="nav-link p-0 text-body-secondary">Registro</a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="col mb-3">
-                        <h4>Esas cosas</h4>
+                        <h4>Vista</h4>
                         <ul class="nav flex-column">
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Mapa</a></li>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Barrios</a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a></li>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="col mb-3">
-                        <h4>Más cosas</h4>
+                        <h4>Contacto</h4>
                         <ul class="nav flex-column">
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a>zaragozacomercio@gmail.com</li>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">654-666-xxx</a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a>
                             </li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a></li>
+                            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary"></a>
                             </li>
                         </ul>
                     </div>
@@ -248,7 +248,7 @@
         var texto = document.getElementById('texto1');
         var zc = document.getElementById('zc');
         var comercios = document.getElementById('comercios');
-        var categorias = document.getElementById('categorias');
+        var categorias = document.getElementById('categoriass');
 
         if (window.scrollY == 0) {
             navbar.classList.remove('bg-dark', 'shadow-3-strong');
