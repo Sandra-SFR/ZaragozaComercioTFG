@@ -104,11 +104,4 @@ class ApiController extends AbstractController
         return new JsonResponse($data, 200, [], true);
     }
 
-    /**
-     * Endpoints API
-     * requieren auth (JWT)
-     **/
-
-    // Login y logout
-
 }

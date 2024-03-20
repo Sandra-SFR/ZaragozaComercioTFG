@@ -164,7 +164,7 @@ class AdminController extends AbstractController
             ]);
         }
 
-        return $this->render('admin/new.html.twig', [
+        return $this->render('admin/nuevocomercio.html.twig', [
             'comercio' => $comercio,
             'form' => $form,
             'categorias' => $categorias,
@@ -235,14 +235,14 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('admin_comercios', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('admin/new.html.twig', [
+            return $this->render('admin/nuevocomercio.html.twig', [
                 'comercio' => $comercio,
                 'categorias' => $categorias,
                 'form' => $form,
             ]);
         } else {
 
-            return $this->render('admin/new.html.twig', [
+            return $this->render('admin/nuevocomercio.html.twig', [
                 'comercio' => $comercio,
                 'categorias' => $categorias,
                 'form' => $form,
@@ -267,7 +267,7 @@ class AdminController extends AbstractController
             ]);
         }
 
-        return $this->render('admin/newcat.html.twig', [
+        return $this->render('admin/nuevacategoria.html.twig', [
             'categoria' => $categoria,
             'form' => $form,
         ]);
@@ -301,13 +301,13 @@ class AdminController extends AbstractController
                 return $this->redirectToRoute('admin_categorias', [], Response::HTTP_SEE_OTHER);
             }
 
-            return $this->render('admin/newcat.html.twig', [
+            return $this->render('admin/nuevacategoria.html.twig', [
                 'categoria' => $categoria,
                 'form' => $form,
             ]);
         } else {
 
-            return $this->render('admin/newcat.html.twig', [
+            return $this->render('admin/nuevacategoria.html.twig', [
                 'categoria' => $categoria,
                 'form' => $form,
             ]);
@@ -439,14 +439,17 @@ class AdminController extends AbstractController
                 'imagen' => 'img/sirulogandalf.webp',
             ]);
         }
+//        dd($form->get('password'));
+        if ($form->isSubmitted() ) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if(!is_null($form->get('password')->getData()) && $form->isValid()){
             $usuario->setPassword(
                 $userPasswordHasher->hashPassword(
                     $usuario,
                     $form->get('password')->getData()
                 )
             );
+            }
 
             //si es administrador comprobara el campo para asignar roles
             if(in_array('ROLE_ADMIN', $rol)){

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="mt-5"></div>
     <section class="container mt-5">
-        <h1 class="text-center mt-3">Editar categoria</h1>
+        <h1 class="text-center mt-3">Editar categoría</h1>
         <div class="">
             <div class="row">
 
@@ -28,18 +28,54 @@
                         <button type="submit" class="btn btn-link btn-sm btn-rounded">
                             <a href="{{ path('admin_categorias') }}">
                                 <i class="far fa-square-check fa-2x green"
-                                  >{{ button_label|default('') }}</i></a>
+                                >{{ button_label|default('') }}</i></a>
                         </button>
 
-                        <a href="{{ path('categoria_delete', {'id': categoria.id}) }}"
-                           class="btn btn-link btn-sm btn-rounded">
-                            <i class="fas fa-trash-can fa-2x red"></i></a>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                data-mdb-toggle="modal"
+                                data-mdb-target="#borrarComercio">
+                            <i class="fas fa-trash-can fa-2x red"></i>
+                        </button>
+
                     </div>
 
                 </div>
                 {{ form_end(form) }}
+            </div>
+        </div>
+
+        <!--Eliminar categoria-->
+        <!-- Modal Borrar-->
+        <div class="modal fade" id="borrarComercio" tabindex="-1"
+             aria-labelledby="borrarLabel2"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="borrarLabel2">¿Está seguro de borrar
+                            la categoría?</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Será eliminada definitivamente, los comercios en está categoría
+                            aparecerán sin categoría despues de eliminarla.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-mdb-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <a href="{{ path('categoria_delete', {'id': categoria.id}) }}">
+                            <button type="button" class="btn btn-primary">Aceptar
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <!-- Modal Borrar-->
+
         </div>
     </section>
 {% endblock %}

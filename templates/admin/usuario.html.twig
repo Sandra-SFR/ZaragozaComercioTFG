@@ -26,12 +26,12 @@
 
                     <div class="form-outline mb-4">
                         <input name="{{ field_name(form.password) }}" type="password" id="form1Example4"
-                               class="form-control" required/>
+                               class="form-control"/>
                         <label class="form-label" for="form1Example4">{{ field_label(form.password) }}</label>
                     </div>
                     <div>
                         <div class="form-outline mb-4">
-                            <input name="" type="password" id="form1Example5" class="form-control" required/>
+                            <input name="" type="password" id="form1Example5" class="form-control"/>
                             <label class="form-label" for="form1Example5">Password</label>
                         </div>
                         <div class="error-message"></div>
@@ -53,14 +53,46 @@
                                 >{{ button_label|default('') }}</i></a>
                         </button>
 
-                        <a href="{{ path('usuario_delete', {'id': usuario.id}) }}"
-                           class="btn btn-link btn-sm btn-rounded">
-                            <i class="fas fa-trash-can fa-2x red"></i></a>
+                        <button type="button" class="btn btn-link btn-sm btn-rounded"
+                                data-mdb-toggle="modal"
+                                data-mdb-target="#borrarComercio">
+                            <i class="fas fa-trash-can fa-2x red"></i>
+                        </button>
                     </div>
 
                 </div>
                 {{ form_end(form) }}
             </div>
+            <!--Eliminar usuario-->
+            <!-- Modal Borrar-->
+            <div class="modal fade" id="borrarComercio" tabindex="-1"
+                 aria-labelledby="borrarLabel2"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="borrarLabel2">¿Está seguro de borrar
+                                la cuenta?</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>La cuenta será eliminada definitavamente y los comercios vinculados.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-mdb-dismiss="modal">
+                                Cancelar
+                            </button>
+                            <a href="{{ path('usuario_delete', {'id': usuario.id}) }}">
+                                <button type="button" class="btn btn-primary">Aceptar
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Borrar-->
         </div>
     </section>
 {% endblock %}
