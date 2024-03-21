@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MapaController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>{{ controller_name }}! ✅</h1>
+
+    <div class="container pt-md-5 pt-lg-5">
+        <div class="row g-0">
+
+            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
+                <div class="mapa-estilo" id="map"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        // Función para inicializar el mapa
+        function initMap() {
+            var direccion = "{{ comercio.direccion }}";
+
+            var geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({'address': direccion}, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
+
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                } else {
+                    alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4&callback=initMap">
+    </script>
+{% endblock %}
