@@ -57,6 +57,9 @@ class Comercio
      */
     private $relacionBidireccional;
 
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $cp = null;
+
     public function __construct()
     {
         $this->horarios = new ArrayCollection();
@@ -245,6 +248,18 @@ class Comercio
     public function setDescripcionLarga(?string $descripcionLarga): static
     {
         $this->descripcionLarga = $descripcionLarga;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(?string $cp): static
+    {
+        $this->cp = $cp;
 
         return $this;
     }
