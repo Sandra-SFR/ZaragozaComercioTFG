@@ -41,7 +41,7 @@
         <div id="paso4" class="paso-formulario" style="display: none;">
             <div class="form-outline mb-4">
                 <input name="{{ field_name(form.direccion) }}" type="text" id="form4" class="form-control"
-                       onchange="mapa()" required/>
+                       onkeyup="mapa()" required/>
                 <label class="form-label" for="form4">{{ field_label(form.direccion) }}</label>
             </div>
             <div class="error-message"></div>
@@ -278,7 +278,7 @@
 
         function validateImage(fileInput) {
             imgOk = true;
-            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i; // Extensiones permitidas
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i; // Extensiones permitidas
             var maxFileSizeInMB = 5; // Tamaño máximo permitido en megabytes
 
             var filePath = fileInput.value;
@@ -287,7 +287,7 @@
             // Verificar la extensión del archivo
             if (!allowedExtensions.exec(filePath)) {
                 imgOk = false;
-                showError(fileInput, 'Por favor, seleccione un archivo de imagen válido (JPEG, JPG, PNG o GIF).');
+                showError(fileInput, 'Por favor, seleccione un archivo de imagen válido (JPEG, JPG, PNG, WEBP o GIF).');
                 return false;
             }
 
@@ -421,6 +421,49 @@
                     // alert('Geocodificación fallida debido a: ' + status);
                 }
             });
+        }
+
+        // editor para descripcion larga
+        function contarPalabras(descripcionLarga) {
+            // Eliminar espacios en blanco al principio y al final del texto
+            var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
+                palabra.replace('&nbsp;', '');
+                palabra.replace('</p>', '');
+                console.log(palabra);
+                return palabra.length > 0;
+            });
+
+            // Contar la cantidad de palabras
+            return textoSinEspacios.length;
+        }
+
+        function quitarHtml(html){
+            var elementoTemporal = document.createElement('div');
+            elementoTemporal.innerHTML = html;
+            return elementoTemporal.textContent || elementoTemporal.innerText || '';
+        }
+
+        function mostrarConteo(texto) {
+            var descripcionLarga = quitarHtml(texto.getData());
+            var resultado = contarPalabras(descripcionLarga);
+
+            if(resultado <= 200){
+                document.getElementById("resultado").classList.add( "text-bg-danger");
+                document.getElementById("resultado").classList.remove("text-bg-warning");
+                document.getElementById("resultado").classList.remove("text-bg-success");
+
+            }else if(resultado > 200 && resultado <= 300){
+                document.getElementById("resultado").classList.remove("text-bg-danger");
+                document.getElementById("resultado").classList.remove("text-bg-success");
+                document.getElementById("resultado").classList.add("text-bg-warning");
+            }else{
+                document.getElementById("resultado").classList.remove("text-bg-warning");
+                document.getElementById("resultado").classList.remove("text-bg-danger");
+                document.getElementById("resultado").classList.add("text-bg-success");
+            }
+
+            var resultadoElemento = document.getElementById('resultado');
+            resultadoElemento.textContent = "Palabras: " + resultado;
         }
     </script>
 

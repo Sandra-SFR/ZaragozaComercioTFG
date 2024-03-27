@@ -270,49 +270,6 @@
             categorias.classList.remove('d-md-block');
         }
     });
-
-    // editor para descripcion larga
-    function contarPalabras(descripcionLarga) {
-        // Eliminar espacios en blanco al principio y al final del texto
-        var textoSinEspacios = descripcionLarga.trim().split(/\s+/).filter((palabra) => {
-            palabra.replace('&nbsp;', '');
-            palabra.replace('</p>', '');
-            console.log(palabra);
-            return palabra.length > 0;
-        });
-
-        // Contar la cantidad de palabras
-        return textoSinEspacios.length;
-    }
-
-    function quitarHtml(html){
-        var elementoTemporal = document.createElement('div');
-        elementoTemporal.innerHTML = html;
-        return elementoTemporal.textContent || elementoTemporal.innerText || '';
-    }
-
-    function mostrarConteo(texto) {
-        var descripcionLarga = quitarHtml(texto.getData());
-        var resultado = contarPalabras(descripcionLarga);
-
-            if(resultado <= 200){
-                document.getElementById("resultado").classList.add( "text-bg-danger");
-                document.getElementById("resultado").classList.remove("text-bg-warning");
-                document.getElementById("resultado").classList.remove("text-bg-success");
-
-            }else if(resultado > 200 && resultado <= 300){
-                document.getElementById("resultado").classList.remove("text-bg-danger");
-                document.getElementById("resultado").classList.remove("text-bg-success");
-                document.getElementById("resultado").classList.add("text-bg-warning");
-            }else{
-                document.getElementById("resultado").classList.remove("text-bg-warning");
-                document.getElementById("resultado").classList.remove("text-bg-danger");
-                document.getElementById("resultado").classList.add("text-bg-success");
-            }
-
-        var resultadoElemento = document.getElementById('resultado');
-        resultadoElemento.textContent = "Palabras: " + resultado;
-    }
 </script>
 
 {% block js %}
