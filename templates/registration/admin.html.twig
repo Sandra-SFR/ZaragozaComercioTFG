@@ -20,7 +20,7 @@
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control"
                    required/>
-            <label class="form-label" for="form5Example2">{{ field_label(registrationForm.nombre) }}</label>
+            <label class="form-label" for="form5Example2">Nombre</label>
         </div>
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3"
@@ -37,7 +37,7 @@
             <input name="{{ field_name(registrationForm.agreeTerms) }}" class="form-check-input me-2" type="checkbox"
                    value="" id="form5Example3" checked/>
             <label class="form-check-label" for="form5Example3">
-                {{ field_label(registrationForm.agreeTerms) }}
+                Aceptar terminos
             </label>
         </div>
         <div class="form-check d-flex justify-content-left mb-2">
@@ -48,7 +48,7 @@
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Registrar usuario</button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

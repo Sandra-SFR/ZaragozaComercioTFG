@@ -5,7 +5,7 @@
 {% block body %}
     <div class="mt-5"></div>
     <div class="features-section">
-        <h1>Register</h1>
+        <h1>Registrarse</h1>
 
         {{ form_errors(registrationForm) }}
 
@@ -40,7 +40,7 @@
             <input name="{{ field_name(registrationForm.agreeTerms) }}" class="form-check-input me-2" type="checkbox"
                    value="" id="form5Example5" checked/>
             <label class="form-check-label" for="form5Example5">
-                {{ field_label(registrationForm.agreeTerms) }}
+                Aceptar terminos
             </label>
         </div>
         <div class="form-check d-flex justify-content-left mb-2">
@@ -51,7 +51,7 @@
             </label>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block mb-4" id="submitBtn">Register</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4" id="submitBtn">Registrarse</button>
         {{ form_end(registrationForm) }}
         <div class="justify-content-center mt-5">
             <h6>¿Ya tienes cuenta?
