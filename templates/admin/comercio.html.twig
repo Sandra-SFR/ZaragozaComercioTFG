@@ -100,7 +100,8 @@
                                     <div class="form-outline mb-3 mt-5">
                                         <input name="{{ field_name(form.nombre) }}" type="text" id="form5Example2"
                                                class="form-control"
-                                               value="{{ comercio.nombre }}"/>
+                                               value="{{ comercio.nombre }}"
+                                               required/>
                                         <label class="form-label"
                                                for="form5Example2">{{ field_label(form.nombre) }}</label>
                                     </div>
@@ -108,30 +109,38 @@
                                     <div class="form-outline mb-3">
                                         <input name="{{ field_name(form.email) }}" type="email" id="form5Example2"
                                                class="form-control"
-                                               value="{{ comercio.email }}"/>
+                                               value="{{ comercio.email }}"
+                                               onkeyup="validateEmail(this)"
+                                               required/>
                                         <label class="form-label"
                                                for="form5Example2">{{ field_label(form.email) }}</label>
                                     </div>
+                                    <div class="error-message my-3"></div>
                                     <!-- Telefono input -->
                                     <div class="form-outline mb-3">
                                         <input name="{{ field_name(form.telefono) }}" type="tel" id="form4"
                                                class="form-control"
-                                               value="{{ comercio.telefono }}"/>
+                                               value="{{ comercio.telefono }}"
+                                               onkeyup="validatePhoneNumber(this)"
+                                               required/>
                                         <label class="form-label" for="form4">{{ field_label(form.telefono) }}</label>
                                     </div>
+                                    <div class="error-message my-3"></div>
                                     <!-- Direccion input -->
                                     <div class="form-outline mb-3">
                                         <input name="{{ field_name(form.direccion) }}" type="text" id="direccion"
                                                class="form-control"
-                                               value="{{ comercio.direccion }}" onkeyup="mapa()" required/>
-                                        <label class="form-label" for="direccion">{{ field_label(form.direccion) }}</label>
+                                               value="{{ comercio.direccion }}" onkeyup="mapa()"
+                                               required/>
+                                        <label class="form-label"
+                                               for="direccion">{{ field_label(form.direccion) }}</label>
 
                                         <section>
                                             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXfC6YS6x486gAff9-InexBfZaerhr9p4"></script>
                                             <div class="mapa-estilo2" id="map"></div>
                                         </section>
                                     </div>
-
+                                    <div class="error-message my-3"></div>
                                     <!-- Descripcion input -->
                                     <div class="form-outline mb-3">
                                         <textarea name="{{ field_name(form.descripcion) }}" class="form-control"
@@ -147,7 +156,8 @@
                                                   rows="4">{{ comercio.descripcionLarga | raw }}</textarea>
                                         <label class="form-label" for="descripcionLarga"></label>
                                         <p class="text-center">
-                                            Recomendamos una longitud de texto superior a las 200 palabras: <span class="badge rounded-pill text-white" id="resultado"></span>
+                                            Recomendamos una longitud de texto superior a las 200 palabras: <span
+                                                    class="badge rounded-pill text-white" id="resultado"></span>
                                         </p>
                                     </div>
 
@@ -190,23 +200,23 @@
                         <div class="form-outline mb-3">
                             <div class="row">
                                 {% for categoria in categorias %}
-                                <div class="form-check form-group mb-4 col-4">
-                                    <input onclick="obtenerIdSeleccionado()" class="form-check-input" type="radio"
-                                           value="{{ categoria.id }}"
-                                           name="categoria"
-                                           id="categoria{{ categoria.id }}"
-                                            {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
-                                    <label class="form-check-label text-capitalize"
-                                           for="categoria{{ categoria.id }}">
-                                        {{ categoria.nombre }}
-                                    </label>
-                                </div>
+                                    <div class="form-check form-group mb-4 col-4">
+                                        <input onclick="obtenerIdSeleccionado()" class="form-check-input" type="radio"
+                                               value="{{ categoria.id }}"
+                                               name="categoria"
+                                               id="categoria{{ categoria.id }}"
+                                                {% if ids is not empty and categoria.id == ids[0] %} checked {% endif %}>
+                                        <label class="form-check-label text-capitalize"
+                                               for="categoria{{ categoria.id }}">
+                                            {{ categoria.nombre }}
+                                        </label>
+                                    </div>
                                 {% endfor %}
                             </div>
                             <div class="text-center mt-3">
                                 <button onclick="nuevaCategoria()" class="btn btn-link btn-sm btn-rounded">
-                                        <i class="far fa-square-check fa-2x green"
-                                           >{{ button_label|default('') }}</i>
+                                    <i class="far fa-square-check fa-2x green"
+                                    >{{ button_label|default('') }}</i>
                                 </button>
                             </div>
 
@@ -238,7 +248,8 @@
                                         <td>{{ hora.nombreDia }}</td>
                                         <td>{{ hora.horaApertura|date('H:i') }}</td>
                                         <td>{{ hora.horaCierre|date('H:i') }}</td>
-                                        <td onclick="borrarHorario({{ hora.id }})"><i class="fas fa-trash-can fa-1x red"></i>
+                                        <td onclick="borrarHorario({{ hora.id }})"><i
+                                                    class="fas fa-trash-can fa-1x red"></i>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -260,9 +271,10 @@
                                     <td><input type="time" name="horaApertura" id="horaApertura"></td>
                                     <td><input type="time" name="horaCierre" id="horaCierre"></td>
                                     <td>
-                                        <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded" id="sbmBtn">
+                                        <button onclick="nuevoHorario()" class="btn btn-link btn-sm btn-rounded"
+                                                id="sbmBtn">
                                             <i class="far fa-square-check fa-2x green"
-                                              >{{ button_label|default('') }}</i>
+                                            >{{ button_label|default('') }}</i>
                                         </button>
                                     </td>
                                 </tr>
@@ -293,14 +305,15 @@
                                                     class="btn btn-link btn-sm btn-rounded">
                                                 {% if foto.isDestacada %}
                                                     <i class="fas fa-star fa-2x yellow"
-                                                       >{{ button_label|default('') }}</i>
+                                                    >{{ button_label|default('') }}</i>
                                                 {% else %}
                                                     <i class="far fa-star fa-2x yellow"
-                                                       >{{ button_label|default('') }}</i>
+                                                    >{{ button_label|default('') }}</i>
                                                 {% endif %}
                                             </button>
 
-                                            <button onclick="borrarFoto({{ foto.id }})" class="btn btn-link btn-sm btn-rounded">
+                                            <button onclick="borrarFoto({{ foto.id }})"
+                                                    class="btn btn-link btn-sm btn-rounded">
                                                 <i class="fas fa-trash-can fa-2x red"></i>
                                             </button>
                                         </div>
@@ -330,17 +343,19 @@
                                                     data-mdb-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                            <div class="modal-body">
-                                                <input class="form-control" type="file" name="foto"
-                                                       accept="image/*"><input
-                                                        type="hidden"
-                                                        name="comercio"
-                                                        value="{{ comercio.id }}">
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button onclick="nuevaFoto({{ comercio.id }})" class="btn btn-primary" id="sbmBtn2">Subir Foto
-                                                </button>
-                                            </div>
+                                        <div class="modal-body">
+                                            <input class="form-control" type="file" name="foto"
+                                                   accept="image/*" onchange="validateImage(this)"><input
+                                                    type="hidden"
+                                                    name="comercio"
+                                                    value="{{ comercio.id }}">
+                                        </div>
+                                        <div class="error-message m-3"></div>
+                                        <div class="modal-footer">
+                                            <button onclick="nuevaFoto({{ comercio.id }})" class="btn btn-primary"
+                                                    id="sbmBtn2">Subir Foto
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -436,10 +451,10 @@
             var navbar = document.getElementById('navVertical');
             var navbar2 = document.getElementById('navVertical2');
 
-            if (window.scrollY === 0 ) {
+            if (window.scrollY === 0) {
                 navbar.classList.remove('fixed-top');
                 navbar2.classList.remove('offset-3');
-            } else if(window.innerWidth > 600) {
+            } else if (window.innerWidth > 600) {
                 navbar.classList.add('fixed-top', 'mt-4');
                 navbar2.classList.add('offset-3');
             }
@@ -654,7 +669,7 @@
             return textoSinEspacios.length;
         }
 
-        function quitarHtml(html){
+        function quitarHtml(html) {
             var elementoTemporal = document.createElement('div');
             elementoTemporal.innerHTML = html;
             return elementoTemporal.textContent || elementoTemporal.innerText || '';
@@ -664,16 +679,16 @@
             var descripcionLarga = quitarHtml(texto.getData());
             var resultado = contarPalabras(descripcionLarga);
 
-            if(resultado <= 200){
-                document.getElementById("resultado").classList.add( "text-bg-danger");
+            if (resultado <= 200) {
+                document.getElementById("resultado").classList.add("text-bg-danger");
                 document.getElementById("resultado").classList.remove("text-bg-warning");
                 document.getElementById("resultado").classList.remove("text-bg-success");
 
-            }else if(resultado > 200 && resultado <= 300){
+            } else if (resultado > 200 && resultado <= 300) {
                 document.getElementById("resultado").classList.remove("text-bg-danger");
                 document.getElementById("resultado").classList.remove("text-bg-success");
                 document.getElementById("resultado").classList.add("text-bg-warning");
-            }else{
+            } else {
                 document.getElementById("resultado").classList.remove("text-bg-warning");
                 document.getElementById("resultado").classList.remove("text-bg-danger");
                 document.getElementById("resultado").classList.add("text-bg-success");
@@ -683,65 +698,131 @@
             resultadoElemento.textContent = "Palabras: " + resultado;
         }
 
+        function validateEmail(email) {
+            // Utiliza una expresión regular simple para validar el formato del correo electrónico
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email.value)) {
+                showError(email, 'El email debe tener un formato válido.');
+                return false;
+            }
+
+            hideError(email);
+            return true;
+        }
+
+        function validatePhoneNumber(phoneNumber) {
+            // Utiliza una expresión regular para validar que el número de teléfono tenga exactamente 6 dígitos
+            var phoneRegex = /^\d{9}$/;
+
+            if (!phoneRegex.exec(phoneNumber.value)) {
+                showError(phoneNumber, 'El número debe tener 9 digitos.');
+                return false;
+            }
+            hideError(phoneNumber);
+            return true;
+        }
+
+        function validateImage(fileInput) {
+            imgOk = true;
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i; // Extensiones permitidas
+            var maxFileSizeInMB = 5; // Tamaño máximo permitido en megabytes
+
+            var filePath = fileInput.value;
+            var fileSize = fileInput.files[0].size;
+
+            // Verificar la extensión del archivo
+            if (!allowedExtensions.exec(filePath)) {
+                imgOk = false;
+                showError(fileInput, 'Por favor, seleccione un archivo de imagen válido (JPEG, JPG, PNG, WEBP o GIF).');
+                return false;
+            }
+
+            // Verificar el tamaño del archivo
+            if (fileSize > maxFileSizeInMB * 1024 * 1024) {
+                imgOk = false;
+                showError(fileInput, 'La imagen seleccionada es demasiado grande. El tamaño máximo permitido es de ' + maxFileSizeInMB + ' MB.');
+                return false;
+            }
+
+            // Si todo está bien, oculta los mensajes de error
+            hideError(fileInput);
+            return true;
+        }
+
+        function showError(field, message) {
+            // Encuentra el elemento de mensaje de error asociado con el campo
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+
+            // Muestra el mensaje de error y aplica el estilo
+            errorElement.textContent = message;
+            errorElement.style.color = 'red';
+        }
+
+        function hideError(field) {
+            // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            errorElement.textContent = '';
+        }
     </script>
 
     <script>
-    // Función para inicializar el mapa
-    function initMap() {
-    var direccion = document.getElementById('direccion').value;
+        // Función para inicializar el mapa
+        function initMap() {
+            var direccion = document.getElementById('direccion').value;
 
-    var geocoder = new google.maps.Geocoder();
+            var geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({'address': direccion}, function (results, status) {
-    if (status === 'OK') {
-    var mapOptions = {
-    center: results[0].geometry.location,
-    zoom: 15
-    };
+            geocoder.geocode({'address': direccion}, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
 
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    var marker = new google.maps.Marker({
-    map: map,
-    position: results[0].geometry.location,
-    title: 'Ubicación del Comercio'
-    });
-    } else {
-    alert('Geocodificación fallida debido a: ' + status);
-    }
-    });
-    }
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                } else {
+                    alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
 
-    function mapa() {
-    var direccion = document.getElementById('direccion').value;
+        function mapa() {
+            var direccion = document.getElementById('direccion').value;
 
-    var geocoder = new google.maps.Geocoder();
+            var geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({'address': direccion}, function (results, status) {
-    if (status === 'OK') {
-    var mapOptions = {
-    center: results[0].geometry.location,
-    zoom: 15
-    };
+            geocoder.geocode({'address': direccion}, function (results, status) {
+                if (status === 'OK') {
+                    var mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 15
+                    };
 
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    var marker = new google.maps.Marker({
-    map: map,
-    position: results[0].geometry.location,
-    title: 'Ubicación del Comercio'
-    });
-    hideAllErrors();
-    mapaOk = true;
-    } else if (status === 'ZERO_RESULTS') {
-    mapaOk = false;
-    // alert('La dirección proporcionada no es válida. Por favor, ingrese una dirección válida.');
-    } else {
-    mapaOk = false;
-    // alert('Geocodificación fallida debido a: ' + status);
-    }
-    });
-    }
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location,
+                        title: 'Ubicación del Comercio'
+                    });
+                    hideAllErrors();
+                    mapaOk = true;
+                } else if (status === 'ZERO_RESULTS') {
+                    mapaOk = false;
+                    // alert('La dirección proporcionada no es válida. Por favor, ingrese una dirección válida.');
+                } else {
+                    mapaOk = false;
+                    // alert('Geocodificación fallida debido a: ' + status);
+                }
+            });
+        }
     </script>
 
     <script async defer
