@@ -4,6 +4,10 @@ controllers:
         namespace: App\Controller
     type: attribute
 
+swagger_ui:
+    path: '/apidocs'
+    controller: App\Controller\SwaggerUiController::index
+
 comercio_delete:
     path: '/comercio/{id}/delete'
     controller: App\Controller\AdminController::delete
