@@ -9,7 +9,8 @@
         <div class="">
             <div class="row">
 
-                {{ form_start(form) }}
+                {{ form_start(form, {'method': 'PUT'}) }}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="col">
                     <!-- Name input -->
                     <div class="form-outline mb-3 mt-5">

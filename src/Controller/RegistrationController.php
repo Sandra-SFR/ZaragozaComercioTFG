@@ -52,23 +52,23 @@ class RegistrationController extends AbstractController
             // aquí se puede añadir que mande un email
 
             //comprueba si no es el administrador, y si no lo es lo loguea
-            if (!in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+            if (in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+                return $this->redirectToRoute('admin_usuarios');
+            } else {
                 return $userAuthenticator->authenticateUser(
                     $user,
                     $authenticator,
                     $request
                 );
-            } else {
-                return $this->redirectToRoute('admin_usuarios');
             }
         }
 
-        if (!in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
-            return $this->render('registration/register.html.twig', [
+        if (in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+            return $this->render('registration/admin.html.twig', [
                 'registrationForm' => $form->createView(),
             ]);
         } else {
-            return $this->render('registration/admin.html.twig', [
+            return $this->render('registration/register.html.twig', [
                 'registrationForm' => $form->createView(),
             ]);
         }

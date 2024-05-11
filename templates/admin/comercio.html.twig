@@ -523,7 +523,7 @@
             localStorage.setItem('activeTabId', activeTabId);
 
             fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -548,7 +548,7 @@
             localStorage.setItem('activeTabId', activeTabId);
 
             fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 body: envio
             })
                 .then(response => response.json())
@@ -609,7 +609,7 @@
             localStorage.setItem('activeTabId', activeTabId);
 
             fetch(url, {
-                    method: 'POST',
+                    method: 'DELETE',
                     body: envio
                 }
             )
@@ -631,7 +631,7 @@
             localStorage.setItem('activeTabId', activeTabId);
 
             fetch(url, {
-                    method: 'POST',
+                    method: 'DELETE',
                     body: envio
                 }
             )

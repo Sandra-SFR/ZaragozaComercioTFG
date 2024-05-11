@@ -51,8 +51,6 @@ class AdminController extends AbstractController
         $user = $this->getUser();
         $rol = $user->getRoles();
         $comercios = $em->getRepository(Comercio::class)->findNombresComercios($user, ['nombre' => 'ASC'], 20, 0);
-
-
         if (in_array('ROLE_ADMIN', $rol)) {
             return $this->render('admin/index.html.twig', [
                 'controller_name' => 'AdminController',
@@ -358,7 +356,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/comercio/{id}/edit/cat', name: 'comercio_edit_cat', methods: ['POST'])]
+    #[Route('/comercio/{id}/edit/cat', name: 'comercio_edit_cat', methods: ['PUT'])]
     public function editCat(Request $request, Comercio $comercio, EntityManagerInterface $em): Response
     {
         $usuario = $this->getUser();
@@ -482,7 +480,7 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['POST'])]
+    #[Route('/comercio/{id}/delete', name: 'comercio_delete', methods: ['DELETE'])]
     public function delete(Comercio $comercio, EntityManagerInterface $entityManager): Response
     {
         $usuario = $this->getUser();
@@ -507,7 +505,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_comercios');
     }
 
-    #[Route('/categoria/{id}/delete', name: 'categoria_delete', methods: ['POST'])]
+    #[Route('/categoria/{id}/delete', name: 'categoria_delete', methods: ['DELETE'])]
     public function deleteCategoria(Categoria $categoria, EntityManagerInterface $entityManager): Response
     {
         $usuario = $this->getUser();
@@ -529,7 +527,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_categorias');
     }
 
-    #[Route('/usuario/{id}/delete', name: 'usuario_delete', methods: ['POST'])]
+    #[Route('/usuario/{id}/delete', name: 'usuario_delete', methods: ['DELETE'])]
     public function deleteUsuario(Usuario $user, EntityManagerInterface $entityManager): Response
     {
         $usuario = $this->getUser();
@@ -596,7 +594,7 @@ class AdminController extends AbstractController
         return $this->json(['code' => 200]);
     }
 
-    #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['POST'])]
+    #[Route('/foto/{foto_id}/delete', name: 'foto_delete', methods: ['DELETE'])]
     public function deleteFoto(Request $request, Foto $foto, EntityManagerInterface $em): Response
     {
         $comercioId = $foto->getComercio();
@@ -609,7 +607,7 @@ class AdminController extends AbstractController
             return $this->json(['code' => 403, 'message' => 'No tienes permisos para borrar fotos.']);
         }
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('DELETE')) {
             $fs = new Filesystem();
 
             $currentDir = $this->getParameter('kernel.project_dir');
@@ -629,7 +627,7 @@ class AdminController extends AbstractController
         return $this->json(['code' => 200]);
     }
 
-    #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET', 'POST'])]
+    #[Route('/foto/{id}/destacar', name: 'foto_destacar', methods: ['GET', 'PUT'])]
     public function destacarFoto(Request $request, Foto $foto, EntityManagerInterface $em): Response
     {
         $comercioId = $foto->getComercio();
@@ -642,7 +640,7 @@ class AdminController extends AbstractController
             return $this->json(['code' => 403, 'message' => 'No tienes permisos para destacar fotos.']);
         }
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('PUT')) {
             // Desactivar todas las fotos destacadas del comercio
             foreach ($comercio->getFotos() as $f) {
                 if ($f->isDestacada()) {
@@ -698,7 +696,7 @@ class AdminController extends AbstractController
         return $this->render('admin/comercio.html.twig');
     }
 
-    #[Route('comercio/{id}/horario/{horario_id}/delete', name: 'horario_delete', methods: ['POST'])]
+    #[Route('comercio/{id}/horario/{horario_id}/delete', name: 'horario_delete', methods: ['DELETE'])]
     public function deleteHorario(Request $request, Horario $horario, EntityManagerInterface $em): Response
     {
         $comercioId = $horario->getComercio();
@@ -711,7 +709,7 @@ class AdminController extends AbstractController
             return $this->json(['code' => 403, 'message' => 'No tienes permisos para borrar horarios.']);
         }
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('DELETE')) {
 
             $em->remove($horario);
             $em->flush();
