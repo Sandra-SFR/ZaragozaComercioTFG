@@ -44,7 +44,41 @@ Use these steps to clone from SourceTree, our client for using the repository co
 
 Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
 
+repositorio de GitHub
 ---
+https://github.com/Sandra-SFR/ZaragozaComercioTFG
+
+Importante
+---
+La base de datos esta apuntando en .env a la base de datos de producción, cambia donde apunta 
+para usarla en local si copias el archivo de la base de datos.
+Estando desplegada podrías usar desde cualquier sitio donde apunta actualmente.
+
+Swagger doc
+---
+Puedes acceder a la documentación swagger desde el footer de la página "docs"
+o en el proyecto dentro de /public/swaggerUI.json
+(No va a funcionar en algunos casos ya que esto no es una api json, está devolviendo http).
+
+Postman
+---
+La documentación de postman estará en el entregable del proyecto.
+(Haz login primero para que se guarden el token y las cookies, algunos metodos post no funcionan
+por un tema deautenticación con las cookies de sesión).
+
+Comandos Para montar el proyecto
+---
+- Comandos de instalacion:
+
+Composer
+```bash
+composer install
+```
+Doctrine ORM
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
 - Comandos de arranque:
 ```bash
 npm run build
@@ -55,6 +89,16 @@ symfony serve:start
 ```
 
 ---
+Plugins
+---
+
+- Bootstrap 5
+- CkEditor
+- Google Maps
+- Google Fonts
+- Font Awesome
+- ImageMagick
+
 - Modulo de cookies:
 ```bash
 https://github.com/orestbida/cookieconsent
