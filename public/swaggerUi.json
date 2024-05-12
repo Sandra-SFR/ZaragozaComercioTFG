@@ -363,6 +363,48 @@
         }
       }
     },
+    "/admin/foto/new": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Subir nueva foto",
+        "description": "Endpoint para subir una nueva foto de comercio.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "description": "ID del comercio"
+                  },
+                  "authorization": {
+                    "type": "string",
+                    "description": "Token de autorización"
+                  },
+                  "image": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Archivo de imagen"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Foto subida exitosamente"
+          }
+        }
+      }
+    },
     "/admin/horario/new": {
       "post": {
         "tags": [
@@ -428,12 +470,55 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string",
+                    "description": "Nombre del comercio"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email del comercio"
+                  },
+                  "telefono": {
+                    "type": "integer",
+                    "description": "Número del comercio"
+                  },
+                  "direccion": {
+                    "type": "string",
+                    "description": "Direccion del comercio"
+                  },
+                  "descripcion": {
+                    "type": "string",
+                    "description": "Descripción del comercio"
+                  },
+                  "direccionLarga": {
+                    "type": "string",
+                    "description": "Descripción larga del comercio"
+                  },
+                  "estado": {
+                    "type": "integer",
+                    "description": "Estado del comercio"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Comercio editado exitosamente"
           },
           "403": {
             "description": "No tienes permisos para editar este comercio o no se encontró el comercio"
+          },
+          "404": {
+            "description": "No se encontró ningún comercio con este id"
           }
         }
       }
@@ -456,12 +541,31 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoria": {
+                    "type": "integer",
+                    "description": "Id de la categoría del comercio"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Categorías editadas exitosamente"
           },
           "403": {
             "description": "No tienes permisos para editar las categorías de este comercio o no se encontró elcomercio"
+          },
+          "404": {
+            "description": "No se encontró ningún comercio con este id"
           }
         }
       }
@@ -484,12 +588,35 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string",
+                    "description": "Nombre de la categoría"
+                  },
+                  "icono": {
+                    "type": "string",
+                    "description": "Icono de la categoría"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Categoría editada exitosamente"
           },
           "403": {
             "description": "No tienes permisos para editar esta categoría o no se encontró la categoría"
+          },
+          "404": {
+            "description": "No se encontró ninguna categoría con este id"
           }
         }
       }
@@ -512,12 +639,31 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "destacada": {
+                    "type": "boolean",
+                    "description": "Foto destacada del comercio"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Foto destacada exitosamente"
           },
           "403": {
             "description": "No tienes permisos para destacar esta foto o no se encontró la foto"
+          },
+          "404": {
+            "description": "No se encontró ninguna foto con este id"
           }
         }
       }
@@ -545,7 +691,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Usuario"
+                "type": "object",
+                "properties": {
+                  "nombre": {
+                    "type": "string",
+                    "description": "Nombre del usuario"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Correo electrónico del usuario"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Roles del usuario"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Contraseña hasheada del usuario"
+                  }
+                }
               }
             }
           }
@@ -553,6 +720,12 @@
         "responses": {
           "200": {
             "description": "Usuario editado exitosamente"
+          },
+          "403": {
+            "description": "No tienes permisos para editar este usuario o no se encontró el usuario"
+          },
+          "404": {
+            "description": "No se encontró ningún usuario con este id"
           }
         }
       }
@@ -578,6 +751,12 @@
         "responses": {
           "200": {
             "description": "Comercio eliminado exitosamente"
+          },
+          "403": {
+            "description": "No tienes permisos para editar este comercio o no se encontró el comercio"
+          },
+          "404": {
+            "description": "No se encontró ningún comercio con este id"
           }
         }
       }
@@ -603,6 +782,12 @@
         "responses": {
           "200": {
             "description": "Categoría eliminada exitosamente"
+          },
+          "403": {
+            "description": "No tienes permisos para editar esta categoría o no se encontró la categoría"
+          },
+          "404": {
+            "description": "No se encontró ninguna categoría con este id"
           }
         }
       }
@@ -628,6 +813,43 @@
         "responses": {
           "200": {
             "description": "Usuario eliminado exitosamente"
+          },
+          "403": {
+            "description": "No tienes permisos para editar este usuario o no se encontró el usuario"
+          },
+          "404": {
+            "description": "No se encontró ningún usuario con este id"
+          }
+        }
+      }
+    },
+    "/admin/foto/{id}/delete": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Eliminar foto",
+        "description": "Endpoint para eliminar una foto de comercio.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID de la foto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Foto eliminada exitosamente"
+          },
+          "403": {
+            "description": "No tienes permisos para destacar esta foto o no se encontró la foto"
+          },
+          "404": {
+            "description": "No se encontró ninguna foto con este id"
           }
         }
       }
@@ -722,48 +944,6 @@
         }
       }
     },
-    "/foto/new": {
-      "post": {
-        "tags": [
-          "Foto"
-        ],
-        "summary": "Subir nueva foto",
-        "description": "Endpoint para subir una nueva foto de comercio.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "description": "ID del comercio"
-                  },
-                  "authorization": {
-                    "type": "string",
-                    "description": "Token de autorización"
-                  },
-                  "image": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "Archivo de imagen"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Foto subida exitosamente"
-          }
-        }
-      }
-    },
     "/foto/{id}": {
       "get": {
         "tags": [
@@ -785,72 +965,6 @@
         "responses": {
           "200": {
             "description": "Foto obtenida exitosamente"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Foto"
-        ],
-        "summary": "Editar foto",
-        "description": "Endpoint para editar los detalles de una foto de comercio.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "ID de la foto"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "Título de la foto"
-                  },
-                  "public": {
-                    "type": "boolean",
-                    "description": "Indicador de si la foto es pública"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Foto editada exitosamente"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Foto"
-        ],
-        "summary": "Eliminar foto",
-        "description": "Endpoint para eliminar una foto de comercio.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "ID de la foto"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Foto eliminada exitosamente"
           }
         }
       }
@@ -1046,7 +1160,7 @@
       }
     },
     "/logout": {
-      "post": {
+      "get": {
         "tags": [
           "Auth"
         ],
@@ -1059,34 +1173,13 @@
         }
       }
     },
-    "/storage": {
-      "get": {
-        "tags": [
-          "Storage"
-        ],
-        "summary": "Obtener la página de almacenamiento",
-        "description": "Endpoint para obtener la página principal del almacenamiento.",
-        "responses": {
-          "200": {
-            "description": "Página encontrada",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/storage/thumb/{comercio_id}/{filename}": {
       "get": {
         "tags": [
           "Storage"
         ],
         "summary": "Obtener una miniatura de archivo",
-        "description": "Endpoint para obtener una miniatura de archivo.",
+        "description": "Endpoint para obtener una miniatura de archivo, es de uso interno de la aplicación.",
         "parameters": [
           {
             "in": "path",
@@ -1127,7 +1220,7 @@
           "Storage"
         ],
         "summary": "Obtener un archivo",
-        "description": "Endpoint para obtener un archivo almacenado.",
+        "description": "Endpoint para obtener un archivo almacenado, es de uso interno de la aplicación.",
         "parameters": [
           {
             "in": "path",
