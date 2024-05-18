@@ -9,27 +9,31 @@
 
         {{ form_errors(registrationForm) }}
 
+            <div class="alert red d-none" id="dialogo">
+                <p>El nombre o el email ya existen.</p>
+            </div>
+
         {{ form_start(registrationForm, {'attr': {'id': 'formId'}}) }}
         <!-- Email input -->
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.email) }}" type="email" id="form5Example1" class="form-control"
-                   required/>
+                 onkeyup="validateEmail(this)"  required/>
             <label class="form-label" for="form5Example1">{{ field_label(registrationForm.email) }}</label>
         </div>
         <!-- Name input -->
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control"
-                   required/>
+                   onkeyup="validateName(this)" required/>
             <label class="form-label" for="form5Example2">{{ field_label(registrationForm.nombre) }}</label>
         </div>
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3"
-                   class="form-control" required/>
+                   class="form-control" onkeyup="validatePass1(this)" required/>
             <label class="form-label" for="form1Example3">{{ field_label(registrationForm.password) }}</label>
         </div>
         <div>
             <div class="form-outline mb-4">
-                <input name="" type="password" id="form1Example4" class="form-control" required/>
+                <input name="" type="password" id="form1Example4" class="form-control" onkeyup="validatePass2(this)" required/>
                 <label class="form-label" for="form1Example4">Password</label>
             </div>
             <div class="error-message"></div>
@@ -53,6 +57,7 @@
 
         <button type="submit" class="btn btn-primary btn-block mb-4" id="submitBtn">Registrarse</button>
         {{ form_end(registrationForm) }}
+
         <div class="justify-content-center mt-5">
             <h6>¿Ya tienes cuenta?
                 <a href="{{ path('app_login') }}"> Inicia sesión aquí.</a>
@@ -63,16 +68,80 @@
 
 {% block js %}
     <script>
-        document.getElementById("formId").addEventListener("submit", function (event) {
-            var password = document.getElementById("form1Example3").value;
-            var confirmPassword = document.getElementById("form1Example4").value;
+        var vpass1 = false;
+        var vpass2 = false;
+        var vemail = false;
+        var vname = false;
 
-            if (password !== confirmPassword) {
-                showError(document.getElementById("form1Example4"), 'Los campos Password deben coincidir.');
-                console.log(password, confirmPassword);
+        document.getElementById("formId").addEventListener("submit", function (event) {
+            validatePass1(document.getElementById("form1Example3"));
+            validatePass2(document.getElementById("form1Example4"));
+            validateName(document.getElementById("form5Example2"));
+            validateEmail(document.getElementById("form5Example1"));
+
+            // Si alguna validación falla, evita el envío del formulario
+            if (!vpass1 || !vemail || !vname || !vpass2) {
                 event.preventDefault();
             }
+            document.getElementById("dialogo").classList.remove("d-none");
         });
+
+        function validatePass1(pass1){
+
+            if(pass1.value.length < 6){
+                showError(pass1, 'La contraseña debe tener 6 caracteres.');
+                vpass1 = false;
+                return false;
+            }
+
+            vpass1 = true;
+            hideError(pass1);
+            return true;
+        }
+
+        function validatePass2(pass2){
+            var password = document.getElementById("form1Example3").value;
+
+            if (password !== pass2.value) {
+                showError(pass2, 'Los campos Password deben coincidir.');
+                vpass2 = false;
+                return false;
+            }
+
+            vpass2 = true;
+            hideError(pass2);
+            return true;
+        }
+
+        function validateName(name){
+            var nombre = document.getElementById("form5Example2").value.trim();
+            if (nombre === ''){
+                showError(name, 'El nombre no puede estar en blanco.');
+
+                vname = false;
+                return false;
+            }
+
+            hideError(name);
+            vname = true;
+            return true;
+        }
+
+
+        function validateEmail(email) {
+            // Utiliza una expresión regular simple para validar el formato del correo electrónico
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email.value)) {
+                showError(email, 'El email debe tener un formato válido.');
+                vemail = false;
+                return false;
+            }
+
+            hideError(email);
+            vemail = true;
+            return true;
+        }
 
         function showError(field, message) {
             // Encuentra el elemento de mensaje de error asociado con el campo
@@ -81,6 +150,12 @@
             // Muestra el mensaje de error y aplica el estilo
             errorElement.textContent = message;
             errorElement.style.color = 'red';
+        }
+
+        function hideError(field) {
+            // Encuentra el elemento de mensaje de error asociado con el campo y limpia el mensaje
+            var errorElement = field.parentElement.parentElement.querySelector('.error-message');
+            errorElement.textContent = '';
         }
 
     </script>

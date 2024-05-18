@@ -59,7 +59,7 @@ class UsuarioNewType extends AbstractType
                 if ($token) {
                     $user = $token->getUser();
 
-                    // Oculta el campo de estado si el estado es "Pendiente" y no es administrador
+                    // Oculta el campo si no es administrador
                     if (!$this->isAdmin($user)) {
                         $form->remove('admin');
                     }else{

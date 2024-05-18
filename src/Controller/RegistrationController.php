@@ -36,30 +36,38 @@ class RegistrationController extends AbstractController
         $usuario = $this->getUser();
         $rol = $usuario ? $usuario->getRoles() : ['null'];
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
 
-            $user->setRoles(['ROLE_USER']);
+        if ($form->isSubmitted()) {
+           $formNombre = $form->get('nombre')->getData();
+           $nombreExiste = $entityManager->getRepository(Usuario::class)->findBy(['nombre' => $formNombre]);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            // aquí se puede añadir que mande un email
-
-            //comprueba si no es el administrador, y si no lo es lo loguea
-            if (in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
-                return $this->redirectToRoute('admin_usuarios');
-            } else {
-                return $userAuthenticator->authenticateUser(
-                    $user,
-                    $authenticator,
-                    $request
+            if ($form->isValid() && $nombreExiste === null) {
+                // encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
                 );
+
+                $user->setRoles(['ROLE_USER']);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+                // aquí se puede añadir que mande un email
+
+                //comprueba si no es el administrador, y si no lo es lo loguea
+                if (in_array('ROLE_ADMIN', $rol) || !in_array('null', $rol)) {
+                    return $this->redirectToRoute('admin_usuarios');
+                } else {
+                    return $userAuthenticator->authenticateUser(
+                        $user,
+                        $authenticator,
+                        $request
+                    );
+                }
+            } else {
+                echo '<script>document.getElementById("dialogo").classList.remove("d-none");</script>';
             }
         }
 
