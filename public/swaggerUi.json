@@ -2,15 +2,12 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Zaragoza comercio",
-    "description": "Endpoints para acceder a información sobre comercios.",
+    "description": "Documentación de la parte API de Zaragoza Comercio pero que otras aplicaciones puedan solicitar los datos y documentación de los endpoint de uso interno de los controladores de la web.",
     "version": "1.0.0"
   },
   "servers": [
     {
       "url": "https://temp.zaragozacomercio.es/"
-    },
-    {
-      "url": "https://127.0.0.1:8000/"
     }
   ],
   "tags": [
@@ -24,7 +21,7 @@
     },
     {
       "name": "Admin",
-      "description": "Llamadas del controlador admin",
+      "description": "Llamadas de uso interno de la web del controlador admin",
       "externalDocs": {
         "description": "Requieren token",
         "url": "https://temp.zaragozacomercio.es/admin"
@@ -32,7 +29,7 @@
     },
     {
       "name": "Comercio",
-      "description": "Llamadas del controlador Comercio Controller",
+      "description": "Llamadas de uso interno de la web del controlador Comercio Controller",
       "externalDocs": {
         "description": "No necesitan token",
         "url": "https://temp.zaragozacomercio.es/comercio"
@@ -40,7 +37,7 @@
     },
     {
       "name": "Foto",
-      "description": "Llamadas del controlador Foto Controller",
+      "description": "Llamadas de uso interno de la web del controlador Foto Controller",
       "externalDocs": {
         "description": "Uso interno de la aplicación",
         "url": "https://temp.zaragozacomercio.es/foto"
@@ -48,7 +45,7 @@
     },
     {
       "name": "Inicio",
-      "description": "Llamadas del controlador Inicio Controller",
+      "description": "Llamadas de uso interno de la web del controlador Inicio Controller",
       "externalDocs": {
         "description": "No necesitan token",
         "url": "https://temp.zaragozacomercio.es/"
@@ -56,7 +53,7 @@
     },
     {
       "name": "Register",
-      "description": "Llamadas del controlador Register Controller",
+      "description": "Llamadas de uso interno de la web del controlador Register Controller",
       "externalDocs": {
         "description": "No necesitan token",
         "url": "https://temp.zaragozacomercio.es/register"
@@ -64,7 +61,7 @@
     },
     {
       "name": "Auth",
-      "description": "Llamadas del controlador Security Controller",
+      "description": "Llamadas de uso interno de la web del controlador Security Controller",
       "externalDocs": {
         "description": "Llamadas de autentificación",
         "url": "https://temp.zaragozacomercio.es/"
@@ -72,7 +69,7 @@
     },
     {
       "name": "Storage",
-      "description": "Llamadas del controlador storage",
+      "description": "Llamadas de uso interno de la web del controlador storage",
       "externalDocs": {
         "description": "Uso interno de la aplicación",
         "url": "https://temp.zaragozacomercio.es/storage"
@@ -127,6 +124,10 @@
                           "descripcion": {
                             "type": "string",
                             "description": "Descripción del comercio"
+                          },
+                          "foto": {
+                            "type": "string",
+                            "description": "url de la foto del comercio"
                           }
                         }
                       }
@@ -248,7 +249,7 @@
                       "type": "array",
                       "items": {
                         "type": "string",
-                        "description": "Archivos de las fotos del comercio"
+                        "description": "Urls de las fotos del comercio"
                       }
                     }
                   }

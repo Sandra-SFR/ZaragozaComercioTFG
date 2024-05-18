@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comercio;
+use App\Entity\Foto;
 use App\Entity\Horario;
 use App\Service\ComercioService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,16 +24,24 @@ class ApiController extends AbstractController
     /**
      * Endpoint API que muestra todos los comercios
      * no requiere auth (JWT)
-    **/
+     **/
     #[Route('/comercios', name: 'app_api_comercios', methods: ['GET'])]
-    public function index(EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    public function index(EntityManagerInterface $em): JsonResponse
     {
-        $comercios = $em->getRepository(Comercio::class)->findBy([],['nombre'=>'ASC']);
+        $comercios = $em->getRepository(Comercio::class)->findBy([], ['nombre' => 'ASC']);
         $comerciosData = [];
 
+
         foreach ($comercios as $comercio) {
+            $fotoDestacada = $em->getRepository(Foto::class)->findBy(['destacada' => 'true', 'comercio' => $comercio]);
             $categorias = $comercio->getCategorias()->getValues();
             $categoria = $categorias[0]->getNombre();
+
+            if ($fotoDestacada) {
+                $url = 'https://temp.zaragozacomercio.es/storage/' . $comercio->getId() . '/' . $fotoDestacada[0]->getArchivo();
+            } else {
+                $url = '';
+            }
 
             $comercioData = [
                 'id' => $comercio->getId(),
@@ -43,16 +52,16 @@ class ApiController extends AbstractController
                 'estado' => $comercio->getEstado(),
                 'categoria' => $categoria,
                 'descripcion' => $comercio->getDescripcion(),
+                'foto' => $url,
             ];
 
             // Agregamos los datos del comercio al arreglo de todos los comercios
             $comerciosData[] = $comercioData;
         }
 
-        $data = $serializer->serialize([
+        $data = json_encode([
             'comercios' => $comerciosData,
-
-        ], 'json');
+        ], JSON_UNESCAPED_SLASHES);
 
         return new JsonResponse($data, 200, [], true);
     }
@@ -69,6 +78,10 @@ class ApiController extends AbstractController
 
         $comercio = $em->getRepository(Comercio::class)->find($id);
 
+        if (!$comercio) {
+            return new JsonResponse(['error' => 'Comercio no encontrado'], 404);
+        }
+
         $categorias = $comercio->getCategorias()->getValues();
         $categoria = $categorias[0]->getNombre();
 
@@ -79,27 +92,28 @@ class ApiController extends AbstractController
         $estadoComercio = $comercioService->verificarEstadoComercio($horas);
 
         $fotos = $comercio->getFotos()->getValues();
-        $archivos = array_map(function ($foto){
-            return $foto->getArchivo();
+        $archivos = array_map(function ($foto) use ($id) {
+            $url = 'https://temp.zaragozacomercio.es/storage/' . $id . '/' . $foto->getArchivo();
+            return $url;
         }, $fotos);
-        $fotosJson = json_encode($archivos);
+        $fotosJson = json_encode($archivos, JSON_UNESCAPED_SLASHES);
 
-        $data =$serializer->serialize([
-        'comercio'=>[
-            'id' =>$comercio->getId(),
-            'nombre' =>$comercio->getNombre(),
-            'telefono' => $comercio->getTelefono(),
-            'direccion' => $comercio->getDireccion(),
-            'email' => $comercio->getEmail(),
-            'estado' => $comercio->getEstado(),
-            'descripcion' => $comercio->getDescripcion(),
-            'descripcion larga' => $comercio->getDescripcionLarga(),
-        ],
+        $data = $serializer->serialize([
+            'comercio' => [
+                'id' => $comercio->getId(),
+                'nombre' => $comercio->getNombre(),
+                'telefono' => $comercio->getTelefono(),
+                'direccion' => $comercio->getDireccion(),
+                'email' => $comercio->getEmail(),
+                'estado' => $comercio->getEstado(),
+                'descripcion' => $comercio->getDescripcion(),
+                'descripcion larga' => $comercio->getDescripcionLarga(),
+            ],
             'categoria' => $categoria,
             'horas' => $horarios,
             'estado' => $estadoComercio,
             'fotos' => $fotosJson,
-        ],'json', ['groups' => 'comercio'] );
+        ], 'json', ['groups' => 'comercio']);
 
         return new JsonResponse($data, 200, [], true);
     }
