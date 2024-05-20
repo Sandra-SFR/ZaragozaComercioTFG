@@ -8,11 +8,6 @@
         <h1>Registrarse</h1>
 
         {{ form_errors(registrationForm) }}
-
-            <div class="alert red d-none" id="dialogo">
-                <p>El nombre o el email ya existen.</p>
-            </div>
-
         {{ form_start(registrationForm, {'attr': {'id': 'formId'}}) }}
         <!-- Email input -->
         <div class="form-outline mb-4">
@@ -20,12 +15,22 @@
                  onkeyup="validateEmail(this)"  required/>
             <label class="form-label" for="form5Example1">{{ field_label(registrationForm.email) }}</label>
         </div>
+        {% if registrationForm.email.vars.errors %}
+            <div class="error red">
+                {{ form_errors(registrationForm.email) }}
+            </div>
+        {% endif %}
         <!-- Name input -->
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.nombre) }}" type="text" id="form5Example2" class="form-control"
                    onkeyup="validateName(this)" required/>
             <label class="form-label" for="form5Example2">{{ field_label(registrationForm.nombre) }}</label>
         </div>
+        {% if registrationForm.nombre.vars.errors %}
+            <div class="error red">
+                {{ form_errors(registrationForm.nombre) }}
+            </div>
+        {% endif %}
         <div class="form-outline mb-4">
             <input name="{{ field_name(registrationForm.password) }}" type="password" id="form1Example3"
                    class="form-control" onkeyup="validatePass1(this)" required/>
@@ -38,6 +43,11 @@
             </div>
             <div class="error-message"></div>
         </div>
+        {% if registrationForm.password.vars.errors %}
+            <div class="error-message red">
+                {{ form_errors(registrationForm.password) }}
+            </div>
+        {% endif %}
 
         <!-- Checkbox -->
         <div class="form-check d-flex justify-content-left mb-1">

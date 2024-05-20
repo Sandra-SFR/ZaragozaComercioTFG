@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Form\FormError;
 
 class RegistrationController extends AbstractController
 {
@@ -37,11 +38,18 @@ class RegistrationController extends AbstractController
         $rol = $usuario ? $usuario->getRoles() : ['null'];
 
 
-        if ($form->isSubmitted()) {
-           $formNombre = $form->get('nombre')->getData();
-           $nombreExiste = $entityManager->getRepository(Usuario::class)->findBy(['nombre' => $formNombre]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formNombre = $form->get('nombre')->getData();
+            $nombreExiste = $entityManager->getRepository(Usuario::class)->findBy(['nombre' => $formNombre]);
 
-            if ($form->isValid() && $nombreExiste === null) {
+            $formEmail = $form->get('email')->getData();
+            $emailExiste = $entityManager->getRepository(Usuario::class)->findBy(['email' => $formEmail]);
+
+            if ($nombreExiste) {
+                $form->get('nombre')->addError(new FormError('El nombre ya está en uso.'));
+            }elseif ($emailExiste){
+                $form->get('email')->addError(new FormError('El email ya está en uso.'));
+            } else {
                 // encode the plain password
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
@@ -66,8 +74,6 @@ class RegistrationController extends AbstractController
                         $request
                     );
                 }
-            } else {
-                echo '<script>document.getElementById("dialogo").classList.remove("d-none");</script>';
             }
         }
 

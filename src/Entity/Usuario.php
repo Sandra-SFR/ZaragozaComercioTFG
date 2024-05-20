@@ -12,7 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'El email ya esta en uso')]
+#[UniqueEntity(fields: ['nombre'], message: 'El nombre ya esta en uso')]
 class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
