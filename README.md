@@ -46,7 +46,7 @@ Now that you're more familiar with your Bitbucket repository, go ahead and add a
 
 repositorio de GitHub
 ---
-https://github.com/Sandra-SFR/ZaragozaComercioTFG
+https://github.com/Sandra-SFR/ZaragozaComercioTfg
 
 Importante
 ---
