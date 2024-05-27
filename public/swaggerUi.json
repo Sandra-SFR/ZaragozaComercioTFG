@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Zaragoza comercio",
-    "description": "Documentación de la parte API de Zaragoza Comercio pero que otras aplicaciones puedan solicitar \n\nlos datos y documentación de los endpoint de uso interno de los controladores de la web. \n\n Repositorio git [Zaragoza comercio](https://github.com/Sandra-SFR/ZaragozaComercioTFG)",
+    "description": "Documentación de la parte API de Zaragoza Comercio pero que otras aplicaciones puedan solicitar \n\nlos datos y documentación de los endpoint de uso interno de los controladores de la web. \n\n Repositorio git [Zaragoza comercio](https://github.com/Sandra-SFR/ZaragozaComercioTfg)",
     "version": "1.0.0"
   },
   "servers": [
