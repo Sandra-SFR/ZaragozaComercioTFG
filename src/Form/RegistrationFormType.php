@@ -27,7 +27,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('envio', CheckboxType::class)
+            ->add('envio', CheckboxType::class, [
+                'label' => 'Aceptar envio de notificaciones por email.'
+            ])
             ->add('password', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
